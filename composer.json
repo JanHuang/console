@@ -1,0 +1,23 @@
+{
+    "name": "dobee/console",
+    "description": "dobee console component",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "janhuang",
+            "email": "384099566@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.7"
+    },
+    "config": {
+        "bin-dir": "src/Dobee/Console/bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dobee\\": "src/Dobee"
+        }
+    }
+}
