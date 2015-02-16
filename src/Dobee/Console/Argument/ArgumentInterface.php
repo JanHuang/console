@@ -11,9 +11,17 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Console\Options;
+namespace Dobee\Console\Argument;
 
-interface OptionsInterface
+interface ArgumentInterface
 {
+    public function setCommandName($command_name);
 
+    public function getCommandName();
+
+    public function hasArgument($key);
+
+    public function setArgument($key, $value);
+
+    public function getArgument($key);
 }

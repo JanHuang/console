@@ -19,9 +19,7 @@ interface InputInterface extends FormatInterface
 
     public function hasOption($key);
 
-    public function removeOption($key);
-
-    public function setArgument($key, $value);
+    public function getOption($key);
 
     public function getArgument($key);
 }

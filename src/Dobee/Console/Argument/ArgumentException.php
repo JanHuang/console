@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: janhuang
  * Date: 15/2/15
- * Time: 上午1:16
+ * Time: 下午2:01
  * Github: https://www.github.com/janhuang 
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
@@ -11,9 +11,9 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Console\Options;
+namespace Dobee\Console\Argument;
 
-class OptionsException extends \Exception
+class ArgumentException extends \Exception
 {
 
 }

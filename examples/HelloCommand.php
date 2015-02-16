@@ -11,23 +11,29 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
+use Dobee\Console\Format\InputInterface;
+use Dobee\Console\Format\OutputInterface;
 use Dobee\Console\Format\Input;
 
 class HelloCommand extends \Dobee\Console\Command
 {
+    public function getName()
+    {
+        return 'hello';
+    }
+
     public function configure()
     {
         $this
-            ->setName('hello')
             ->setDescription('hello demo command')
-            ->addOption('name', 'janhuang', Input::VALUE_NONE)
+            ->addOption('name', 'janhuang', Input::OPTIONAL)
             ->addOption('age', 22, Input::OPTIONAL)
             ->addOption('height', null, Input::REQUIRED)
         ;
     }
 
-    public function execute(\Dobee\Console\Format\InputInterface $input, \Dobee\Console\Format\OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(var_dump($input->hasArgument('name')));
+        $output->writeln($input->getArgument('name'));
     }
 }

@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/2/15
- * Time: 上午12:51
+ * Date: 15/2/16
+ * Time: 下午9:39
  * Github: https://www.github.com/janhuang 
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
@@ -13,17 +13,18 @@
 
 namespace Dobee\Console\Format;
 
-class Output implements OutputInterface
+class Writeln implements FormatInterface
 {
-    private $writeln;
+    const SUCCESS = '[42m';
 
-    public function __construct(Writeln $writeln)
-    {
-        $this->writeln = $writeln;
-    }
+    const NOTICE = '[41m';
+
+    const WARNING = '[43m';
+
+    const ERROR = '[41m';
 
     public function writeln($message, $style = Writeln::SUCCESS)
     {
-        return $this->writeln->writeln($message, $style);
+        echo chr(27) . $style . $message . chr(27) . "[0m" . PHP_EOL;
     }
 }

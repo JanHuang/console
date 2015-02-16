@@ -19,25 +19,9 @@ use Dobee\Console\Format\OutputInterface;
 
 abstract class Command implements CommandInterface
 {
-    private $name;
-
     private $description;
 
     private $options;
-
-    private $sys_input = array();
-
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
 
     public function setDescription($description)
     {
@@ -51,14 +35,10 @@ abstract class Command implements CommandInterface
         return $this->description;
     }
 
-    public function addInput($name, $default_value, $notice = '')
-    {
-
-    }
-
     public function addOption($key, $value = null, $optional = Input::OPTIONAL, $notice = null)
     {
         $this->options[$key] = array(
+            'name' => $key,
             'value' => $value,
             'optional' => $optional,
             'notice' => $notice,
@@ -75,6 +55,8 @@ abstract class Command implements CommandInterface
 
         return $this->options[$key];
     }
+
+    abstract public function getName();
 
     abstract public function configure();
 

@@ -13,8 +13,10 @@
 
 namespace Dobee\Console;
 
+use Dobee\Console\Argument\Argument;
 use Dobee\Console\Format\Input;
 use Dobee\Console\Format\Output;
+use Dobee\Console\Format\Writeln;
 
 class Console
 {
@@ -24,13 +26,13 @@ class Console
 
     private $output;
 
-    public function __construct(CommandCollections $collections)
+    public function __construct()
     {
-        $this->command_collections = $collections;
+        $this->command_collections = new CommandCollections();
 
-        $this->input = new Input();
+        $this->input = new Input(new Argument());
 
-        $this->output = new Output();
+        $this->output = new Output(new Writeln());
     }
 
     public function addCommand(CommandInterface $command)
@@ -46,17 +48,11 @@ class Console
         return $this;
     }
 
-    public function run(CommandInterface $command = null)
+    public function run()
     {
         $this->input->parseArgsInput();
 
-        if (null === $command) {
-            foreach ($this->command_collections->getCommand(null) as $command) {
-                $command->execute($this->input, $this->output);
-            }
-
-            return 1;
-        }
+        $command = $this->command_collections->getCommand($this->input->getCommandName());
 
         return $command->execute($this->input, $this->output);
     }

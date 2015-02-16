@@ -13,7 +13,7 @@
 
 namespace Dobee\Console\Format;
 
-use Dobee\Console\Options\Options;
+use Dobee\Console\Argument\ArgumentInterface;
 
 class Input implements InputInterface
 {
@@ -23,23 +23,29 @@ class Input implements InputInterface
 
     const VALUE_NONE = '';
 
-    const OPTION_SHORT = 4;
-
-    const OPTION_LONG = 5;
-
     private $options = array();
 
     private $arguments = array();
 
-    public function addOption($key, $value = null, $options = Input::OPTIONAL, $notice = null)
+    public function __construct(ArgumentInterface $argumentInterface)
     {
-        $this->arguments[$key] = array(
+        $this->arguments = $argumentInterface;
+    }
+
+    public function getCommandName()
+    {
+        return $this->arguments->getCommandName();
+    }
+
+    public function addOption($key, $value = null, $optional = Input::OPTIONAL, $notice = null)
+    {
+        $this->options[$key] = array(
             'value' => $value,
-            'optional' => $options,
+            'optional' => $optional,
             'notice' => $notice,
         );
 
-        $this->options[] = $key . $options;
+        return $this;
     }
 
     public function hasOption($key)
@@ -49,43 +55,20 @@ class Input implements InputInterface
 
     public function parseArgsInput()
     {
-        $this->arguments = Options::parse('', $this->options);
-
-        return $this->arguments;
-    }
-
-    public function removeOption($key)
-    {
-        if ($this->hasOption($key)) {
-            unset($this->options[$key]);
-        }
-
-        return $this;
-    }
-
-    public function hasArgument($key)
-    {
-        return isset($this->arguments[$key]);
-    }
-
-    public function setArgument($key, $value)
-    {
-        $this->arguments[$key] = $value;
-
-        return $this;
+        return $this->arguments->parse($this->options);
     }
 
     public function getArgument($key)
     {
-        if (!isset($this->arguments[$key])) {
-            throw new \Exception(sprintf('%s\' is undefined.', $key));
-        }
-
-        return $this->arguments[$key];
+        return $this->arguments->getArgument($key);
     }
 
-    public function getNotice($key)
+    public function getOption($key)
     {
-        return STDIN;
+        if (!$this->hasOption($key)) {
+            return false;
+        }
+
+        return $this->options[$key];
     }
 }

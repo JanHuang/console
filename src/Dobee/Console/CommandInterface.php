@@ -18,8 +18,6 @@ use Dobee\Console\Format\OutputInterface;
 
 interface CommandInterface
 {
-    public function setName($name);
-
     public function getName();
 
     public function setDescription($description);

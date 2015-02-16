@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * Created by PhpStorm.
@@ -16,10 +17,9 @@ include __DIR__ . '/HelloCommand.php';
 
 $helloCommand = new HelloCommand();
 
-use Dobee\Console\CommandCollections;
 use Dobee\Console\Console;
 
-$console = new Console(new CommandCollections());
+$console = new Console();
 
 $console->addCommand($helloCommand);
 
