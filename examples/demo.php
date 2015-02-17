@@ -24,3 +24,4 @@ $console = new Console();
 $console->addCommand($helloCommand);
 
 $console->run();
+

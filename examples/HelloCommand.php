@@ -13,7 +13,7 @@
 
 use Dobee\Console\Format\InputInterface;
 use Dobee\Console\Format\OutputInterface;
-use Dobee\Console\Format\Input;
+use Dobee\Console\Argument\Argument;
 
 class HelloCommand extends \Dobee\Console\Command
 {
@@ -26,14 +26,31 @@ class HelloCommand extends \Dobee\Console\Command
     {
         $this
             ->setDescription('hello demo command')
-            ->addOption('name', 'janhuang', Input::OPTIONAL)
-            ->addOption('age', 22, Input::OPTIONAL)
-            ->addOption('height', null, Input::REQUIRED)
+            ->addOption('name', 'janhuang', Argument::OPTIONAL)
+            ->addOption('age', 22, Argument::OPTIONAL)
+            ->addOption('height', null, Argument::REQUIRED, 'please input height argument')
         ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln($input->getArgument('name'));
+        var_dump($input->getArgument('name'));
+        try {
+            $message = $input->getArgument('name');
+        } catch (\Dobee\Console\Argument\ArgumentException $e) {
+            $message = 'not has argument';
+        }
+
+        $output->writeln($message);
+    }
+
+    /**
+     * return command help information.
+     *
+     * @return string
+     */
+    public function help()
+    {
+        // TODO: Implement help() method.
     }
 }

@@ -30,5 +30,7 @@ interface CommandInterface
 
     public function configure();
 
+    public function help();
+
     public function execute(InputInterface $input, OutputInterface $output);
 }

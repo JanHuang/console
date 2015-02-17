@@ -17,14 +17,6 @@ use Dobee\Console\Argument\ArgumentInterface;
 
 class Input implements InputInterface
 {
-    const REQUIRED = ':';
-
-    const OPTIONAL = '::';
-
-    const VALUE_NONE = '';
-
-    private $options = array();
-
     private $arguments = array();
 
     public function __construct(ArgumentInterface $argumentInterface)
@@ -37,38 +29,18 @@ class Input implements InputInterface
         return $this->arguments->getCommandName();
     }
 
-    public function addOption($key, $value = null, $optional = Input::OPTIONAL, $notice = null)
+    public function parseArgsInput(array $options = array())
     {
-        $this->options[$key] = array(
-            'value' => $value,
-            'optional' => $optional,
-            'notice' => $notice,
-        );
-
-        return $this;
+        return $this->arguments->parseArgsInput($options);
     }
 
-    public function hasOption($key)
+    public function hasArgument($key)
     {
-        return isset($this->options[$key]);
-    }
-
-    public function parseArgsInput()
-    {
-        return $this->arguments->parse($this->options);
+        return $this->arguments->hasArgument($key);
     }
 
     public function getArgument($key)
     {
         return $this->arguments->getArgument($key);
-    }
-
-    public function getOption($key)
-    {
-        if (!$this->hasOption($key)) {
-            return false;
-        }
-
-        return $this->options[$key];
     }
 }

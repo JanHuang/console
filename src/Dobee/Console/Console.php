@@ -37,12 +37,6 @@ class Console
 
     public function addCommand(CommandInterface $command)
     {
-        $command->configure();
-
-        foreach ($command->getOption(null) as $key => $val) {
-            $this->input->addOption($key, $val['value'], $val['optional'], $val['notice']);
-        }
-
         $this->command_collections->addCommand($command->getName(), $command);
 
         return $this;
@@ -50,9 +44,13 @@ class Console
 
     public function run()
     {
-        $this->input->parseArgsInput();
+        $this->output->writeln('Thank for you use \'Dobee\' console component.');
 
         $command = $this->command_collections->getCommand($this->input->getCommandName());
+
+        $command->configure();
+
+        $this->input->parseArgsInput($command->getOption());
 
         return $command->execute($this->input, $this->output);
     }

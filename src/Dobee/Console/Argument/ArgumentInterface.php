@@ -15,8 +15,6 @@ namespace Dobee\Console\Argument;
 
 interface ArgumentInterface
 {
-    public function setCommandName($command_name);
-
     public function getCommandName();
 
     public function hasArgument($key);

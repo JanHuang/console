@@ -13,7 +13,7 @@
 
 namespace Dobee\Console;
 
-use Dobee\Console\Format\Input;
+use Dobee\Console\Argument\Argument;
 use Dobee\Console\Format\InputInterface;
 use Dobee\Console\Format\OutputInterface;
 
@@ -35,10 +35,9 @@ abstract class Command implements CommandInterface
         return $this->description;
     }
 
-    public function addOption($key, $value = null, $optional = Input::OPTIONAL, $notice = null)
+    public function addOption($key, $value = null, $optional = Argument::OPTIONAL, $notice = null)
     {
         $this->options[$key] = array(
-            'name' => $key,
             'value' => $value,
             'optional' => $optional,
             'notice' => $notice,
@@ -55,6 +54,13 @@ abstract class Command implements CommandInterface
 
         return $this->options[$key];
     }
+
+    /**
+     * return command help information.
+     *
+     * @return string
+     */
+    abstract public function help();
 
     abstract public function getName();
 

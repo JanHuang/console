@@ -15,11 +15,4 @@ namespace Dobee\Console\Format;
 
 interface InputInterface extends FormatInterface
 {
-    public function addOption($key, $value, $notice = null);
-
-    public function hasOption($key);
-
-    public function getOption($key);
-
-    public function getArgument($key);
 }

@@ -13,28 +13,46 @@
 
 namespace Dobee\Console;
 
+/**
+ * Command collections object.
+ *
+ * Class CommandCollections
+ *
+ * @package Dobee\Console
+ */
 class CommandCollections implements \Countable, \Iterator
 {
-    private $collections;
+    /**
+     * @var array
+     */
+    private $collections = array();
 
+    /**
+     * @param                  $name
+     * @param CommandInterface $command
+     * @return $this
+     */
     public function addCommand($name, CommandInterface $command)
     {
-        if (empty($name)) {
-            throw new CommandException(sprintf('%s\' is null or empty.', 'name'));
-        }
-
         $this->collections[$name] = $command;
 
         return $this;
     }
 
+    public function hasCommand($name)
+    {
+        return isset($this->collections[$name]);
+    }
+
     /**
-     * @return Command
+     * @param null $name
+     * @return mixed
+     * @throws CommandException
      */
     public function getCommand($name = null)
     {
-        if (null === $name) {
-            return $this->collections;
+        if (!$this->hasCommand($name)) {
+            throw new CommandException(sprintf('%s\' is undefined.', $name));
         }
 
         return $this->collections[$name];

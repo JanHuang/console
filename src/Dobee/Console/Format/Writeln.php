@@ -15,9 +15,9 @@ namespace Dobee\Console\Format;
 
 class Writeln implements FormatInterface
 {
-    const SUCCESS = '[42m';
+    const SUCCESS = '[32m';
 
-    const NOTICE = '[41m';
+    const NOTICE = '[34m';
 
     const WARNING = '[43m';
 

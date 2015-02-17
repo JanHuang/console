@@ -13,46 +13,74 @@
 
 namespace Dobee\Console\Argument;
 
-use Dobee\Console\Format\Input;
-
 class Argument implements ArgumentInterface
 {
-    private $command_name;
+    const REQUIRED = ':';
+
+    const OPTIONAL = '::';
+
+    const VALUE_NONE = '';
 
     private $argument = array();
 
-    public function parse(array $options = array())
+    public function parseArgsInput(array $options = array())
     {
-        $arguments = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
+        $argInput = array_slice($_SERVER['argv'], 2);
 
-        if (!isset($arguments[1]) || '-' === substr($arguments[1], 0, 1)) {
-            throw new ArgumentException(sprintf('The first argument must be a command name'));
+        $arguments = array();
+
+        foreach ($argInput as $val) {
+            $args = explode('=', str_replace(array('--', '-'), '', $val));
+            if (count($args) <= 1) {
+                $value = $options[$args[0]]['value'];
+            } else {
+                $value = $args[1];
+            }
+
+            $arguments[$args[0]] = $value;
         }
 
-        $this->setCommandName($arguments[1]);
-
-        $arguments = array_slice($_SERVER['argv'], 2);
-
-        foreach ($arguments as $val) {
-            $opt = explode('=', str_replace(array('--', '-',), '', $val));
-            $key = $opt[0];
-            $value = isset($opt[1]) ? $opt[1] : null;
-            $this->setArgument($key, $value);
+        foreach ($options as $key => $value) {
+            switch($value['optional']) {
+                case Argument::REQUIRED:
+                    if (!isset($arguments[$key]) || empty($arguments[$key])) {
+                        $arguments[$key] = '';
+                        echo sprintf('\'%s\' %s %s: ', $key, $value['notice'], '[' . $value['value'] . ']');
+                        $value = trim(fgets(STDIN));
+                    } else {
+                        $value = $arguments[$key];
+                    }
+                    break;
+                case Argument::OPTIONAL:
+                    if (isset($arguments[$key])) {
+                        $value = $arguments[$key];
+                    } else {
+                        $value = $value['value'];
+                    }
+                    break;
+                case Argument::VALUE_NONE:
+                    $value = '';
+                    break;
+            }
+            if (isset($arguments[$key])) {
+                $this->setArgument($key, $value);
+            }
         }
-
-        return $this;
-    }
-
-    public function setCommandName($command_name)
-    {
-        $this->command_name = $command_name;
 
         return $this;
     }
 
     public function getCommandName()
     {
-        return $this->command_name;
+        if (!isset($_SERVER['argv'][1])) {
+            echo 'Please input your command name: ';
+            $commandName = trim(fgets(STDIN));
+            if(!empty($commandName)) {
+                $_SERVER['argv'][1] = $commandName;
+            }
+        }
+
+        return $_SERVER['argv'][1];
     }
 
     public function setArgument($key, $value)
