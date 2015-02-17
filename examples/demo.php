@@ -14,14 +14,12 @@
 
 $loader = include __DIR__ . '/../vendor/autoload.php';
 include __DIR__ . '/HelloCommand.php';
+include __DIR__ . '/WorldCommand.php';
 
-$helloCommand = new HelloCommand();
+$console = new \Dobee\Console\Console();
 
-use Dobee\Console\Console;
-
-$console = new Console();
-
-$console->addCommand($helloCommand);
+$console->addCommand(new HelloCommand());
+$console->addCommand(new WorldCommand());
 
 $console->run();
 

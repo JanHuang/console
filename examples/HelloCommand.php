@@ -34,7 +34,6 @@ class HelloCommand extends \Dobee\Console\Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        var_dump($input->getArgument('name'));
         try {
             $message = $input->getArgument('name');
         } catch (\Dobee\Console\Argument\ArgumentException $e) {

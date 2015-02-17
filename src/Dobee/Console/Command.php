@@ -21,7 +21,7 @@ abstract class Command implements CommandInterface
 {
     private $description;
 
-    private $options;
+    private $options = array();
 
     public function setDescription($description)
     {

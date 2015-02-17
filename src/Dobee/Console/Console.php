@@ -50,7 +50,13 @@ class Console
 
         $command->configure();
 
+        $this->output->writeln($command->getDescription());
+
         $this->input->parseArgsInput($command->getOption());
+        
+        if ($this->input->hasArgument('?')) {
+            return $command->help();
+        }
 
         return $command->execute($this->input, $this->output);
     }
