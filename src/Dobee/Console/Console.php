@@ -18,16 +18,37 @@ use Dobee\Console\Format\Input;
 use Dobee\Console\Format\Output;
 use Dobee\Console\Format\Writeln;
 
+/**
+ * Console
+ *
+ * Class Console
+ *
+ * @package Dobee\Console
+ */
 class Console
 {
+    /**
+     * @var CommandCollections
+     */
     private $command_collections;
 
-    private $input;
+    /**
+     * @var Input
+     */
+    protected $input;
 
-    private $output;
+    /**
+     * @var Output
+     */
+    protected $output;
 
+    /**
+     * Initialize console.
+     */
     public function __construct()
     {
+        $this->checkEnvironment();
+
         $this->command_collections = new CommandCollections();
 
         $this->input = new Input(new Argument());
@@ -35,6 +56,20 @@ class Console
         $this->output = new Output(new Writeln());
     }
 
+    /**
+     * Check console running environment.
+     */
+    public function checkEnvironment()
+    {
+        if (PHP_SAPI !== 'cli') {
+            exit('Console running environment must should be cli or cmd.');
+        }
+    }
+
+    /**
+     * @param CommandInterface $command
+     * @return $this
+     */
     public function addCommand(CommandInterface $command)
     {
         $this->command_collections->addCommand($command->getName(), $command);
@@ -42,6 +77,10 @@ class Console
         return $this;
     }
 
+    /**
+     * @return mixed
+     * @throws CommandException
+     */
     public function run()
     {
         $this->output->writeln('Thank for you use \'Dobee\' console component.');
@@ -53,7 +92,7 @@ class Console
         $this->output->writeln($command->getDescription());
 
         $this->input->parseArgsInput($command->getOption());
-        
+
         if ($this->input->hasArgument('?')) {
             return $command->help();
         }

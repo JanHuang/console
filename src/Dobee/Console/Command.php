@@ -17,23 +17,14 @@ use Dobee\Console\Argument\Argument;
 use Dobee\Console\Format\InputInterface;
 use Dobee\Console\Format\OutputInterface;
 
+/**
+ * Class Command
+ *
+ * @package Dobee\Console
+ */
 abstract class Command implements CommandInterface
 {
-    private $description;
-
     private $options = array();
-
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
 
     public function addOption($key, $value = null, $optional = Argument::OPTIONAL, $notice = null)
     {
@@ -61,6 +52,8 @@ abstract class Command implements CommandInterface
      * @return string
      */
     abstract public function help();
+
+    abstract public function getDescription();
 
     abstract public function getName();
 

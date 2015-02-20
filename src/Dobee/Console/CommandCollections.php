@@ -28,6 +28,11 @@ class CommandCollections implements \Countable, \Iterator
     private $collections = array();
 
     /**
+     * @var string
+     */
+    private $position;
+
+    /**
      * @param                  $name
      * @param CommandInterface $command
      * @return $this
@@ -39,6 +44,10 @@ class CommandCollections implements \Countable, \Iterator
         return $this;
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
     public function hasCommand($name)
     {
         return isset($this->collections[$name]);
@@ -67,7 +76,7 @@ class CommandCollections implements \Countable, \Iterator
      */
     public function current()
     {
-        // TODO: Implement current() method.
+        return $this->collections[$this->position];
     }
 
     /**
@@ -79,7 +88,7 @@ class CommandCollections implements \Countable, \Iterator
      */
     public function next()
     {
-        // TODO: Implement next() method.
+        $this->position = next($this->collections);
     }
 
     /**
@@ -91,7 +100,7 @@ class CommandCollections implements \Countable, \Iterator
      */
     public function key()
     {
-        // TODO: Implement key() method.
+        return $this->position;
     }
 
     /**
@@ -104,7 +113,7 @@ class CommandCollections implements \Countable, \Iterator
      */
     public function valid()
     {
-        // TODO: Implement valid() method.
+        return isset($this->collections[$this->position]);
     }
 
     /**
@@ -116,7 +125,7 @@ class CommandCollections implements \Countable, \Iterator
      */
     public function rewind()
     {
-        // TODO: Implement rewind() method.
+        $this->position = reset($this->collections);
     }
 
     /**
@@ -131,6 +140,6 @@ class CommandCollections implements \Countable, \Iterator
      */
     public function count()
     {
-        // TODO: Implement count() method.
+        return count($this->collections);
     }
 }

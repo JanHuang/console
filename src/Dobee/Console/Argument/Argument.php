@@ -45,7 +45,7 @@ class Argument implements ArgumentInterface
                 case Argument::REQUIRED:
                     if (!isset($arguments[$key]) || empty($arguments[$key])) {
                         $arguments[$key] = '';
-                        echo sprintf('\'%s\' %s %s: ', $key, $value['notice'], '[' . $value['value'] . ']');
+                        echo sprintf('%s %s %s: ', $key, $value['notice'], '[' . $value['value'] . ']');
                         $value = trim(fgets(STDIN));
                     } else {
                         $value = $arguments[$key];
