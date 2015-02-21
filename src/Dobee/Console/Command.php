@@ -53,7 +53,7 @@ abstract class Command implements CommandInterface
      */
     abstract public function help();
 
-//    abstract public function getDescription();
+    abstract public function getDescription();
 
     abstract public function getName();
 

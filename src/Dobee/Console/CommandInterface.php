@@ -34,7 +34,7 @@ interface CommandInterface
     /**
      * @return string
      */
-//    public function getDescription();
+    public function getDescription();
 
     /**
      * @param        $key
