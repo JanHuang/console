@@ -36,9 +36,26 @@ class Console
     private $input;
 
     /**
+     * @const string
+     */
+    const THANKS = 'Thank you for your use Dobee console Component.';
+
+    /**
      * @var Output
      */
     private $output;
+
+    /**
+     * @var array
+     */
+    private $trace;
+
+    /**
+     * @var array
+     */
+    private $predefined = array(
+        'Dobee\\Console\\Dumper\\Dump'
+    );
 
     /**
      * @param array $predefined
@@ -47,25 +64,75 @@ class Console
     {
         $this->collections = new CommandCollections();
 
-        $this->input = new Input();
-
         $this->output = new Output();
 
+        $this->input = new Input();
+
         if (!empty($predefined) && is_array($predefined)) {
+
+            $predefined = array_merge($this->predefined, $predefined);
+
             foreach ($predefined as $command) {
                 if (!class_exists($command)) {
                     continue;
                 }
 
-                $command = new $command();
+                $command = new $command($this->input, $this->output);
 
                 if (!($command instanceof Command)) {
                     throw new \InvalidArgumentException(sprintf('The command must be extend to "Dobee\Console\Commands\Command"'));
                 }
 
+                $command->setCollections($this->collections);
+
                 $this->addCommand($command);
             }
         }
+
+        $this->thankUse();
+    }
+
+    public function thankUse()
+    {
+        $this->output->writeBackground(self::THANKS, Output::STYLE_SUCCESS);
+    }
+
+    /**
+     * @return Input
+     */
+    public function getInput()
+    {
+        return $this->input;
+    }
+
+    /**
+     * @param Input $input
+     * @return $this
+     */
+    public function setInput(Input $input)
+    {
+        $this->input = $input;
+
+        return $this;
+    }
+
+    /**
+     * @return Output
+     */
+    public function getOutput()
+    {
+        return $this->output;
+    }
+
+    /**
+     * @param Output $output
+     * @return $this
+     */
+    public function setOutput(Output $output)
+    {
+        $this->output = $output;
+
+        return $this;
     }
 
     /**
@@ -74,9 +141,17 @@ class Console
      */
     public function addCommand(Command $command)
     {
-        $this->collections->setCommand($command);
+        $this->collections->setCommand($command, $this->input, $this->output);
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTrace()
+    {
+        return $this->trace;
     }
 
     /**
@@ -88,42 +163,25 @@ class Console
 
         try {
             $command = $this->collections->getCommand($commandName);
-        } catch (\Exception $e) {
-            $this->output->writeln(sprintf('Not found you command: "%s"', $commandName));
+        } catch (\InvalidArgumentException $e) {
+            $this->collections->executeCommand('command:dump', $this->input, $this->output);
             return 1;
         }
 
+        $this->trace[] = $commandName;
+
+        $command->setCollections($this->collections);
+
         $command->configure();
 
-        $this->output->writeln($command->getDescription()?:$command->getName());
+        $this->output->writeBackground($command->getDescription(), Output::STYLE_BG_NOTICE);
 
-        // Merge console input arguments and check required arguments.
-        $i = 0;
-        foreach ($command->getArguments() as $name => $argument) {
-            $value = isset($this->input->getArguments()[$i]) ? $this->input->getArguments()[$i] : null;
-            if ($argument->getOptional() === Command::ARG_REQUIRED && null === $value) {
-                $value = $this->input->systemInput(sprintf("Please input argument value [%s]: ", $name));
-            }
-            if ($argument->getOptional() === Command::ARG_NOT) {
-                continue;
-            }
-            $command->getArguments($name)->setValue($value);
-            ++$i;
-        }
+        $this->input->setArguments($command->getArguments());
+        $this->input->setOptions($command->getOptions());
+        $this->input->parseArgumentAndOptions();
 
-        unset($i);
-
-        // Merge console input options and check required options.
-        foreach ($command->getOptions() as $name => $option) {
-            $value = isset($this->input->getOptions()[$name]) ? $this->input->getOptions()[$name] : null;
-            if ($option->getOptional() === Command::ARG_REQUIRED && null === $value) {
-                $value = $this->input->systemInput(sprintf("Please input optional value [%s]: ", $name));
-            }
-            if ($option->getOptional() === Command::ARG_NOT) {
-                continue;
-            }
-            $command->getOptions($name)->setValue($value);
-        }
+        $command->setArguments($this->input->getArguments());
+        $command->setOptions($this->input->getOptions());
 
         $command->execute($this->input, $this->output);
 

@@ -13,15 +13,19 @@
 
 namespace Dobee\Console\Format;
 
+use Dobee\Console\Commands\Command;
+use Dobee\Console\Commands\Option;
+use Dobee\Console\Commands\Argument;
+
 /**
  * Class Input
  *
  * @package Dobee\Console\Format
  */
-class Input
+class Input extends Output
 {
     /**
-     * @var array
+     * @var Option[]
      */
     private $options = array();
 
@@ -31,19 +35,9 @@ class Input
     private $commandName;
 
     /**
-     * @var array
+     * @var Argument[]
      */
     private $arguments = array();
-
-    /**
-     * Constructor;
-     */
-    public function __construct()
-    {
-        $this->commandName = $this->parseCommandName();
-
-        $this->parseArgumentAndOptions();
-    }
 
     /**
      * @return bool|string
@@ -63,7 +57,7 @@ class Input
      */
     public function systemInput($message)
     {
-        Output::getInstance()->write($message);
+        $this->write($message, Output::STYLE_INFO);
 
         return trim(fgets(STDIN));
     }
@@ -73,6 +67,8 @@ class Input
      */
     private function parseCommandName()
     {
+        $commandName = '';
+
         if (!isset($_SERVER['argv'][1])) {
             $commandName = $this->systemInput('Please input your command name: ');
             if(empty($commandName)) {
@@ -82,8 +78,6 @@ class Input
             $_SERVER['argv'][1] = $commandName;
         }
 
-        $commandName = $_SERVER['argv'][1];
-
         array_shift($_SERVER['argv']);
         array_shift($_SERVER['argv']);
 
@@ -91,27 +85,90 @@ class Input
     }
 
     /**
-     * @return array
+     * @param      $name
+     * @param null $value
+     * @return $this
      */
-    public function getOptions()
+    public function setOptions($name, $value = null)
+    {
+        if (is_array($name)) {
+            foreach ($name as $key => $value) {
+                $this->options[$key] = $value;
+            }
+         } else {
+            $this->options[$name] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param      $name
+     * @param null $value
+     * @return $this
+     */
+    public function setArguments($name, $value = null)
+    {
+        if (is_array($name)) {
+            foreach ($name as $key => $value) {
+                $this->arguments[$key] = $value;
+            }
+        } else {
+            $this->arguments[$name] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param null|string $name
+     * @return Option[]|Option
+     */
+    public function getOptions($name = null)
     {
         if (empty($this->options)) {
             $this->parseArgumentAndOptions();
         }
 
-        return $this->options;
+        if (null === $name) {
+            return $this->options;
+        }
+
+        return $this->options[$name];
     }
 
     /**
-     * @return array
+     * @param null|string $name
+     * @return Argument
      */
-    public function getArguments()
+    public function getArguments($name = null)
     {
         if (empty($this->arguments)) {
             $this->parseArgumentAndOptions();
         }
 
-        return $this->arguments;
+        if (null === $name) {
+            return $this->arguments;
+        }
+
+        return $this->arguments[$name];
+    }
+
+    /**
+     * @param $name
+     * @return bool|mixed
+     */
+    public function get($name)
+    {
+        if (isset($this->arguments[$name])) {
+            return $this->arguments[$name]->getValue();
+        }
+
+        if (isset($this->options[$name])) {
+            return $this->options[$name]->getValue();
+        }
+
+        return false;
     }
 
     /**
@@ -119,24 +176,35 @@ class Input
      */
     public function parseArgumentAndOptions()
     {
-        if (empty($_SERVER['argv'])) {
-            return false;
-        }
-
         foreach ($_SERVER['argv'] as $arg) {
             if ('--' === substr($arg, 0, 2)) {
                 $pos = strpos($arg, '=');
                 $arg = substr($arg, 2);
                 if (!$pos) {
-                    $this->options[$arg] = null;
+                    $this->options[$arg]->setValue(null);
                     continue;
                 }
 
                 list($name, $value) = explode('=', $arg);
 
-                $this->options[$name] = $value;
+                $this->options[$name]->setValue($value);
             } else {
-                $this->arguments[] = $arg;
+                $this->arguments[key($this->arguments)]->setValue($arg);
+                next($this->arguments);
+            }
+        }
+
+        foreach ($this->arguments as $name => $argument) {
+            if ($argument->getOptional() === Command::ARG_REQUIRED && '' == $argument->getValue()) {
+                $value = $this->systemInput(sprintf('Please input you argument value [%s]: ', $argument->getName()));
+                $this->arguments[$name]->setValue($value);
+            }
+        }
+
+        foreach ($this->options as $name => $option) {
+            if ($option->getOptional() === Command::ARG_REQUIRED && '' == $option->getValue()) {
+                $value = $this->systemInput(sprintf('Please input you option value [%s]: ', $option->getName()));
+                $this->options[$name]->setValue($value);
             }
         }
 

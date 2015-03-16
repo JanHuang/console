@@ -127,4 +127,23 @@ class Output
     {
         return chr(27) . $style . $message . chr(27) . "[0m";
     }
+
+    /**
+     * @param        $message
+     * @param string $style
+     * @param int    $width
+     * @param int    $height
+     */
+    public function writeBackground($message, $style = self::STYLE_DEFAULT, $width = 1, $height = 1)
+    {
+        for ($i = 0; $i < $height; ++$i) {
+            $this->writeln(str_repeat(' ', (strlen($message) + $width * 2)), $style);
+        }
+
+        $this->writeln(str_repeat(' ', $width) . $message . str_repeat(' ', $width), $style);
+
+        for ($i = 0; $i < $height; ++$i) {
+            $this->writeln(str_repeat(' ', (strlen($message) + $width * 2)), $style);
+        }
+    }
 }

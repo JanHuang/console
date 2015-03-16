@@ -13,13 +13,40 @@
 
 namespace Dobee\Console\Commands;
 
+use Dobee\Console\Format\Input;
+use Dobee\Console\Format\Output;
+
+/**
+ * Class CommandCollections
+ *
+ * @package Dobee\Console\Commands
+ */
 class CommandCollections implements \Iterator
 {
+    /**
+     * @var Command[]
+     */
     private $collections = array();
 
-    public function setCommand(Command $command)
+    /**
+     * @param Command $command
+     * @param Input   $input
+     * @param Output  $output
+     * @return $this
+     */
+    public function setCommand(Command $command, Input $input = null, Output $output = null)
     {
         $this->collections[$command->getName()] = $command;
+
+        if (!($command->getInput() instanceof Input) && null !== $input) {
+            $command->setInput($input);
+        }
+
+        if (!($command->getOutput() instanceof Output) && null !== $output) {
+            $command->setOutput($output);
+        }
+
+        return $this;
     }
 
     /**
@@ -41,6 +68,20 @@ class CommandCollections implements \Iterator
     public function getCollections()
     {
         return $this->collections;
+    }
+
+    /**
+     * @param        $name
+     * @param Input  $input
+     * @param Output $output
+     */
+    public function executeCommand($name, Input $input, Output $output)
+    {
+        $command = $this->getCommand($name);
+
+        $command->configure();
+
+        $command->execute($input, $output);
     }
 
     /**

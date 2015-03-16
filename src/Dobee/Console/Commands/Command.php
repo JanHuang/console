@@ -39,6 +39,11 @@ abstract class Command
     protected $description;
 
     /**
+     * @var CommandCollections
+     */
+    protected $collections;
+
+    /**
      * @const string
      */
     const ARG_REQUIRED = ':';
@@ -59,6 +64,65 @@ abstract class Command
     protected $arguments = array();
 
     /**
+     * @var Input
+     */
+    protected $input;
+
+    /**
+     * @var Output
+     */
+    protected $output;
+
+    /**
+     * @param Input  $input
+     * @param Output $output
+     */
+    public function __construct(Input $input = null, Output $output = null)
+    {
+        $this->input = $input;
+
+        $this->output = $output;
+    }
+
+    /**
+     * @return Input
+     */
+    public function getInput()
+    {
+        return $this->input;
+    }
+
+    /**
+     * @return Output
+     */
+    public function getOutput()
+    {
+        return $this->output;
+    }
+
+    /**
+     * @param Input $input
+     * @return $this
+     */
+    public function setInput(Input $input)
+    {
+        $this->input = $input;
+
+        return $this;
+    }
+
+    /**
+     * @param Output $output
+     * @return $this
+     */
+    public function setOutput(Output $output)
+    {
+        $this->output = $output;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     abstract public function getName();
@@ -74,6 +138,25 @@ abstract class Command
      * @return void
      */
     abstract public function execute(Input $input, Output $output);
+
+    /**
+     * @param CommandCollections $collections
+     * @return $this
+     */
+    public function setCollections(CommandCollections $collections)
+    {
+        $this->collections = $collections;
+
+        return $this;
+    }
+
+    /**
+     * @return CommandCollections
+     */
+    public function getCollection()
+    {
+        return $this->collections;
+    }
 
     /**
      * @param $description
@@ -99,10 +182,27 @@ abstract class Command
      * @param        $value
      * @param string $optional
      * @param string $description
+     * @return $this
      */
-    public function setArguments($name, $value, $optional = self::ARG_OPTIONAL, $description = '')
+    public function setArguments($name, $value = null, $optional = self::ARG_OPTIONAL, $description = '')
     {
+        if (is_array($name)) {
+            foreach ($name as $key => $value) {
+                if ($value instanceof Argument) {
+                    $this->arguments[$key] = $value;
+                }
+            }
+
+            return $this;
+        }
+
+        if ($value instanceof Argument) {
+            $this->arguments[$name] = $value;
+        }
+
         $this->arguments[$name] = Argument::createArgument($name, $value, $optional, $description);
+
+        return $this;
     }
 
     /**
@@ -125,8 +225,22 @@ abstract class Command
      * @param string $description
      * @return $this
      */
-    public function setOptions($name, $value, $optional = self::ARG_OPTIONAL, $description = '')
+    public function setOptions($name, $value = null, $optional = self::ARG_OPTIONAL, $description = '')
     {
+        if (is_array($name)) {
+            foreach ($name as $key => $value) {
+                if ($value instanceof Option) {
+                    $this->options[$key] = $value;
+                }
+            }
+
+            return $this;
+        }
+
+        if ($value instanceof Argument) {
+            $this->options[$name] = $value;
+        }
+
         $this->options[$name] = Option::createOption($name, $value, $optional, $description);
 
         return $this;
@@ -143,6 +257,30 @@ abstract class Command
         }
 
         return $this->options[$name];
+    }
+
+    /**
+     * @param $command
+     * @return Command
+     */
+    public function getCommand($command)
+    {
+        return $this->collections->getCommand($command);
+    }
+
+    /**
+     * @param $command
+     */
+    public function executeCommand($command)
+    {
+        $this->collections->executeCommand($command, $this->input, $this->output);
+    }
+
+    public function writeDescription()
+    {
+        $this->output->writeln(str_repeat(' ', strlen($this->getDescription()) + 4), Output::STYLE_BG_NOTICE);
+        $this->output->writeln('  ' . $this->getDescription() . '  ', Output::STYLE_BG_NOTICE);
+        $this->output->writeln(str_repeat(' ', strlen($this->getDescription()) + 4), Output::STYLE_BG_NOTICE);
     }
 
     /**
