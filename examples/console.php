@@ -32,12 +32,14 @@ class Demo extends \Dobee\Console\Commands\Command
 
     public function execute(\Dobee\Console\Format\Input $input, \Dobee\Console\Format\Output $output)
     {
-        $output->writeln('hello demo command');
+        $output->writeln('hello demo command', \Dobee\Console\Format\Output::STYLE_INFO);
     }
 }
 
-$console = new \Dobee\Console\Console();
+$console = new \Dobee\Console\Console(array(
+    '\\Demo'
+));
 
-$console->addCommand(new Demo());
+//$console->addCommand(new Demo());
 
 $console->run();

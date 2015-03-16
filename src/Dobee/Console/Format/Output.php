@@ -13,22 +13,82 @@
 
 namespace Dobee\Console\Format;
 
-class Output 
+/**
+ * Class Output
+ *
+ * @package Dobee\Console\Format
+ */
+class Output
 {
+    /**
+     * @var $this
+     */
     private static $instance;
 
-    const STYLE_NOTICE = 'blue';
+    // font color
+    /**
+     *
+     */
+    const STYLE_FAILURE = '[31m';
 
-    const STYLE_WARNING = '';
+    /**
+     * @const string
+     */
+    const STYLE_SUCCESS = '[32m';
 
-    const STYLE_INFO = '';
+    /**
+     * @const string
+     */
+    const STYLE_WARNING = '[33m';
 
-    const STYLE_BG_NOTICE = '';
+    /**
+     * @const string
+     */
+    const STYLE_NOTICE = '[34m';
 
-    const STYLE_BG_WARNING = '';
+    /**
+     * @const string
+     */
+    const STYLE_INFO = '[36m';
 
-    const STYLE_BG_INFO = '';
+    /**
+     * @const string
+     */
+    const STYLE_DEFAULT = '[37m';
 
+    /**
+     * @const string
+     */
+    const STYLE_BG_FAILURE = '[41m';
+
+    /**
+     * @const string
+     */
+    const STYLE_BG_SUCCESS = '[42m';
+
+    /**
+     * @const string
+     */
+    const STYLE_BG_WARNING = '[43m';
+
+    /**
+     * @const string
+     */
+    const STYLE_BG_NOTICE = '[44m';
+
+    /**
+     * @const string
+     */
+    const STYLE_BG_INFO = '[46m';
+
+    /**
+     * @const string
+     */
+    const STYLE_BG_DEFAULT = '[47m';
+
+    /**
+     * @return Output
+     */
     public static function getInstance()
     {
         if (null === self::$instance) {
@@ -38,20 +98,33 @@ class Output
         return self::$instance;
     }
 
-    public function write($message, $style = self::STYLE_INFO)
+    /**
+     * @param        $message
+     * @param string $style
+     */
+    public function write($message, $style = self::STYLE_DEFAULT)
     {
         echo $this->format($message, $style);
     }
 
-    public function writeln($message, $style = self::STYLE_INFO)
+    /**
+     * @param        $message
+     * @param string $style
+     */
+    public function writeln($message, $style = self::STYLE_DEFAULT)
     {
         $this->write($message, $style);
 
         echo PHP_EOL;
     }
 
-    public function format($message, $style = self::STYLE_INFO)
+    /**
+     * @param        $message
+     * @param string $style
+     * @return string
+     */
+    public function format($message, $style = self::STYLE_DEFAULT)
     {
-        return $message;
+        return chr(27) . $style . $message . chr(27) . "[0m";
     }
 }
