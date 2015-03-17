@@ -89,7 +89,7 @@ class Console
                 $this->addCommand($command);
             }
         }
-        
+
         $this->thankUse();
     }
 

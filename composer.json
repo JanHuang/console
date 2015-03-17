@@ -20,6 +20,9 @@
             "Dobee\\": "src/Dobee"
         }
     },
+    "bin": [
+        "console"
+    ],
     "config": {
         "bin-dir": "bin"
     }
