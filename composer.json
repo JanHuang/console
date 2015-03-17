@@ -21,6 +21,6 @@
         }
     },
     "config": {
-        "bin-dir": "src/Dobee/Console/Bin"
+        "bin-dir": "bin"
     }
 }
