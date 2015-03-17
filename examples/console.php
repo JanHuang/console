@@ -40,6 +40,5 @@ $console = new \Dobee\Console\Console(array(
     '\\Demo'
 ));
 
-//$console->addCommand(new Demo());
-
+print_r($console);die;
 $console->run();

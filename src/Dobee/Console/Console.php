@@ -69,7 +69,7 @@ class Console
 
         $this->input = new Input();
 
-        if (!empty($predefined) && is_array($predefined)) {
+        if (is_array($predefined)) {
 
             $predefined = array_merge($this->predefined, $predefined);
 
@@ -89,7 +89,7 @@ class Console
                 $this->addCommand($command);
             }
         }
-
+        
         $this->thankUse();
     }
 
