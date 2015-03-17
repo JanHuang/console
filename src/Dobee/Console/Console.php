@@ -54,7 +54,8 @@ class Console
      * @var array
      */
     private $predefined = array(
-        'Dobee\\Console\\Dumper\\Dump'
+        'Dobee\\Console\\Dumper\\Dump',
+        'Dobee\\Routing\\Dumper\\Dump',
     );
 
     /**

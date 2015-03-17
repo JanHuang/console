@@ -19,5 +19,8 @@
         "psr-4": {
             "Dobee\\": "src/Dobee"
         }
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
