@@ -74,6 +74,30 @@ abstract class Command
     protected $output;
 
     /**
+     * @var mixed
+     */
+    private $provider;
+
+    /**
+     * @return mixed
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
+     * @param mixed $provider
+     * @return $this
+     */
+    public function setProvider($provider)
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
      * @param Input  $input
      * @param Output $output
      */

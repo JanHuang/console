@@ -60,7 +60,7 @@ class Console
     /**
      * @param array $predefined
      */
-    public function __construct(array $predefined = array())
+    public function __construct($predefined = null)
     {
         $this->collections = new CommandCollections();
 
@@ -69,24 +69,27 @@ class Console
         $this->input = new Input();
 
         if (is_array($predefined)) {
+            $this->predefined = array_merge($this->predefined, $predefined);
+        }
 
-            $predefined = array_merge($this->predefined, $predefined);
-
-            foreach ($predefined as $command) {
-                if (!class_exists($command)) {
-                    continue;
-                }
-
-                $command = new $command($this->input, $this->output);
-
-                if (!($command instanceof Command)) {
-                    throw new \InvalidArgumentException(sprintf('The command must be extend to "Dobee\Console\Commands\Command"'));
-                }
-
-                $command->setCollections($this->collections);
-
-                $this->addCommand($command);
+        foreach ($this->predefined as $command) {
+            if (!class_exists($command)) {
+                continue;
             }
+
+            $command = new $command($this->input, $this->output);
+
+            if (!($command instanceof Command)) {
+                throw new \InvalidArgumentException(sprintf('The command must be extend to "Dobee\Console\Commands\Command"'));
+            }
+
+            $command->setCollections($this->collections);
+
+            if (is_object($predefined)) {
+                $command->setProvider($predefined);
+            }
+
+            $this->addCommand($command);
         }
 
         $this->thankUse();
