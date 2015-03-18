@@ -24,15 +24,15 @@ class Demo extends \Dobee\Console\Commands\Command
 
     public function configure()
     {
-        $this->setOptions('name', null);
-        $this->setOptions('age', null, \Dobee\Console\Commands\Command::ARG_REQUIRED);
-        $this->setArguments('name', null);
-        $this->setArguments('age', null, \Dobee\Console\Commands\Command::ARG_REQUIRED);
+//        $this->setOptions('name', null);
+//        $this->setOptions('age', null, \Dobee\Console\Commands\Command::ARG_REQUIRED);
+//        $this->setArguments('name', null);
+//        $this->setArguments('age', null, \Dobee\Console\Commands\Command::ARG_REQUIRED);
     }
 
     public function execute(\Dobee\Console\Format\Input $input, \Dobee\Console\Format\Output $output)
     {
-        $output->writeBackground('hello demo ' . $this->getOptions('age')->getValue(), \Dobee\Console\Format\Output::STYLE_INFO);
+        $output->writeln('hello world');
     }
 }
 
@@ -40,5 +40,5 @@ $console = new \Dobee\Console\Console(array(
     '\\Demo'
 ));
 
-print_r($console);die;
+
 $console->run();

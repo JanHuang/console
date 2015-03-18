@@ -76,6 +76,8 @@ class Input extends Output
             }
 
             $_SERVER['argv'][1] = $commandName;
+        } else {
+            $commandName = $_SERVER['argv'][1];
         }
 
         array_shift($_SERVER['argv']);
