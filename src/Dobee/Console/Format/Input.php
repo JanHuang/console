@@ -67,8 +67,6 @@ class Input extends Output
      */
     private function parseCommandName()
     {
-        $commandName = '';
-
         if (!isset($_SERVER['argv'][1])) {
             $commandName = $this->systemInput('Please input your command name: ');
             if(empty($commandName)) {
@@ -128,10 +126,6 @@ class Input extends Output
      */
     public function getOptions($name = null)
     {
-        if (empty($this->options)) {
-            $this->parseArgumentAndOptions();
-        }
-
         if (null === $name) {
             return $this->options;
         }
@@ -145,10 +139,6 @@ class Input extends Output
      */
     public function getArguments($name = null)
     {
-        if (empty($this->arguments)) {
-            $this->parseArgumentAndOptions();
-        }
-
         if (null === $name) {
             return $this->arguments;
         }
@@ -191,8 +181,11 @@ class Input extends Output
 
                 $this->options[$name]->setValue($value);
             } else {
-                $this->arguments[key($this->arguments)]->setValue($arg);
-                next($this->arguments);
+                $key = key($this->arguments);
+                if (isset($this->arguments[$key])) {
+                    $this->arguments[key($this->arguments)]->setValue($arg);
+                    next($this->arguments);
+                }
             }
         }
 

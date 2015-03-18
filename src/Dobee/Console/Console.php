@@ -163,6 +163,8 @@ class Console
     {
         $commandName = $this->input->getCommandName();
 
+        $this->input->parseArgumentAndOptions();
+
         try {
             $command = $this->collections->getCommand($commandName);
         } catch (\InvalidArgumentException $e) {
