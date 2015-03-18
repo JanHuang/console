@@ -55,8 +55,6 @@ class Console
      */
     private $predefined = array(
         'Dobee\\Console\\Dumper\\Dump',
-        'Dobee\\Routing\\Commands\\Dump',
-        'Dobee\\Routing\\Commands\\Caching',
     );
 
     /**
