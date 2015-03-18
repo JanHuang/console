@@ -4,7 +4,7 @@
  * User: janhuang
  * Date: 15/3/9
  * Time: 下午7:38
- * Github: https://www.github.com/janhuang 
+ * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
  * Blog: http://segmentfault.com/blog/janhuang
@@ -57,6 +57,8 @@ class Console
         'Dobee\\Console\\Dumper\\Dump',
     );
 
+    private $provider;
+
     /**
      * @param array $predefined
      */
@@ -72,6 +74,10 @@ class Console
             $this->predefined = array_merge($this->predefined, $predefined);
         }
 
+        if (is_object($predefined)) {
+            $this->provider = $predefined;
+        }
+
         foreach ($this->predefined as $command) {
             if (!class_exists($command)) {
                 continue;
@@ -85,9 +91,7 @@ class Console
 
             $command->setCollections($this->collections);
 
-            if (is_object($predefined)) {
-                $command->setProvider($predefined);
-            }
+            $command->setProvider($this->provider);
 
             $this->addCommand($command);
         }
@@ -144,6 +148,8 @@ class Console
      */
     public function addCommand(Command $command)
     {
+        $command->setProvider($this->provider);
+
         $this->collections->setCommand($command, $this->input, $this->output);
 
         return $this;
