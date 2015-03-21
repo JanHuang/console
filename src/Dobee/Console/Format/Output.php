@@ -20,12 +20,7 @@ namespace Dobee\Console\Format;
  */
 class Output
 {
-    /**
-     * @var $this
-     */
-    private static $instance;
-
-    // font color
+    protected $env = '*unix';
     /**
      *
      */
@@ -86,16 +81,11 @@ class Output
      */
     const STYLE_BG_DEFAULT = '[47m';
 
-    /**
-     * @return Output
-     */
-    public static function getInstance()
+    public function __construct()
     {
-        if (null === self::$instance) {
-            self::$instance = new self;
+        if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
+            $this->env = 'win';
         }
-
-        return self::$instance;
     }
 
     /**
@@ -125,6 +115,10 @@ class Output
      */
     public function format($message, $style = self::STYLE_DEFAULT)
     {
+        if ('win' === $this->env) {
+            return $message;
+        }
+
         return chr(27) . $style . $message . chr(27) . "[0m";
     }
 
