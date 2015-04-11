@@ -67,13 +67,15 @@ class Console
         return $this;
     }
 
-    public function __construct()
+    public function __construct($provider)
     {
         $this->collections = new CommandCollections();
 
         $this->output = new Output();
 
         $this->input = new Input();
+
+        $this->provider = $provider;
 
         $this->initConsoleCommand();
 
