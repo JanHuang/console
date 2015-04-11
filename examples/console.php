@@ -36,9 +36,10 @@ class Demo extends \Dobee\Console\Commands\Command
     }
 }
 
-$console = new \Dobee\Console\Console(array(
-    '\\Demo'
-));
+$console = new \Dobee\Console\Console();
 
+$console->addCommand(new Demo());
 
 $console->run();
+
+

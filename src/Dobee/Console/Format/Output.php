@@ -140,4 +140,23 @@ class Output
             $this->writeln(str_repeat(' ', (strlen($message) + $width * 2)), $style);
         }
     }
+
+    public function onException(\Exception $exception)
+    {
+        $height = 1;
+        $width = 1;
+        $file = 'File: ' . $exception->getFile() . ' Line: ' . $exception->getLine();
+        $message = 'Message: ' . $exception->getMessage();
+
+        for ($i = 0; $i < $height; ++$i) {
+            $this->writeln(str_repeat(' ', (strlen($file) + $width * 2)), self::STYLE_BG_FAILURE);
+        }
+
+        $this->writeln(str_repeat(' ', $width) . $message . str_repeat(' ', strlen($file) - strlen($message)) . str_repeat(' ', $width), self::STYLE_BG_FAILURE);
+        $this->writeln(str_repeat(' ', $width) . $file . str_repeat(' ', $width), self::STYLE_BG_FAILURE);
+
+        for ($i = 0; $i < $height; ++$i) {
+            $this->writeln(str_repeat(' ', (strlen($file) + $width * 2)), self::STYLE_BG_FAILURE);
+        }
+    }
 }

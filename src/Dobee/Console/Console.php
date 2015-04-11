@@ -15,6 +15,7 @@ namespace Dobee\Console;
 
 use Dobee\Console\Commands\Command;
 use Dobee\Console\Commands\CommandCollections;
+use Dobee\Console\Dumper\Dump;
 use Dobee\Console\Format\Input;
 use Dobee\Console\Format\Output;
 
@@ -45,24 +46,9 @@ class Console
      */
     private $output;
 
-    /**
-     * @var array
-     */
-    private $trace;
-
-    /**
-     * @var array
-     */
-    private $predefined = array(
-        'Dobee\\Console\\Dumper\\Dump',
-    );
-
     private $provider;
 
-    /**
-     * @param array $predefined
-     */
-    public function __construct($predefined = null)
+    public function __construct()
     {
         $this->collections = new CommandCollections();
 
@@ -70,33 +56,26 @@ class Console
 
         $this->input = new Input();
 
-        if (is_array($predefined)) {
-            $this->predefined = array_merge($this->predefined, $predefined);
-        }
-
-        if (is_object($predefined)) {
-            $this->provider = $predefined;
-        }
-
-        foreach ($this->predefined as $command) {
-            if (!class_exists($command)) {
-                continue;
-            }
-
-            $command = new $command($this->input, $this->output);
-
-            if (!($command instanceof Command)) {
-                throw new \InvalidArgumentException(sprintf('The command must be extend to "Dobee\Console\Commands\Command"'));
-            }
-
-            $command->setCollections($this->collections);
-
-            $command->setProvider($this->provider);
-
-            $this->addCommand($command);
-        }
+        $this->initConsoleCommand();
 
         $this->thankUse();
+    }
+
+    private function initConsoleCommand()
+    {
+        $dumper = new Dump();
+
+        $dumper->setCollections($this->collections);
+
+        $dumper->setProvider($this->provider);
+
+        $dumper->setInput($this->input);
+
+        $dumper->setOutput($this->output);
+
+        $dumper->setOptions('help', null);
+
+        $this->addCommand($dumper);
     }
 
     public function thankUse()
@@ -150,17 +129,27 @@ class Console
     {
         $command->setProvider($this->provider);
 
+        $command->setCollections($this->collections);
+
+        $command->setInput($this->input);
+
+        $command->setOutput($this->output);
+
+        $command->setOptions('help', null);
+
         $this->collections->setCommand($command, $this->input, $this->output);
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getTrace()
+    public function printDescription(Command $command)
     {
-        return $this->trace;
+        $this->output->writeBackground($command->getDescription(), Output::STYLE_BG_NOTICE);
+    }
+
+    public function printHelp(Command $command)
+    {
+
     }
 
     /**
@@ -168,6 +157,12 @@ class Console
      */
     public function run()
     {
+        set_exception_handler(array($this->output, 'onException'));
+
+        set_error_handler(function ($error_no, $error_str, $error_file, $error_line) {
+            throw new \ErrorException($error_str, $error_no, 1, $error_file, $error_line);
+        });
+
         $commandName = $this->input->getCommandName();
 
         $this->input->parseArgumentAndOptions();
@@ -179,13 +174,11 @@ class Console
             return 1;
         }
 
-        $this->trace[] = $commandName;
-
         $command->setCollections($this->collections);
 
         $command->configure();
 
-        $this->output->writeBackground($command->getDescription(), Output::STYLE_BG_NOTICE);
+        $this->printDescription($command);
 
         $this->input->setArguments($command->getArguments());
         $this->input->setOptions($command->getOptions());
@@ -195,6 +188,10 @@ class Console
         $command->setOptions($this->input->getOptions());
 
         $command->execute($this->input, $this->output);
+
+        restore_error_handler();
+
+        restore_exception_handler();
 
         return 0;
     }

@@ -30,21 +30,11 @@ class CommandCollections implements \Iterator
 
     /**
      * @param Command $command
-     * @param Input   $input
-     * @param Output  $output
      * @return $this
      */
-    public function setCommand(Command $command, Input $input = null, Output $output = null)
+    public function setCommand(Command $command)
     {
         $this->collections[$command->getName()] = $command;
-
-        if (!($command->getInput() instanceof Input) && null !== $input) {
-            $command->setInput($input);
-        }
-
-        if (!($command->getOutput() instanceof Output) && null !== $output) {
-            $command->setOutput($output);
-        }
 
         return $this;
     }

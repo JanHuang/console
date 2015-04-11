@@ -29,7 +29,7 @@ abstract class Command
     protected $path;
 
     /**
-     * @var array
+     * @var Option[]
      */
     protected $options = array();
 
@@ -59,7 +59,7 @@ abstract class Command
     const ARG_NOT = '';
 
     /**
-     * @var array
+     * @var Argument[]
      */
     protected $arguments = array();
 
@@ -95,17 +95,6 @@ abstract class Command
         $this->provider = $provider;
 
         return $this;
-    }
-
-    /**
-     * @param Input  $input
-     * @param Output $output
-     */
-    public function __construct(Input $input = null, Output $output = null)
-    {
-        $this->input = $input;
-
-        $this->output = $output;
     }
 
     /**
@@ -300,13 +289,6 @@ abstract class Command
         $this->collections->executeCommand($command, $this->input, $this->output);
     }
 
-    public function writeDescription()
-    {
-        $this->output->writeln(str_repeat(' ', strlen($this->getDescription()) + 4), Output::STYLE_BG_NOTICE);
-        $this->output->writeln('  ' . $this->getDescription() . '  ', Output::STYLE_BG_NOTICE);
-        $this->output->writeln(str_repeat(' ', strlen($this->getDescription()) + 4), Output::STYLE_BG_NOTICE);
-    }
-
     /**
      * @return string
      */
@@ -317,5 +299,18 @@ abstract class Command
         }
 
         return $this->path;
+    }
+
+    public function __toString()
+    {
+        $string = sprintf('
+Usage: %s [arguments] [options=...]
+Options are:', $this->getName());
+
+        foreach ($this->options as $option) {
+            $string .= '--' . $option->getName() . $option->getDescription();
+        }
+
+        return $string;
     }
 }
