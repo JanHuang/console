@@ -158,5 +158,7 @@ class Output
         for ($i = 0; $i < $height; ++$i) {
             $this->writeln(str_repeat(' ', (strlen($file) + $width * 2)), self::STYLE_BG_FAILURE);
         }
+
+        $this->writeln('');
     }
 }
