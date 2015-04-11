@@ -67,7 +67,7 @@ class Console
         return $this;
     }
 
-    public function __construct($provider)
+    public function __construct($provider = null)
     {
         $this->collections = new CommandCollections();
 
