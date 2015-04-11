@@ -303,14 +303,15 @@ abstract class Command
 
     public function __toString()
     {
-        $string = sprintf('
-Usage: %s [arguments] [options=...]
-Options are:', $this->getName());
+        $this->output->write(PHP_EOL . 'Usage: "[');
+        $this->output->write($this->getName(), Output::STYLE_SUCCESS);
+        $this->output->writeln(']" [arguments] [options=...]');
 
+        $string = 'Options are: ';
         foreach ($this->options as $option) {
-            $string .= '--' . $option->getName() . $option->getDescription();
+            $string .= PHP_EOL . "\t" . '--' . $option->getName() . $option->getDescription();
         }
 
-        return $string;
+        return $string . PHP_EOL;
     }
 }

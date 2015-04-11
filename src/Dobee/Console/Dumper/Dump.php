@@ -43,24 +43,19 @@ class Dump extends Command
      */
     public function execute(Input $input, Output $output)
     {
-        $this->output->writeln("id\tname\t", Output::STYLE_SUCCESS);
-
         if ('' == $input->get('name')) {
-            $i = 1;
+            $this->output->writeln("name" . str_repeat(' ', 26) . "path", Output::STYLE_SUCCESS);
+
             foreach ($this->collections as $name => $command) {
-                $this->output->write($i++ . "\t");
-                $this->output->writeln($command->getName());
+                $this->output->write($command->getName() . str_repeat(' ', 30 - strlen($command->getName())));
+                $this->output->writeln($command->getPath());
             }
 
             return ;
         }
 
-        try {
-            $command = $this->getCommand($input->get('name'));
-        } catch (\Exception $e) {
+        $command = $this->getCommand($input->get('name'));
 
-        }
-
-//        $output->writeln($command->getName());
+        $this->output->writeln($command);
     }
 }
