@@ -77,6 +77,8 @@ class Console
 
         $this->provider = $provider;
 
+        $this->handleException();
+
         $this->initConsoleCommand();
 
         $this->thankUse();
@@ -173,6 +175,15 @@ class Console
 
     }
 
+    public function handleException()
+    {
+        set_exception_handler(array($this->output, 'onException'));
+
+        set_error_handler(function ($error_no, $error_str, $error_file, $error_line) {
+            throw new \ErrorException($error_str, $error_no, 1, $error_file, $error_line);
+        });
+    }
+
     /**
      * @return int
      */
@@ -210,10 +221,13 @@ class Console
 
         $command->execute($this->input, $this->output);
 
+        return 0;
+    }
+
+    public function __destruct()
+    {
         restore_error_handler();
 
         restore_exception_handler();
-
-        return 0;
     }
 }
