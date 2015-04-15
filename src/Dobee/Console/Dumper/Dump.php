@@ -44,11 +44,14 @@ class Dump extends Command
     public function execute(Input $input, Output $output)
     {
         if ('' == $input->get('name')) {
-            $this->output->writeln("name" . str_repeat(' ', 26) . "path", Output::STYLE_SUCCESS);
+            $this->output->writeln("name" . str_repeat(' ', 21) . "arguments" . str_repeat(' ', 23) . "options", Output::STYLE_SUCCESS);
 
             foreach ($this->collections as $name => $command) {
+                $options = implode(',', array_keys($command->getOptions()));
+                $arguments = implode(',', array_keys($command->getArguments()));
                 $this->output->write($command->getName() . str_repeat(' ', 30 - strlen($command->getName())));
-                $this->output->writeln($command->getPath());
+                $this->output->write($arguments . str_repeat(' ', 30 - strlen($arguments)));
+                $this->output->writeln($options . str_repeat(' ', 30 - strlen($options)));
             }
 
             return ;

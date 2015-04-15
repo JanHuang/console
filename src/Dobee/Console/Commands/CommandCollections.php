@@ -79,7 +79,7 @@ class CommandCollections implements \Iterator
      * Return the current element
      *
      * @link http://php.net/manual/en/iterator.current.php
-     * @return mixed Can return any type.
+     * @return Command Can return any type.
      */
     public function current()
     {
@@ -103,7 +103,7 @@ class CommandCollections implements \Iterator
      * Return the key of the current element
      *
      * @link http://php.net/manual/en/iterator.key.php
-     * @return mixed scalar on success, or null on failure.
+     * @return string scalar on success, or null on failure.
      */
     public function key()
     {
