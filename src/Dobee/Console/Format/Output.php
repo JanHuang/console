@@ -152,7 +152,7 @@ class Output
             $this->writeln(str_repeat(' ', (strlen($file) + $width * 2)), self::STYLE_BG_FAILURE);
         }
 
-        $this->writeln(str_repeat(' ', $width) . $message . str_repeat(' ', strlen($file) - strlen($message)) . str_repeat(' ', $width), self::STYLE_BG_FAILURE);
+        $this->writeln(str_repeat(' ', $width) . $message . str_repeat(' ', ($length = strlen($file) - strlen($message)) <= 0 ? 1 : $length) . str_repeat(' ', $width), self::STYLE_BG_FAILURE);
         $this->writeln(str_repeat(' ', $width) . $file . str_repeat(' ', $width), self::STYLE_BG_FAILURE);
 
         for ($i = 0; $i < $height; ++$i) {
