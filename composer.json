@@ -18,9 +18,6 @@
         }
     },
     "bin": [
-        "console"
-    ],
-    "config": {
-        "bin-dir": "bin"
-    }
+        "bin"
+    ]
 }
