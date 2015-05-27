@@ -1,7 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-include __DIR__ . '/../vendor/autoload.php';
+foreach ([
+             __DIR__ . '/../../../autoload.php',
+             __DIR__ . '/../vendor/autoload.php',
+         ] as $file) {
+    if (file_exists($file)) {
+        include $file;
+        break;
+    }
+}
 
 $console = new \Dobee\Console\Console();
 
