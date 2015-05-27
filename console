@@ -1,10 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-include __DIR__ . '/../vendor/autoload.php';
+include __DIR__ . '/vendor/autoload.php';
 
 $console = new \Dobee\Console\Console();
-
-
 
 $console->run();
