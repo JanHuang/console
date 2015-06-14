@@ -1,16 +1,18 @@
 {
     "name": "dobee/console",
     "description": "dobee console component",
+    "type": "library",
+    "keywords": ["console", "dobee"],
     "license": "MIT",
     "authors": [
         {
             "name": "janhuang",
-            "email": "384099566@qq.com"
+            "email": "bboyjanhuang@gmail.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.7"
+        "php": ">=5.4"
     },
     "autoload": {
         "psr-4": {
