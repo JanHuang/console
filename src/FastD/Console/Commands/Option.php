@@ -11,12 +11,12 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Console\Commands;
+namespace FastD\Console\Commands;
 
 /**
  * Class Option
  *
- * @package Dobee\Console\Commands
+ * @package FastD\Console\Commands
  */
 class Option
 {

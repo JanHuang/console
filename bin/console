@@ -11,6 +11,6 @@ foreach ([
     }
 }
 
-$console = new \Dobee\Console\Console();
+$console = new \FastD\Console\Console();
 
 $console->run();

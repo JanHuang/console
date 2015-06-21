@@ -1,8 +1,8 @@
 {
-    "name": "dobee/console",
-    "description": "dobee console component",
+    "name": "fastd/console",
+    "description": "FastD console component",
     "type": "library",
-    "keywords": ["console", "dobee"],
+    "keywords": ["console", "FastD"],
     "license": "MIT",
     "authors": [
         {
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Dobee\\": "src/Dobee"
+            "FastD\\": "src/FastD"
         }
     },
     "bin": [

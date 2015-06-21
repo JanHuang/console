@@ -11,12 +11,12 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Console\Format;
+namespace FastD\Console\Format;
 
 /**
  * Class Output
  *
- * @package Dobee\Console\Format
+ * @package FastD\Console\Format
  */
 class Output
 {

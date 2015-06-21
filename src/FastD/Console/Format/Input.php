@@ -11,16 +11,16 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Console\Format;
+namespace FastD\Console\Format;
 
-use Dobee\Console\Commands\Command;
-use Dobee\Console\Commands\Option;
-use Dobee\Console\Commands\Argument;
+use FastD\Console\Commands\Command;
+use FastD\Console\Commands\Option;
+use FastD\Console\Commands\Argument;
 
 /**
  * Class Input
  *
- * @package Dobee\Console\Format
+ * @package FastD\Console\Format
  */
 class Input extends Output
 {

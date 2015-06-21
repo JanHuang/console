@@ -11,18 +11,18 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Console;
+namespace FastD\Console;
 
-use Dobee\Console\Commands\Command;
-use Dobee\Console\Commands\CommandCollections;
-use Dobee\Console\Dumper\Dump;
-use Dobee\Console\Format\Input;
-use Dobee\Console\Format\Output;
+use FastD\Console\Commands\Command;
+use FastD\Console\Commands\CommandCollections;
+use FastD\Console\Dumper\Dump;
+use FastD\Console\Format\Input;
+use FastD\Console\Format\Output;
 
 /**
  * Class Console
  *
- * @package Dobee\Console
+ * @package FastD\Console
  */
 class Console
 {
@@ -39,7 +39,7 @@ class Console
     /**
      * @const string
      */
-    const THANKS = 'Thank you for your use Dobee console Component.';
+    const THANKS = 'Thank you for your use FastD console Component.';
 
     /**
      * @var Output
