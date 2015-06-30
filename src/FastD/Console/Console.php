@@ -51,7 +51,8 @@ class Console implements InvokerInterface
     {
         $environment->setCommand(new Dump($environment));
         $environment->setCommand(new Lists($environment));
-
+        $environment->register();
+        
         $this->environment = $environment;
 
         $this->output = new Output();
