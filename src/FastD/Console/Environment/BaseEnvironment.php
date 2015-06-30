@@ -15,7 +15,6 @@
 namespace FastD\Console\Environment;
 
 use FastD\Console\Command;
-use FastD\Console\Dumper\Dump;
 
 /**
  * Class BaseEnvironment
@@ -122,4 +121,11 @@ class BaseEnvironment implements EnvironmentInterface
     {
         reset($this->commands);
     }
+
+    /**
+     * Register initialize commands list.
+     *
+     * @return Command[]
+     */
+    public function register(){}
 }

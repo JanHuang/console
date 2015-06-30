@@ -40,4 +40,6 @@ interface EnvironmentInterface extends \Iterator
      * @return $this
      */
     public function setCommand(Command $command);
+
+    public function register();
 }
