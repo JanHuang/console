@@ -107,7 +107,7 @@ class Input
     {
         if (is_array($name)) {
             foreach ($name as $value) {
-                if ('--' != substr($name, 0, 2)) {
+                if ('--' != substr($value, 0, 2)) {
                     $value = '--' . $value;
                 }
                 if (isset($this->options[$value])) {
