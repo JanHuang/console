@@ -56,6 +56,8 @@ class BaseEnvironment implements EnvironmentInterface
      */
     public function setCommand(Command $command)
     {
+        $command->setEnv($this);
+
         $this->commands[$command->getName()] = $command;
 
         return $this;

@@ -14,6 +14,7 @@
 
 namespace FastD\Console;
 
+use FastD\Console\Environment\EnvironmentInterface;
 use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
 
@@ -30,6 +31,20 @@ abstract class Command
     protected $arguments = [];
 
     protected $help = '';
+
+    protected $env;
+
+    public function setEnv(EnvironmentInterface $interface)
+    {
+        $this->env = $interface;
+
+        return $this;
+    }
+
+    public function getEnv()
+    {
+        return $this->env;
+    }
 
     public function setOption($name, $optional = Command::OPT_OPTIONAL, $description = null)
     {
