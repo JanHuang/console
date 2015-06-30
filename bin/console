@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+set_time_limit(0);
+
 foreach ([
              __DIR__ . '/../../../autoload.php',
              __DIR__ . '/../vendor/autoload.php',
@@ -11,6 +13,10 @@ foreach ([
     }
 }
 
-$console = new \FastD\Console\Console();
+$env = new \FastD\Console\Environment\BaseEnvironment();
 
-$console->run();
+$argvInput = new \FastD\Console\ArgvInput();
+
+$console = new \FastD\Console\Console($env);
+
+$console->run($argvInput);

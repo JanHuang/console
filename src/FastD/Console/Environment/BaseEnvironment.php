@@ -2,42 +2,32 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/3/9
- * Time: 下午7:45
- * Github: https://www.github.com/janhuang 
+ * Date: 15/6/30
+ * Time: 上午10:51
+ * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
  * Blog: http://segmentfault.com/blog/janhuang
  * Gmail: bboyjanhuang@gmail.com
+ * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Console\Commands;
+namespace FastD\Console\Environment;
 
-use FastD\Console\Format\Input;
-use FastD\Console\Format\Output;
+use FastD\Console\Command;
+use FastD\Console\Dumper\Dump;
 
 /**
- * Class CommandCollections
+ * Class BaseEnvironment
  *
- * @package FastD\Console\Commands
+ * @package FastD\Console\Environment
  */
-class CommandCollections implements \Iterator
+class BaseEnvironment implements EnvironmentInterface
 {
     /**
-     * @var Command[]
+     * @var array
      */
-    private $collections = array();
-
-    /**
-     * @param Command $command
-     * @return $this
-     */
-    public function setCommand(Command $command)
-    {
-        $this->collections[$command->getName()] = $command;
-
-        return $this;
-    }
+    protected $commands = [];
 
     /**
      * @param $name
@@ -45,33 +35,31 @@ class CommandCollections implements \Iterator
      */
     public function getCommand($name)
     {
-        if (!isset($this->collections[$name])) {
-            throw new \InvalidArgumentException(sprintf('Command "%s" is undefined.', $name));
+        if (null === $name || !$this->hasCommand($name)) {
+            throw new \RuntimeException(sprintf('Command "%s" is not exists.', $name));
         }
 
-        return $this->collections[$name];
+        return $this->commands[$name];
     }
 
     /**
-     * @return Command[]
+     * @param $name
+     * @return bool
      */
-    public function getCollections()
+    public function hasCommand($name)
     {
-        return $this->collections;
+        return isset($this->commands[$name]) ? $this->commands[$name] : null;
     }
 
     /**
-     * @param        $name
-     * @param Input  $input
-     * @param Output $output
+     * @param Command $command
+     * @return $this
      */
-    public function executeCommand($name, Input $input, Output $output)
+    public function setCommand(Command $command)
     {
-        $command = $this->getCommand($name);
+        $this->commands[$command->getName()] = $command;
 
-        $command->configure();
-
-        $command->execute($input, $output);
+        return $this;
     }
 
     /**
@@ -79,11 +67,11 @@ class CommandCollections implements \Iterator
      * Return the current element
      *
      * @link http://php.net/manual/en/iterator.current.php
-     * @return Command Can return any type.
+     * @return mixed Can return any type.
      */
     public function current()
     {
-        return current($this->collections);
+        return current($this->commands);
     }
 
     /**
@@ -95,7 +83,7 @@ class CommandCollections implements \Iterator
      */
     public function next()
     {
-        next($this->collections);
+        next($this->commands);
     }
 
     /**
@@ -103,11 +91,11 @@ class CommandCollections implements \Iterator
      * Return the key of the current element
      *
      * @link http://php.net/manual/en/iterator.key.php
-     * @return string scalar on success, or null on failure.
+     * @return mixed scalar on success, or null on failure.
      */
     public function key()
     {
-        return key($this->collections);
+        return key($this->commands);
     }
 
     /**
@@ -116,11 +104,11 @@ class CommandCollections implements \Iterator
      *
      * @link http://php.net/manual/en/iterator.valid.php
      * @return boolean The return value will be casted to boolean and then evaluated.
-     *       Returns true on success or false on failure.
+     * Returns true on success or false on failure.
      */
     public function valid()
     {
-        return isset($this->collections[$this->key()]);
+        return isset($this->commands[$this->key()]);
     }
 
     /**
@@ -132,6 +120,6 @@ class CommandCollections implements \Iterator
      */
     public function rewind()
     {
-        reset($this->collections);
+        reset($this->commands);
     }
 }

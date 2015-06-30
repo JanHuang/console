@@ -11,7 +11,7 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace FastD\Console\Format;
+namespace FastD\Console\IO;
 
 /**
  * Class Output

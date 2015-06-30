@@ -2,13 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/3/16
- * Time: 下午2:13
- * Github: https://www.github.com/janhuang 
+ * Date: 15/6/30
+ * Time: 上午11:29
+ * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
  * Blog: http://segmentfault.com/blog/janhuang
  * Gmail: bboyjanhuang@gmail.com
+ * WebSite: http://www.janhuang.me
  */
 
 namespace FastD\Console\Dumper;
@@ -18,7 +19,7 @@ use FastD\Console\Environment\EnvironmentInterface;
 use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
 
-class Dump extends Command
+class Lists extends Command
 {
     protected $env;
 
@@ -29,23 +30,19 @@ class Dump extends Command
 
     public function getName()
     {
-        return 'dump';
+        return 'list';
     }
 
     public function configure()
     {
-        $this->setDescription('Console Dump tool.');
-        $this->setOption('name', Command::OPT_REQUIRED, 'Dump command name.');
+        $this->setDescription('Command list tool.');
     }
 
     public function execute(Input $input, Output $output)
     {
-        if (null === ($name = $input->getParameterOption('name'))) {
-            throw new \RuntimeException(sprintf('Option name is null.'));
+        $output->writeln('Command name:');
+        foreach ($this->env as $name => $command) {
+            $output->writeln($command->getName(), Output::STYLE_SUCCESS);
         }
-
-        $command = $this->env->getCommand($name);
-
-        $output->writeln($command);
     }
 }

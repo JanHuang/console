@@ -2,232 +2,122 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/3/9
- * Time: 下午7:38
+ * Date: 15/6/29
+ * Time: 下午11:15
  * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
  * Blog: http://segmentfault.com/blog/janhuang
  * Gmail: bboyjanhuang@gmail.com
+ * WebSite: http://www.janhuang.me
  */
 
 namespace FastD\Console;
 
-use FastD\Console\Commands\Command;
-use FastD\Console\Commands\CommandCollections;
 use FastD\Console\Dumper\Dump;
-use FastD\Console\Format\Input;
-use FastD\Console\Format\Output;
+use FastD\Console\Dumper\Lists;
+use FastD\Console\Environment\EnvironmentInterface;
+use FastD\Console\IO\Input;
+use FastD\Console\IO\Output;
 
 /**
  * Class Console
  *
  * @package FastD\Console
  */
-class Console
+class Console implements InvokerInterface
 {
     /**
-     * @var CommandCollections
+     * @var EnvironmentInterface
      */
-    private $collections;
-
-    /**
-     * @var Input
-     */
-    private $input;
-
-    /**
-     * @const string
-     */
-    const THANKS = 'Thank you for your use FastD console Component.';
+    protected $environment;
 
     /**
      * @var Output
      */
-    private $output;
-
-    private $provider;
+    protected $output;
 
     /**
-     * @return mixed
+     * @var Input|ArgvInput
      */
-    public function getProvider()
-    {
-        return $this->provider;
-    }
+    protected $input;
 
     /**
-     * @param mixed $provider
-     * @return $this
+     * Inject console execute environment.
+     *
+     * @param EnvironmentInterface $environment
      */
-    public function setProvider($provider)
+    public function __construct(EnvironmentInterface $environment)
     {
-        $this->provider = $provider;
+        $environment->setCommand(new Dump($environment));
+        $environment->setCommand(new Lists($environment));
 
-        return $this;
-    }
-
-    public function __construct($provider = null)
-    {
-        $this->collections = new CommandCollections();
+        $this->environment = $environment;
 
         $this->output = new Output();
 
-        $this->input = new Input();
-
-        $this->provider = $provider;
-
-        $this->handleException();
-
-        $this->initConsoleCommand();
-
-        $this->thankUse();
-    }
-
-    private function initConsoleCommand()
-    {
-        $dumper = new Dump();
-
-        $dumper->setCollections($this->collections);
-
-        $dumper->setProvider($this->provider);
-
-        $dumper->setInput($this->input);
-
-        $dumper->setOutput($this->output);
-
-        $dumper->setOptions('help', null);
-
-        $this->addCommand($dumper);
-    }
-
-    public function thankUse()
-    {
-        $this->output->writeBackground(self::THANKS, Output::STYLE_SUCCESS);
+        set_exception_handler([$this, 'exceptionHandler']);
     }
 
     /**
-     * @return Input
+     * @param \Exception $exception
      */
-    public function getInput()
+    public function exceptionHandler(\Exception $exception)
     {
-        return $this->input;
+        $this->output->writeln($exception->getMessage(), Output::STYLE_BG_FAILURE);
     }
 
     /**
-     * @param Input $input
-     * @return $this
-     */
-    public function setInput(Input $input)
-    {
-        $this->input = $input;
-
-        return $this;
-    }
-
-    /**
-     * @return Output
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
-
-    /**
-     * @param Output $output
-     * @return $this
-     */
-    public function setOutput(Output $output)
-    {
-        $this->output = $output;
-
-        return $this;
-    }
-
-    /**
-     * @param Command $command
-     * @return $this
-     */
-    public function addCommand(Command $command)
-    {
-        $command->setProvider($this->provider);
-
-        $command->setCollections($this->collections);
-
-        $command->setInput($this->input);
-
-        $command->setOutput($this->output);
-
-        $command->setOptions('help', null);
-
-        $this->collections->setCommand($command, $this->input, $this->output);
-
-        return $this;
-    }
-
-    public function printDescription(Command $command)
-    {
-        $this->output->writeBackground($command->getDescription(), Output::STYLE_BG_NOTICE);
-    }
-
-    public function printHelp(Command $command)
-    {
-
-    }
-
-    public function handleException()
-    {
-        set_exception_handler(array($this->output, 'onException'));
-
-        set_error_handler(function ($error_no, $error_str, $error_file, $error_line) {
-            throw new \ErrorException($error_str, $error_no, 1, $error_file, $error_line);
-        });
-    }
-
-    /**
+     * @param ArgvInput $argvInput
      * @return int
      */
-    public function run()
+    public function run(ArgvInput $argvInput)
     {
-        set_exception_handler(array($this->output, 'onException'));
+        $this->input = $argvInput;
 
-        set_error_handler(function ($error_no, $error_str, $error_file, $error_line) {
-            throw new \ErrorException($error_str, $error_no, 1, $error_file, $error_line);
-        });
-
-        $commandName = $this->input->getCommandName();
-
-        $this->input->parseArgumentAndOptions();
-
-        try {
-            $command = $this->collections->getCommand($commandName);
-        } catch (\InvalidArgumentException $e) {
-            $this->collections->executeCommand('command:dump', $this->input, $this->output);
-            return 1;
+        if ($this->input->emptyArgv()) {
+            echo $this;
+            return 0;
         }
 
-        $command->setCollections($this->collections);
+        $name = $argvInput->getCommandName();
 
-        $command->configure();
+        $command = $this->environment->getCommand($name);
 
-        $this->printDescription($command);
+        if (0 == ($command = $this->validate($command))) {
+            return 0;
+        }
 
-        $this->input->setArguments($command->getArguments());
-        $this->input->setOptions($command->getOptions());
-        $this->input->parseArgumentAndOptions();
+        if ('' != ($description = $command->getDescription())) {
+            $this->output->writeBackground($description, Output::STYLE_BG_SUCCESS);
+        }
 
-        $command->setArguments($this->input->getArguments());
-        $command->setOptions($this->input->getOptions());
-
-        $command->execute($this->input, $this->output);
+        $command->execute($argvInput, $this->output);
 
         return 0;
     }
 
-    public function __destruct()
+    /**
+     * @param Command $command
+     * @return Command
+     */
+    public function validate(Command $command)
     {
-        restore_error_handler();
+        $command->configure();
 
-        restore_exception_handler();
+        if (($this->input->emptyArgv() && array() !== $command->getAllOptions()) || $this->input->hasParameterOption(['--help', '-h'])) {
+            echo $command;
+            return 0;
+        }
+
+        return $command;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf("Console help: \ncommand [--help] [argument] [--optional] ... \n");
     }
 }
