@@ -66,6 +66,8 @@ class Console implements InvokerInterface
     public function exceptionHandler(\Exception $exception)
     {
         $this->output->writeln($exception->getMessage(), Output::STYLE_BG_FAILURE);
+        $this->output->writeln($exception->getFile(), Output::STYLE_BG_FAILURE);
+        $this->output->writeln($exception->getLine(), Output::STYLE_BG_FAILURE);
     }
 
     /**
