@@ -35,17 +35,18 @@ class Dump extends Command
     public function configure()
     {
         $this->setDescription('Console Dump tool.');
-        $this->setOption('name', Command::OPT_REQUIRED, 'Dump command name.');
     }
 
     public function execute(Input $input, Output $output)
     {
-        if (null === ($name = $input->getParameterOption('name'))) {
+        if (null === ($name = $input->getParameterArgument(0))) {
             throw new \RuntimeException(sprintf('Option name is null.'));
         }
-
+        
         $command = $this->env->getCommand($name);
 
         $output->writeln($command);
+
+        return 0;
     }
 }
