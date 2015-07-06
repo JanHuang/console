@@ -66,8 +66,8 @@ class Console implements InvokerInterface
     public function exceptionHandler(\Exception $exception)
     {
         $this->output->writeln($exception->getMessage(), Output::STYLE_BG_FAILURE);
-        $this->output->writeln($exception->getFile(), Output::STYLE_BG_FAILURE);
-        $this->output->writeln($exception->getLine(), Output::STYLE_BG_FAILURE);
+        $this->output->writeln('File: ' . $exception->getFile(), Output::STYLE_BG_FAILURE);
+        $this->output->writeln('Line: ' . $exception->getLine(), Output::STYLE_BG_FAILURE);
     }
 
     /**
@@ -87,7 +87,7 @@ class Console implements InvokerInterface
 
         $command = $this->environment->getCommand($name);
 
-        if (0 == ($command = $this->validate($command))) {
+        if (false === ($command = $this->validate($command))) {
             return 0;
         }
 
@@ -108,9 +108,10 @@ class Console implements InvokerInterface
     {
         $command->configure();
 
+        return $command;
+
         if (($this->input->emptyArgv() && array() !== $command->getAllOptions()) || $this->input->hasParameterOption(['--help', '-h'])) {
-            echo $command;
-            return 0;
+            return false;
         }
 
         return $command;
