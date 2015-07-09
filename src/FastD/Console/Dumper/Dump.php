@@ -40,7 +40,7 @@ class Dump extends Command
     public function execute(Input $input, Output $output)
     {
         if (null === ($name = $input->getParameterArgument(0))) {
-            throw new \RuntimeException(sprintf('Option name is null.'));
+            throw new \RuntimeException(sprintf('Argument name is null.'));
         }
 
         $command = $this->env->getCommand($name);
