@@ -13,10 +13,6 @@
 
 namespace FastD\Console\IO;
 
-use FastD\Console\Commands\Command;
-use FastD\Console\Commands\Option;
-use FastD\Console\Commands\Argument;
-
 /**
  * Class Input
  *
