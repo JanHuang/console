@@ -18,6 +18,11 @@ use FastD\Console\Environment\EnvironmentInterface;
 use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
 
+/**
+ * Class Command
+ *
+ * @package FastD\Console
+ */
 abstract class Command
 {
     const OPT_REQUIRED = 1;
@@ -32,8 +37,15 @@ abstract class Command
 
     protected $help = '';
 
+    /**
+     * @var EnvironmentInterface
+     */
     protected $env;
 
+    /**
+     * @param EnvironmentInterface $interface
+     * @return $this
+     */
     public function setEnv(EnvironmentInterface $interface)
     {
         $this->env = $interface;
@@ -41,6 +53,9 @@ abstract class Command
         return $this;
     }
 
+    /**
+     * @return EnvironmentInterface
+     */
     public function getEnv()
     {
         return $this->env;
