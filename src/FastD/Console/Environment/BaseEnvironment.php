@@ -15,6 +15,7 @@
 namespace FastD\Console\Environment;
 
 use FastD\Console\Command;
+use FastD\Container\Container;
 
 /**
  * Class BaseEnvironment
@@ -27,6 +28,11 @@ class BaseEnvironment implements EnvironmentInterface
      * @var array
      */
     protected $commands = [];
+
+    /**
+     * @var Container
+     */
+    protected $container;
 
     /**
      * @param $name
@@ -130,4 +136,23 @@ class BaseEnvironment implements EnvironmentInterface
      * @return Command[]
      */
     public function register(){}
+
+    /**
+     * @param Container $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
+
+    /**
+     * @return Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
 }

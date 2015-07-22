@@ -17,6 +17,7 @@ namespace FastD\Console;
 use FastD\Console\Environment\EnvironmentInterface;
 use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
+use FastD\Container\Container;
 
 /**
  * Class Command
@@ -36,6 +37,8 @@ abstract class Command
     protected $arguments = [];
 
     protected $help = '';
+
+    protected $container;
 
     /**
      * @var EnvironmentInterface
@@ -138,6 +141,21 @@ abstract class Command
     abstract public function configure();
 
     abstract public function execute(Input $input, Output $output);
+
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
+
+    /**
+     * @return Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
 
     public function __toString()
     {

@@ -15,6 +15,7 @@
 namespace FastD\Console\Environment;
 
 use FastD\Console\Command;
+use FastD\Container\Container;
 
 /**
  * Interface EnvironmentInterface
@@ -41,5 +42,19 @@ interface EnvironmentInterface extends \Iterator
      */
     public function setCommand(Command $command);
 
+    /**
+     * @param Container $container
+     * @return $this
+     */
+    public function setContainer(Container $container);
+
+    /**
+     * @return Container
+     */
+    public function getContainer();
+
+    /**
+     * @return void
+     */
     public function register();
 }
