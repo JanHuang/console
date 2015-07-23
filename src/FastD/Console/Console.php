@@ -49,7 +49,6 @@ class Console implements InvokerInterface
      */
     public function __construct(EnvironmentInterface $environment)
     {
-        $environment->setCommand(new Dump($environment));
         $environment->setCommand(new Lists($environment));
         $environment->register();
         
@@ -78,12 +77,11 @@ class Console implements InvokerInterface
     {
         $this->input = $argvInput;
 
-        if ($this->input->emptyArgv()) {
-            echo $this;
-            return 0;
-        }
-
         $name = $argvInput->getCommandName();
+
+        if (null == $name) {
+            $name = 'command:list';
+        }
 
         $command = $this->environment->getCommand($name);
 

@@ -30,7 +30,7 @@ class Lists extends Command
 
     public function getName()
     {
-        return 'list';
+        return 'command:list';
     }
 
     public function configure()
