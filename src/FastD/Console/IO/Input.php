@@ -92,7 +92,7 @@ class Input
             return false;
         }
 
-        return isset($this->options[$name]) ? true : false;
+        return array_key_exists($name, $this->options) ? true : false;
     }
 
     /**
