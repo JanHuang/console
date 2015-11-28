@@ -49,7 +49,6 @@ class Console implements InvokerInterface
      */
     public function __construct(EnvironmentInterface $environment)
     {
-        $environment->setCommand(new Lists($environment));
         $environment->register();
         
         $this->environment = $environment;
