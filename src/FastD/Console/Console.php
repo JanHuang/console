@@ -14,8 +14,6 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Dumper\Dump;
-use FastD\Console\Dumper\Lists;
 use FastD\Console\Environment\EnvironmentInterface;
 use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
