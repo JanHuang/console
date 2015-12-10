@@ -15,6 +15,7 @@
 namespace FastD\Console\Environment;
 
 use FastD\Console\Command;
+use FastD\Console\IO\InputInterface;
 use FastD\Container\Container;
 
 /**
@@ -24,6 +25,12 @@ use FastD\Container\Container;
  */
 interface EnvironmentInterface extends \Iterator
 {
+    /**
+     * @param InputInterface $inputInterface
+     * @return mixed
+     */
+    public function run(InputInterface $inputInterface);
+
     /**
      * @param $name
      * @return Command

@@ -18,68 +18,9 @@ namespace FastD\Console\IO;
  *
  * @package FastD\Console\Format
  */
-class Output
+class Output implements OutputInterface
 {
     protected $env = '*unix';
-    /**
-     *
-     */
-    const STYLE_FAILURE = '[31m';
-
-    /**
-     * @const string
-     */
-    const STYLE_SUCCESS = '[32m';
-
-    /**
-     * @const string
-     */
-    const STYLE_WARNING = '[33m';
-
-    /**
-     * @const string
-     */
-    const STYLE_NOTICE = '[34m';
-
-    /**
-     * @const string
-     */
-    const STYLE_INFO = '[36m';
-
-    /**
-     * @const string
-     */
-    const STYLE_DEFAULT = '[37m';
-
-    /**
-     * @const string
-     */
-    const STYLE_BG_FAILURE = '[41m';
-
-    /**
-     * @const string
-     */
-    const STYLE_BG_SUCCESS = '[42m';
-
-    /**
-     * @const string
-     */
-    const STYLE_BG_WARNING = '[43m';
-
-    /**
-     * @const string
-     */
-    const STYLE_BG_NOTICE = '[44m';
-
-    /**
-     * @const string
-     */
-    const STYLE_BG_INFO = '[46m';
-
-    /**
-     * @const string
-     */
-    const STYLE_BG_DEFAULT = '[47m';
 
     public function __construct()
     {

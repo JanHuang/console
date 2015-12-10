@@ -18,20 +18,21 @@ use FastD\Console\ArgvInput;
 
 class ArgvInputTest extends \PHPUnit_Framework_TestCase
 {
-    public function testInput()
-    {
-        $_SERVER['argv'] = [];
-        $argvInput = new ArgvInput();
-        print_r($argvInput);
-    }
-
     public function testArgsInput()
     {
+        // -f "value for f" -v -a --required value --optional="optional value" --option
         $_SERVER['argv'] = [
             'demo.php',
-            '--name=janhuang',
-            '--debug',
+            '-f',
+            'value for f',
+            '-v',
+            '-a',
+            '--required',
+            'value',
+            '--optional="optional value"',
+            '--option'
         ];
         $argvInput = new ArgvInput();
+        print_r($argvInput);
     }
 }

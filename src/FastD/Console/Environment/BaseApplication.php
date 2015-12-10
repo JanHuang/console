@@ -22,7 +22,7 @@ use FastD\Container\Container;
  *
  * @package FastD\Console\Environment
  */
-class BaseEnvironment implements EnvironmentInterface
+class BaseApplication implements EnvironmentInterface
 {
     /**
      * @var array

@@ -16,18 +16,13 @@ namespace FastD\Console\IO;
 /**
  * Class Input
  *
- * @package FastD\Console\Format
+ * @package FastD\Console\IO
  */
-class Input
+class Input implements InputInterface
 {
-    public function systemInput($notice)
-    {
-        echo $notice . ': ';
-
-        return trim(fgets(STDIN));
-    }
-
     /**
+     * Server argv.
+     *
      * @var array
      */
     protected $argv;
@@ -47,48 +42,57 @@ class Input
      */
     public function __construct()
     {
-        $this->initialize();
+        $this->argv = $_SERVER['argv'];
+
+        array_shift($this->argv);
+
+        $this->parseCommandLineArguments();
     }
 
     /**
      * Initialize command argv input.
      * @return void
      */
-    public function initialize()
+    public function parseCommandLineArguments()
     {
-        $argv = $_SERVER['argv'];
-
-        array_shift($argv);
-
-        $this->argv = $argv;
-
-        foreach ($argv as $val) {
-            if ('-' === substr($val, 0, 1)) {
-                $name = $val;
+        foreach ($this->argv as $argv) {
+            if ('-' === substr($argv, 0, 1)) {
+                $name = $argv;
                 $value = null;
-                if (strpos($val, '=')) {
-                    list($name, $value) = explode('=', $val);
+                if (false !== strpos($argv, '=')) {
+                    list($name, $value) = explode('=', $argv);
                 }
-                $this->options[$name] = $value;
+                $this->options[str_replace(['-', '--'], '', $name)] = $value;
             } else {
-                $this->arguments[] = $val;
+                $this->arguments[] = $argv;
             }
         }
+    }
+
+    public function recombination($options = null)
+    {
+
+    }
+
+    public function systemInput($notice)
+    {
+        echo $notice . ': ';
+
+        return trim(fgets(STDIN));
     }
 
     /**
      * @param $name
      * @return bool
      */
-    public function hasParameterOption($name)
+    public function has($name)
     {
         if (is_array($name)) {
             foreach ($name as $value) {
-                if (isset($this->options[$value])) {
+                if (array_key_exists($value, $this->options)) {
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -99,23 +103,15 @@ class Input
      * @param $name
      * @return null|string|int
      */
-    public function getParameterOption($name)
+    public function get($name)
     {
         if (is_array($name)) {
             foreach ($name as $value) {
-                if ('--' != substr($value, 0, 2)) {
-                    $value = '--' . $value;
-                }
-                if (isset($this->options[$value])) {
+                if (array_key_exists($value, $this->options)) {
                     return $this->options[$value];
                 }
             }
-
             return null;
-        }
-
-        if ('--' != substr($name, 0, 2)) {
-            $name = '--' . $name;
         }
 
         return isset($this->options[$name]) ? $this->options[$name] : null;
