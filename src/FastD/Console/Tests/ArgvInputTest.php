@@ -33,6 +33,8 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
             '--option'
         ];
         $argvInput = new ArgvInput();
-        print_r($argvInput);
+        $this->assertTrue($argvInput->has('f'));
+        $this->assertTrue($argvInput->has('required'));
+        $this->assertEquals('optional value', $argvInput->get('optional'));
     }
 }

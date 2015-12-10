@@ -62,23 +62,23 @@ class Input implements InputInterface
                 if (false !== strpos($argv, '=')) {
                     list($name, $value) = explode('=', $argv);
                 }
-                $this->options[str_replace(['-', '--'], '', $name)] = $value;
+                $this->options[str_replace(['-', '--'], '', $name)] = str_replace(['"', '\''], '', $value);
             } else {
                 $this->arguments[] = $argv;
             }
         }
     }
 
-    public function recombination($options = null)
+    /**
+     * Recombination command line arguments.
+     *
+     * @param null $options
+     * @param null $arguments
+     * @return void
+     */
+    public function recombination($options = null, $arguments = null)
     {
 
-    }
-
-    public function systemInput($notice)
-    {
-        echo $notice . ': ';
-
-        return trim(fgets(STDIN));
     }
 
     /**
@@ -90,6 +90,9 @@ class Input implements InputInterface
         if (is_array($name)) {
             foreach ($name as $value) {
                 if (array_key_exists($value, $this->options)) {
+                    return true;
+                }
+                if (array_key_exists($value, $this->arguments)) {
                     return true;
                 }
             }
@@ -110,20 +113,14 @@ class Input implements InputInterface
                 if (array_key_exists($value, $this->options)) {
                     return $this->options[$value];
                 }
+                if (array_key_exists($value, $this->arguments)) {
+                    return $this->arguments[$value];
+                }
             }
             return null;
         }
 
         return isset($this->options[$name]) ? $this->options[$name] : null;
-    }
-
-    /**
-     * @param $index
-     * @return null|string|int
-     */
-    public function getParameterArgument($index)
-    {
-        return isset($this->arguments[$index]) ? $this->arguments[$index] : null;
     }
 
     /**
