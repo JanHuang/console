@@ -15,7 +15,9 @@
 namespace FastD\Console\Environment;
 
 /**
- * Class BaseEnvironment
+ * Console run application.
+ *
+ * Class Application
  *
  * @package FastD\Console\Environment
  */

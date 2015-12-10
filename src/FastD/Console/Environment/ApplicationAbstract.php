@@ -14,8 +14,8 @@
 
 namespace FastD\Console\Environment;
 
+use FastD\Console\ArgvInput;
 use FastD\Console\Command\Command;
-use FastD\Console\IO\InputInterface;
 
 abstract class ApplicationAbstract implements ApplicationInterface
 {
@@ -58,11 +58,11 @@ abstract class ApplicationAbstract implements ApplicationInterface
     }
 
     /**
-     * @param InputInterface $inputInterface
-     * @return mixed
+     * @param ArgvInput $argvInput
+     * @return int
      */
-    public function run(InputInterface $inputInterface)
+    public function run(ArgvInput $argvInput)
     {
-
+        $this->getCommand($argvInput->getCommandName());
     }
 }

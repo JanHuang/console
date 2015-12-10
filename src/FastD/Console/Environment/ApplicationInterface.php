@@ -14,8 +14,8 @@
 
 namespace FastD\Console\Environment;
 
+use FastD\Console\ArgvInput;
 use FastD\Console\Command\Command;
-use FastD\Console\IO\InputInterface;
 
 /**
  * Interface EnvironmentInterface
@@ -25,10 +25,10 @@ use FastD\Console\IO\InputInterface;
 interface ApplicationInterface
 {
     /**
-     * @param InputInterface $inputInterface
+     * @param ArgvInput $argvInput
      * @return mixed
      */
-    public function run(InputInterface $inputInterface);
+    public function run(ArgvInput $argvInput);
 
     /**
      * @param $name

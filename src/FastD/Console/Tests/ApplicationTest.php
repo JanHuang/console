@@ -16,5 +16,8 @@ namespace FastD\Console\Tests;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
-
+    public function testApplication()
+    {
+        
+    }
 }
