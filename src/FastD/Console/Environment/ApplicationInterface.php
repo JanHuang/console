@@ -14,16 +14,15 @@
 
 namespace FastD\Console\Environment;
 
-use FastD\Console\Command;
+use FastD\Console\Command\Command;
 use FastD\Console\IO\InputInterface;
-use FastD\Container\Container;
 
 /**
  * Interface EnvironmentInterface
  *
  * @package FastD\Console\Environment
  */
-interface ConsoleApplicationInterface extends \Iterator
+interface ApplicationInterface
 {
     /**
      * @param InputInterface $inputInterface
@@ -48,20 +47,4 @@ interface ConsoleApplicationInterface extends \Iterator
      * @return $this
      */
     public function setCommand(Command $command);
-
-    /**
-     * @param Container $container
-     * @return $this
-     */
-    public function setContainer(Container $container);
-
-    /**
-     * @return Container
-     */
-    public function getContainer();
-
-    /**
-     * @return void
-     */
-    public function register();
 }
