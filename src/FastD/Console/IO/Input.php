@@ -95,6 +95,7 @@ class Input implements InputInterface
     /**
      * @param $name
      * @return bool
+     * @throws \Exception
      */
     public function has($name)
     {
@@ -110,7 +111,7 @@ class Input implements InputInterface
         if (is_array($name)) {
             foreach ($name as $value) {
                 try {
-                    return $has($value);
+                    return $has(str_replace(['--', '-'], '', $value));
                 } catch (\Exception $e) {
                     continue;
                 }
@@ -145,7 +146,7 @@ class Input implements InputInterface
         if (is_array($name)) {
             foreach ($name as $value) {
                 try {
-                    return $get($value);
+                    return $get(str_replace(['--', '-'], '', $value));
                 } catch (\Exception $e) {
                     continue;
                 }

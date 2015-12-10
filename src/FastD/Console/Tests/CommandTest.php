@@ -31,10 +31,14 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             'demo.php',
             '18',
             '--name=janhuang',
-            '--height="188"'
+            '--height="188"',
+            '--env=dev'
         ];
 
         $argvInput = new ArgvInput();
+        $this->assertTrue($argvInput->has(['--env', '-e']));
+        // context equals
+        $this->assertTrue($argvInput->has(['env', 'e']));
         $argvInput->recombination($baseCommand);
 
         $this->assertEquals(18, $argvInput->get('age'));
