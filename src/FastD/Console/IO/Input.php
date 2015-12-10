@@ -55,7 +55,7 @@ class Input implements InputInterface
      * Initialize command argv input.
      * @return void
      */
-    public function parseCommandLineArguments(array $options = [], array $arguments = [])
+    public function parseCommandLineArguments()
     {
         foreach ($this->argv as $argv) {
             if ('-' === substr($argv, 0, 1)) {
@@ -80,13 +80,16 @@ class Input implements InputInterface
     public function recombination(Command $command)
     {
         $options = [];
-        foreach ($command->getOption(null) as $option) {
+        foreach ($command->getOption(null) as $name => $option) {
+            if (!array_key_exists($name, $this->options)) {
+                continue;
+            }
 
+            $options[$name] = self::ARG_NONE === $option ? null : $this->options[$name];
         }
+        $this->options = $options;
 
-        foreach ($command->getArgument(null) as $argument) {
-
-        }
+        $this->arguments = array_combine(array_keys($command->getArgument(null)), array_slice($this->arguments, 0, count($command->getArgument())));
     }
 
     /**
@@ -95,40 +98,66 @@ class Input implements InputInterface
      */
     public function has($name)
     {
+        $has = function ($name) {
+            if (array_key_exists($name, $this->options)) {
+                return true;
+            }
+            if (array_key_exists($name, $this->arguments)) {
+                return true;
+            }
+            throw new \Exception(sprintf('Argument "%s" is undefined.', $name));
+        };
         if (is_array($name)) {
             foreach ($name as $value) {
-                if (array_key_exists($value, $this->options)) {
-                    return true;
-                }
-                if (array_key_exists($value, $this->arguments)) {
-                    return true;
+                try {
+                    return $has($value);
+                } catch (\Exception $e) {
+                    continue;
                 }
             }
             return false;
         }
 
-        return array_key_exists($name, $this->options) ? true : false;
+        try {
+            return $has($name);
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**
      * @param $name
-     * @return null|string|int
+     * @return null
+     * @throws \Exception
      */
     public function get($name)
     {
+        $get = function ($name) {
+            if (array_key_exists($name, $this->options)) {
+                return $this->options[$name];
+            }
+            if (array_key_exists($name, $this->arguments)) {
+                return $this->arguments[$name];
+            }
+            throw new \Exception(sprintf('Argument "%s" is undefined.', $name));
+        };
+
         if (is_array($name)) {
             foreach ($name as $value) {
-                if (array_key_exists($value, $this->options)) {
-                    return $this->options[$value];
-                }
-                if (array_key_exists($value, $this->arguments)) {
-                    return $this->arguments[$value];
+                try {
+                    return $get($value);
+                } catch (\Exception $e) {
+                    continue;
                 }
             }
             return null;
         }
 
-        return isset($this->options[$name]) ? $this->options[$name] : null;
+        try {
+            return $get($name);
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**

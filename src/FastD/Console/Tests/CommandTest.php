@@ -16,6 +16,7 @@ namespace FastD\Console\Tests;
 
 use FastD\Console\ArgvInput;
 use FastD\Console\Tests\Command\BaseCommand;
+use FastD\Console\IO\Input;
 
 class CommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,17 +24,21 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $baseCommand = new BaseCommand();
         $baseCommand->setOption('name');
+        $baseCommand->setOption('height', Input::ARG_NONE);
         $baseCommand->setArgument('age');
 
         $_SERVER['argv'] = [
             'demo.php',
             '18',
             '--name=janhuang',
+            '--height="188"'
         ];
 
         $argvInput = new ArgvInput();
         $argvInput->recombination($baseCommand);
-        print_r($baseCommand);
-        print_r($argvInput);
+
+        $this->assertEquals(18, $argvInput->get('age'));
+        $this->assertEquals('janhuang', $argvInput->get('name'));
+        $this->assertNull($argvInput->get('height'));
     }
 }
