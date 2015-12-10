@@ -33,7 +33,7 @@ abstract class Command
     /**
      * @var string
      */
-    protected $help = '';
+    protected $help = [];
 
     /**
      * @var string
@@ -77,10 +77,9 @@ abstract class Command
      */
     public function setOption($name, $optional = Input::ARG_OPTIONAL, $help = null)
     {
-        $this->options[$name] = [
-            'optional' => $optional,
-            'description' => $help
-        ];
+        $this->options[$name] = $optional;
+
+        $this->help[$name] = $help;
 
         return $this;
     }
@@ -90,8 +89,12 @@ abstract class Command
      * @return mixed
      * @throws \ErrorException
      */
-    public function getOption($name)
+    public function getOption($name = null)
     {
+        if (null === $name) {
+            return $this->options;
+        }
+
         if (array_key_exists($name, $this->options)) {
             throw new \ErrorException(sprintf('Options %s is undefined.', $name));
         }
@@ -107,10 +110,9 @@ abstract class Command
      */
     public function setArgument($name, $optional = Input::ARG_OPTIONAL, $help = null)
     {
-        $this->arguments[$name] = [
-            'optional' => $optional,
-            'help' => $help,
-        ];
+        $this->arguments[$name] = $optional;
+
+        $this->help[$name] = $help;
 
         return $this;
     }
@@ -120,8 +122,12 @@ abstract class Command
      * @return mixed
      * @throws \ErrorException
      */
-    public function getArgument($name)
+    public function getArgument($name = null)
     {
+        if (null === $name) {
+            return $this->arguments;
+        }
+
         if (!isset($this->arguments[$name])) {
             throw new \ErrorException(sprintf('Argument %s is undefined.', $name));
         }

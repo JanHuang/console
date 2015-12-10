@@ -13,6 +13,8 @@
 
 namespace FastD\Console\IO;
 
+use FastD\Console\Command\Command;
+
 /**
  * Class Input
  *
@@ -53,7 +55,7 @@ class Input implements InputInterface
      * Initialize command argv input.
      * @return void
      */
-    public function parseCommandLineArguments()
+    public function parseCommandLineArguments(array $options = [], array $arguments = [])
     {
         foreach ($this->argv as $argv) {
             if ('-' === substr($argv, 0, 1)) {
@@ -72,13 +74,19 @@ class Input implements InputInterface
     /**
      * Recombination command line arguments.
      *
-     * @param null $options
-     * @param null $arguments
+     * @param Command $command
      * @return void
      */
-    public function recombination($options = null, $arguments = null)
+    public function recombination(Command $command)
     {
+        $options = [];
+        foreach ($command->getOption(null) as $option) {
 
+        }
+
+        foreach ($command->getArgument(null) as $argument) {
+
+        }
     }
 
     /**
