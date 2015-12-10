@@ -15,6 +15,7 @@
 namespace FastD\Console\Environment;
 
 use FastD\Console\Command;
+use FastD\Console\IO\InputInterface;
 use FastD\Container\Container;
 
 /**
@@ -22,7 +23,7 @@ use FastD\Container\Container;
  *
  * @package FastD\Console\Environment
  */
-class BaseApplication implements EnvironmentInterface
+class BaseApplication implements ConsoleApplicationInterface
 {
     /**
      * @var array
@@ -154,5 +155,14 @@ class BaseApplication implements EnvironmentInterface
     public function getContainer()
     {
         return $this->container;
+    }
+
+    /**
+     * @param InputInterface $inputInterface
+     * @return mixed
+     */
+    public function run(InputInterface $inputInterface)
+    {
+        // TODO: Implement run() method.
     }
 }

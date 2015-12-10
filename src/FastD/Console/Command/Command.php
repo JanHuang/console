@@ -12,97 +12,114 @@
  * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Console;
+namespace FastD\Console\Command;
 
-use FastD\Console\Environment\EnvironmentInterface;
+use FastD\Console\Environment\ConsoleApplicationInterface;
 use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
-use FastD\Container\Container;
 
 /**
  * Class Command
  *
- * @package FastD\Console
+ * @package FastD\Console\Command
  */
 abstract class Command
 {
-    const OPT_REQUIRED = 1;
-    const OPT_OPTIONAL = 2;
-    const OPT_NULL = 3;
+    /**
+     * @var ConsoleApplicationInterface
+     */
+    protected $application;
 
-    protected $description = '';
-
-    protected $options = [];
-
-    protected $arguments = [];
-
+    /**
+     * @var string
+     */
     protected $help = '';
 
-    protected $container;
-
     /**
-     * @var EnvironmentInterface
+     * @var string
      */
-    protected $env;
+    protected $description = '';
 
     /**
-     * @param EnvironmentInterface $interface
+     * @var array
+     */
+    protected $options = [];
+
+    /**
+     * @var array
+     */
+    protected $arguments = [];
+
+    /**
+     * @return ConsoleApplicationInterface
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
+
+    /**
+     * @param ConsoleApplicationInterface $application
      * @return $this
      */
-    public function setEnv(EnvironmentInterface $interface)
+    public function setApplication(ConsoleApplicationInterface $application)
     {
-        $this->env = $interface;
+        $this->application = $application;
 
         return $this;
     }
 
     /**
-     * @return EnvironmentInterface
+     * @param        $name
+     * @param string $optional
+     * @param null   $help
+     * @return $this
      */
-    public function getEnv()
-    {
-        return $this->env;
-    }
-
-    public function setOption($name, $optional = Command::OPT_OPTIONAL, $description = null)
+    public function setOption($name, $optional = Input::ARG_OPTIONAL, $help = null)
     {
         $this->options[$name] = [
             'optional' => $optional,
-            'description' => $description
+            'description' => $help
         ];
 
         return $this;
     }
 
-    public function getAllOptions()
-    {
-        return $this->options;
-    }
-
-    public function getAllArgument()
-    {
-        return $this->arguments;
-    }
-
+    /**
+     * @param $name
+     * @return mixed
+     * @throws \ErrorException
+     */
     public function getOption($name)
     {
-        if (!isset($this->options[$name])) {
+        if (array_key_exists($name, $this->options)) {
             throw new \ErrorException(sprintf('Options %s is undefined.', $name));
         }
 
         return $this->options[$name];
     }
 
-    public function setArgument($name, $optional = Command::OPT_OPTIONAL, $description = null)
+    /**
+     * @param        $name
+     * @param string $optional
+     * @param null   $help
+     * @return $this
+     */
+    public function setArgument($name, $optional = Input::ARG_OPTIONAL, $help = null)
     {
         $this->arguments[$name] = [
             'optional' => $optional,
-            'description' => $description,
+            'help' => $help,
         ];
 
         return $this;
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     * @throws \ErrorException
+     */
     public function getArgument($name)
     {
         if (!isset($this->arguments[$name])) {
@@ -112,6 +129,10 @@ abstract class Command
         return $this->arguments[$name];
     }
 
+    /**
+     * @param $description
+     * @return $this
+     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -119,11 +140,18 @@ abstract class Command
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
+    /**
+     * @param $help
+     * @return $this
+     */
     public function setHelp($help)
     {
         $this->help = $help;
@@ -131,32 +159,34 @@ abstract class Command
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getHelp()
     {
         return $this->help;
     }
 
+    /**
+     * @return string
+     */
     abstract public function getName();
 
+    /**
+     * @return void
+     */
     abstract public function configure();
 
+    /**
+     * @param Input  $input
+     * @param Output $output
+     * @return int
+     */
     abstract public function execute(Input $input, Output $output);
 
-    public function setContainer(Container $container)
-    {
-        $this->container = $container;
-
-        return $this;
-    }
-
     /**
-     * @return Container
+     * @return string
      */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
     public function __toString()
     {
         return sprintf("Command '%s': --help %s %s\n", $this->getName(), '', '');

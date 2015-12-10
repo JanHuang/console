@@ -23,7 +23,7 @@ use FastD\Container\Container;
  *
  * @package FastD\Console\Environment
  */
-interface EnvironmentInterface extends \Iterator
+interface ConsoleApplicationInterface extends \Iterator
 {
     /**
      * @param InputInterface $inputInterface
