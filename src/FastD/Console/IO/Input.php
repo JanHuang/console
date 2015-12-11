@@ -117,7 +117,9 @@ class Input implements InputInterface
         }
         $this->options = $options;
 
-        $this->arguments = array_combine(array_keys($command->getArgument(null)), array_slice($this->arguments, 0, count($command->getArgument())));
+        if (array() !== $this->arguments) {
+            $this->arguments = array_combine(array_keys($command->getArgument(null)), array_slice($this->arguments, 0, count($command->getArgument())));
+        }
     }
 
     /**
