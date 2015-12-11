@@ -152,7 +152,7 @@ class Input implements InputInterface
         try {
             return $has($name);
         } catch (\Exception $e) {
-            throw $e;
+            return null;
         }
     }
 
@@ -187,7 +187,7 @@ class Input implements InputInterface
         try {
             return $get($name);
         } catch (\Exception $e) {
-            throw $e;
+            return null;
         }
     }
 
