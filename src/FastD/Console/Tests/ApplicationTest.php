@@ -14,10 +14,27 @@
 
 namespace FastD\Console\Tests;
 
+use FastD\Console\ArgvInput;
+use FastD\Console\Environment\Application;
+
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     public function testApplication()
     {
-        
+        $_SERVER['argv'] = [
+            'demo.php',
+            'base',
+            '-f',
+            'value for f',
+            '-v',
+            '-a',
+            '--required',
+            'value',
+            '--optional="optional value"',
+            '--option'
+        ];
+
+        $application = new Application();
+        $application->run(new ArgvInput());
     }
 }

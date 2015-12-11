@@ -23,6 +23,26 @@ use FastD\Console\Command\Command;
 class Input implements InputInterface
 {
     /**
+     * @var string
+     */
+    protected $document_root;
+
+    /**
+     * @var string
+     */
+    protected $script_filename;
+
+    /**
+     * @var string
+     */
+    protected $script_name;
+
+    /**
+     * @var string
+     */
+    protected $command_name;
+
+    /**
      * Server argv.
      *
      * @var array
@@ -46,7 +66,15 @@ class Input implements InputInterface
     {
         $this->argv = $_SERVER['argv'];
 
+        $this->document_root = isset($_SERVER['PWD']) ? $_SERVER['PWD'] : __DIR__;
+
+        $this->script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : basename(__FILE__);
+
+        $this->script_filename = $this->document_root . DIRECTORY_SEPARATOR . $this->script_name;
+
         array_shift($this->argv);
+
+        $this->command_name = array_shift($this->argv);
 
         $this->parseCommandLineArguments();
     }

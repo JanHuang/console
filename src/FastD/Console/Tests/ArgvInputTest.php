@@ -23,6 +23,7 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         // -f "value for f" -v -a --required value --optional="optional value" --option
         $_SERVER['argv'] = [
             'demo.php',
+            'base',
             '-f',
             'value for f',
             '-v',

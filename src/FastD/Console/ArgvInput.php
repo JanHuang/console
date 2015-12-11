@@ -24,14 +24,9 @@ use FastD\Console\IO\Input;
 class ArgvInput extends Input
 {
     /**
-     * @var string|null
-     */
-    protected $commandName;
-
-    /**
      * @return bool
      */
-    public function emptyArgv()
+    public function isEmpty()
     {
         return empty($this->argv);
     }
@@ -41,16 +36,6 @@ class ArgvInput extends Input
      */
     public function getCommandName()
     {
-        if (null !== $this->commandName) {
-            return $this->commandName;
-        }
-
-        if (empty($this->argv)) {
-            return $this->systemInput('Please input command name');
-        }
-
-        $this->commandName = array_shift($this->arguments); array_shift($this->argv);
-
-        return $this->commandName;
+        return $this->command_name;
     }
 }

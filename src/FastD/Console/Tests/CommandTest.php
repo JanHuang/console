@@ -29,6 +29,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         $_SERVER['argv'] = [
             'demo.php',
+            'base',
             '18',
             '--name=janhuang',
             '--height="188"',
