@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: janhuang
  * Date: 15/12/11
- * Time: 上午12:14
+ * Time: 下午2:44
  * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
@@ -18,14 +18,14 @@ use FastD\Console\Command\Command;
 use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
 
-class BaseCommand extends Command
+class TestCommand extends Command
 {
     /**
      * @return string
      */
     public function getName()
     {
-        return 'base:demo';
+        return 'base:test';
     }
 
     /**
@@ -43,6 +43,6 @@ class BaseCommand extends Command
      */
     public function execute(Input $input, Output $output)
     {
-        echo 'hello command';
+        // TODO: Implement execute() method.
     }
 }
