@@ -16,6 +16,7 @@ namespace FastD\Console\Tests;
 
 use FastD\Console\ArgvInput;
 use FastD\Console\Environment\Application;
+use FastD\Console\Tests\Command\BaseCommand;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,6 +36,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         ];
 
         $application = new Application();
+        $application->setCommand(new BaseCommand());
         $application->run(new ArgvInput());
     }
 }

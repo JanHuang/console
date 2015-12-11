@@ -14,7 +14,7 @@
 
 namespace FastD\Console\Command;
 
-use FastD\Console\Environment\ConsoleApplicationInterface;
+use FastD\Console\Environment\ApplicationInterface;
 use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
 
@@ -26,7 +26,7 @@ use FastD\Console\IO\Output;
 abstract class Command
 {
     /**
-     * @var ConsoleApplicationInterface
+     * @var ApplicationInterface
      */
     protected $application;
 
@@ -51,7 +51,7 @@ abstract class Command
     protected $arguments = [];
 
     /**
-     * @return ConsoleApplicationInterface
+     * @return ApplicationInterface
      */
     public function getApplication()
     {
@@ -59,12 +59,12 @@ abstract class Command
     }
 
     /**
-     * @param ConsoleApplicationInterface $application
+     * @param ApplicationInterface $applicationInterface
      * @return $this
      */
-    public function setApplication(ConsoleApplicationInterface $application)
+    public function setApplication(ApplicationInterface $applicationInterface)
     {
-        $this->application = $application;
+        $this->application = $applicationInterface;
 
         return $this;
     }

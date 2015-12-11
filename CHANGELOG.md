@@ -3,3 +3,4 @@
  * 优化Input命令行参数解析
  * 优化Command基础命令行方法
  * 优化命令行参数设置和使用方式
+ * 增加命令行ApplicationInterface接口和ApplicationAbstract抽象对象

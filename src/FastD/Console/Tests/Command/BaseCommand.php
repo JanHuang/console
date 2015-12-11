@@ -43,6 +43,6 @@ class BaseCommand extends Command
      */
     public function execute(Input $input, Output $output)
     {
-        // TODO: Implement execute() method.
+        echo 'hello command';
     }
 }

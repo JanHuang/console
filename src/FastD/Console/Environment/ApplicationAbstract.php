@@ -16,6 +16,7 @@ namespace FastD\Console\Environment;
 
 use FastD\Console\ArgvInput;
 use FastD\Console\Command\Command;
+use FastD\Console\IO\Output;
 
 abstract class ApplicationAbstract implements ApplicationInterface
 {
@@ -23,6 +24,16 @@ abstract class ApplicationAbstract implements ApplicationInterface
      * @var array
      */
     protected $commands = [];
+
+    /**
+     * @var Output
+     */
+    protected $output;
+
+    public function __construct()
+    {
+        $this->output = new Output();
+    }
 
     /**
      * @param $name
@@ -63,6 +74,12 @@ abstract class ApplicationAbstract implements ApplicationInterface
      */
     public function run(ArgvInput $argvInput)
     {
-        $this->getCommand($argvInput->getCommandName());
+        $command = $this->getCommand($argvInput->getCommandName());
+
+        $command->configure();
+
+        $argvInput->recombination($command);
+
+        return $command->execute($argvInput, $this->output);
     }
 }
