@@ -89,11 +89,13 @@ abstract class ApplicationAbstract implements ApplicationInterface, \Iterator
                 $tab = '';
                 if (!empty($gname)) {
                     $this->output->writeln($gname);
-                    $tab = '|-';
+                    $tab = ' |-';
                 }
                 foreach ($group as $name) {
-                    $this->output->writeln($tab . $name);
+                    $this->output->write($tab);
+                    $this->output->writeln($name, Output::STYLE_SUCCESS);
                 }
+                $this->output->writeln('');
             }
             return 0;
         }

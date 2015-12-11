@@ -17,7 +17,7 @@ namespace FastD\Console\IO;
 interface OutputInterface
 {
     /**
-     *
+     * @const string
      */
     const STYLE_FAILURE = '[31m';
 
