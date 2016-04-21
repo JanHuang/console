@@ -10,7 +10,7 @@
 
 ```json
 {
-    “fastd/console": "2.0.x-dev”
+    "fastd/console": "2.0.x-dev"
 }
 ```
 
