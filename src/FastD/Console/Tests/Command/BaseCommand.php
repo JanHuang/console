@@ -33,7 +33,8 @@ class BaseCommand extends Command
      */
     public function configure()
     {
-        // TODO: Implement configure() method.
+        $this->setArgument('name');
+        $this->setOption('age', Input::ARG_OPTIONAL);
     }
 
     /**
@@ -43,6 +44,6 @@ class BaseCommand extends Command
      */
     public function execute(Input $input, Output $output)
     {
-        echo 'hello command';
+        echo 'hello ' . $input->get('name');
     }
 }
