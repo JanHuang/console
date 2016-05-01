@@ -25,7 +25,7 @@ class BaseCommand extends Command
      */
     public function getName()
     {
-        return 'base:demo';
+        return 'test:demo';
     }
 
     /**
