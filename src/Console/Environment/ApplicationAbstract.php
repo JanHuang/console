@@ -88,7 +88,7 @@ abstract class ApplicationAbstract implements ApplicationInterface, \Iterator
             foreach ($commands as $gname => $group) {
                 $tab = '';
                 if (!empty($gname)) {
-                    $this->output->writeln('✗ ' . $gname . ':');
+                    $this->output->writeln('' . $gname . ':');
                     $tab = ' ➜ ';
                 }
                 foreach ($group as $name) {
