@@ -24,7 +24,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $_SERVER['argv'] = [
             'demo.php',
-            'base:demo',
+            'test:demo',
             '-f',
             'value for f',
             '-v',
