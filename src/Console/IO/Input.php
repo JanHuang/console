@@ -192,6 +192,16 @@ class Input implements InputInterface
     }
 
     /**
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
+    public function hasGet($name, $default = null)
+    {
+        return $this->has($name) ? $this->get($name) : $default;
+    }
+
+    /**
      * @return array
      */
     public function getArgv()
