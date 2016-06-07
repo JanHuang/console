@@ -12,10 +12,10 @@
  * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Console\Environment;
+namespace FastD\Console;
 
-use FastD\Console\ArgvInput;
 use FastD\Console\Command\Command;
+use FastD\Console\IO\Input;
 use FastD\Console\IO\Output;
 
 abstract class ApplicationAbstract implements ApplicationInterface, \Iterator
@@ -67,14 +67,14 @@ abstract class ApplicationAbstract implements ApplicationInterface, \Iterator
 
         return $this;
     }
-
+    
     /**
-     * @param ArgvInput $argvInput
+     * @param Input $input
      * @return int
      */
-    public function run(ArgvInput $argvInput)
+    public function run(Input $input)
     {
-        $name = $argvInput->getCommandName();
+        $name = $input->getCommandName();
 
         if (null === $name) {
             $commands = [];

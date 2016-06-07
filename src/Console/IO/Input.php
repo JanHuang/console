@@ -80,6 +80,22 @@ class Input implements InputInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->argv);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCommandName()
+    {
+        return $this->command_name;
+    }
+
+    /**
      * Initialize command argv input.
      * @return void
      */

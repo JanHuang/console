@@ -12,7 +12,7 @@
  * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Console\Environment;
+namespace FastD\Console;
 
 /**
  * Console run application.

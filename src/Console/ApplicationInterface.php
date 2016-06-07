@@ -12,10 +12,10 @@
  * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Console\Environment;
+namespace FastD\Console;
 
-use FastD\Console\ArgvInput;
 use FastD\Console\Command\Command;
+use FastD\Console\IO\Input;
 
 /**
  * Interface EnvironmentInterface
@@ -25,10 +25,10 @@ use FastD\Console\Command\Command;
 interface ApplicationInterface
 {
     /**
-     * @param ArgvInput $argvInput
+     * @param Input $input
      * @return mixed
      */
-    public function run(ArgvInput $argvInput);
+    public function run(Input $input);
 
     /**
      * @param $name
