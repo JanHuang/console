@@ -11,10 +11,14 @@
 
 namespace FastD\Console\Tests\Output;
 
+use FastD\Console\Output\Output;
+
 class OutputTest extends \PHPUnit_Framework_TestCase
 {
     public function testFormatter()
     {
+        $output = new Output();
+        
         
     }
 }
