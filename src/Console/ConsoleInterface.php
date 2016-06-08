@@ -15,14 +15,14 @@
 namespace FastD\Console;
 
 use FastD\Console\Command\Command;
-use FastD\Console\IO\Input;
+use FastD\Console\Input\Input;
 
 /**
  * Interface EnvironmentInterface
  *
  * @package FastD\Console\Environment
  */
-interface ApplicationInterface
+interface ConsoleInterface
 {
     /**
      * @param Input $input

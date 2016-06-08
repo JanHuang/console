@@ -12,7 +12,7 @@
  * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Console\IO;
+namespace FastD\Console\Output;
 
 interface OutputInterface
 {

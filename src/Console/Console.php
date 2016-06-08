@@ -15,10 +15,14 @@
 namespace FastD\Console;
 
 use FastD\Console\Command\Command;
-use FastD\Console\IO\Input;
-use FastD\Console\IO\Output;
+use FastD\Console\Output\Output;
+use FastD\Console\Input\Input;
 
-abstract class ApplicationAbstract implements ApplicationInterface, \Iterator
+/**
+ * Class Console
+ * @package FastD\Console
+ */
+class Console implements ConsoleInterface
 {
     /**
      * @var array

@@ -14,7 +14,7 @@
 
 namespace FastD\Console\Tests;
 
-use FastD\Console\ArgvInput;
+use FastD\Console\Input\Input;
 
 class ArgvInputTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,15 +27,17 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
             '-f',
             'value for f',
             '-v',
-            '-a',
-            '--required',
+            '-a=all',
+            '--required=request',
             'value',
             '--optional="optional value"',
             '--option'
         ];
-        $argvInput = new ArgvInput();
-        $this->assertTrue($argvInput->has('f'));
-        $this->assertTrue($argvInput->has('required'));
-        $this->assertEquals('optional value', $argvInput->get('optional'));
+
+        $argvInput = new Input();
+
+        $this->assertEquals('base', $argvInput->getCommand());
+
+        print_r($argvInput->getShortOptions());
     }
 }
