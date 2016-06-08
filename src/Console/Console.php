@@ -96,8 +96,13 @@ class Console implements ConsoleInterface, InvokerInterface, Iterator
             return 0;
         }
 
-        $this->command = $this->getCommand($name);
-        
+        try {
+            $this->command = $this->getCommand($name);
+        } catch (RuntimeException $e) {
+            $this->output->writeln(sprintf('Do you has mean ["<warning>%s</warning>"]?', $name));
+            return 0;
+        }
+
         $this->command->configure();
 
 //        $input->recombination($command);
