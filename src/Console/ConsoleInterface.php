@@ -15,7 +15,7 @@
 namespace FastD\Console;
 
 use FastD\Console\Command\Command;
-use FastD\Console\Input\Input;
+use FastD\Console\Input\ArgvInput;
 
 /**
  * Interface ConsoleInterface
@@ -25,10 +25,10 @@ use FastD\Console\Input\Input;
 interface ConsoleInterface
 {
     /**
-     * @param Input $input
+     * @param ArgvInput $input
      * @return mixed
      */
-    public function run(Input $input);
+    public function run(ArgvInput $input);
 
     /**
      * @param $name

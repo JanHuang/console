@@ -14,11 +14,11 @@
 
 include __DIR__ . '/../vendor/autoload.php';
 
-use FastD\Console\Input\Input;
+use \FastD\Console\Input\ArgvInput;
 use FastD\Console\Console;
 use FastD\Console\Tests\Command\BaseCommand;
 
-$input = new Input();
+$input = new ArgvInput();
 
 $console = new Console();
 $console->setCommand(new BaseCommand());
