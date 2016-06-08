@@ -25,6 +25,10 @@ class OutputFormatter implements OutputFormatterInterface
     public static function format($message)
     {
         $message = preg_replace_callback('/\<(?<tag>\/?[a-z]+)\>/', function ($match) {
+            if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
+                return '';
+            }
+
             if ('/' === $match['tag']{0}) {
                 // If tag ending.
                 return chr(27) . "[0m";

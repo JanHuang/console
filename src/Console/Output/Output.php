@@ -21,21 +21,6 @@ namespace FastD\Console\Output;
 class Output
 {
     /**
-     * @var string
-     */
-    protected $env = '*unix';
-
-    /**
-     * Output constructor.
-     */
-    public function __construct()
-    {
-        if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
-            $this->env = 'win';
-        }
-    }
-
-    /**
      * @param $message
      * @param bool $toReturn
      * @return string

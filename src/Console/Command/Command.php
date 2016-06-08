@@ -14,9 +14,8 @@
 
 namespace FastD\Console\Command;
 
-use FastD\Console\Environment\ApplicationInterface;
-use FastD\Console\IO\Input;
-use FastD\Console\IO\Output;
+use FastD\Console\Input\Input;
+use FastD\Console\Output\Output;
 
 /**
  * Class Command
