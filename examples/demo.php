@@ -14,13 +14,14 @@
 
 include __DIR__ . '/../vendor/autoload.php';
 
-use FastD\Console\Application;
-use \FastD\Console\IO\Input;
+use FastD\Console\Input\Input;
+use FastD\Console\Console;
+use FastD\Console\Tests\Command\BaseCommand;
 
 $input = new Input();
-$application = new Application();
-$application->setCommand(new \FastD\Console\Tests\Command\BaseCommand());
-$application->setCommand(new \FastD\Console\Tests\Command\TestCommand());
-$application->run($input);
+
+$console = new Console();
+$console->setCommand(new BaseCommand());
+$console->run($input);
 
 

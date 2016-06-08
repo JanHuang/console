@@ -16,6 +16,7 @@ use FastD\Console\Output\Output;
 
 /**
  * Interface InvokerInterface
+ * 
  * @package FastD\Console
  */
 interface InvokerInterface

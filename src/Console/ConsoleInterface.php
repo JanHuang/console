@@ -18,9 +18,9 @@ use FastD\Console\Command\Command;
 use FastD\Console\Input\Input;
 
 /**
- * Interface EnvironmentInterface
- *
- * @package FastD\Console\Environment
+ * Interface ConsoleInterface
+ * 
+ * @package FastD\Console
  */
 interface ConsoleInterface
 {

@@ -15,8 +15,8 @@
 namespace FastD\Console\Tests\Command;
 
 use FastD\Console\Command\Command;
-use FastD\Console\IO\Input;
-use FastD\Console\IO\Output;
+use FastD\Console\Input\Input;
+use FastD\Console\Output\Output;
 
 class BaseCommand extends Command
 {
@@ -34,7 +34,7 @@ class BaseCommand extends Command
     public function configure()
     {
         $this->setArgument('name');
-        $this->setOption('age', Input::ARG_OPTIONAL);
+        $this->setOption('age');
     }
 
     /**
@@ -44,6 +44,6 @@ class BaseCommand extends Command
      */
     public function execute(Input $input, Output $output)
     {
-        echo 'hello ' . $input->get('name');
+        $output->writeln('<success>Success</success>');
     }
 }

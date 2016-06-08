@@ -25,19 +25,9 @@ use FastD\Console\Output\Output;
 abstract class Command
 {
     /**
-     * @var ApplicationInterface
-     */
-    protected $application;
-
-    /**
      * @var string
      */
-    protected $help = [];
-
-    /**
-     * @var string
-     */
-    protected $description = '';
+    protected $help = '';
 
     /**
      * @var array
@@ -50,34 +40,12 @@ abstract class Command
     protected $arguments = [];
 
     /**
-     * @return ApplicationInterface
-     */
-    public function getApplication()
-    {
-        return $this->application;
-    }
-
-    /**
-     * @param ApplicationInterface $applicationInterface
-     * @return $this
-     */
-    public function setApplication(ApplicationInterface $applicationInterface)
-    {
-        $this->application = $applicationInterface;
-
-        return $this;
-    }
-
-    /**
      * @param        $name
-     * @param string $optional
      * @param null   $help
      * @return $this
      */
-    public function setOption($name, $optional = Input::ARG_OPTIONAL, $help = null)
+    public function setOption($name, $help = null)
     {
-        $this->options[$name] = $optional;
-
         $this->help[$name] = $help;
 
         return $this;
@@ -103,14 +71,11 @@ abstract class Command
 
     /**
      * @param        $name
-     * @param string $optional
      * @param null   $help
      * @return $this
      */
-    public function setArgument($name, $optional = Input::ARG_OPTIONAL, $help = null)
+    public function setArgument($name, $help = null)
     {
-        $this->arguments[$name] = $optional;
-
         $this->help[$name] = $help;
 
         return $this;
@@ -132,25 +97,6 @@ abstract class Command
         }
 
         return $this->arguments[$name];
-    }
-
-    /**
-     * @param $description
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**

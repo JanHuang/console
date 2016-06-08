@@ -17,23 +17,34 @@ namespace FastD\Console;
 use FastD\Console\Command\Command;
 use FastD\Console\Output\Output;
 use FastD\Console\Input\Input;
+use Iterator;
+use RuntimeException;
 
 /**
  * Class Console
+ *
  * @package FastD\Console
  */
-class Console implements ConsoleInterface, InvokerInterface
+class Console implements ConsoleInterface, InvokerInterface, Iterator
 {
     /**
-     * @var array
+     * @var Command[]
      */
     protected $commands = [];
+
+    /**
+     * @var Command
+     */
+    protected $command;
 
     /**
      * @var Output
      */
     protected $output;
 
+    /**
+     * Console constructor.
+     */
     public function __construct()
     {
         $this->output = new Output();
@@ -46,7 +57,7 @@ class Console implements ConsoleInterface, InvokerInterface
     public function getCommand($name)
     {
         if (null === $name || !$this->hasCommand($name)) {
-            throw new \RuntimeException(sprintf('Command "%s" is not exists.', $name));
+            throw new RuntimeException(sprintf('Command "%s" is not exists.', $name));
         }
 
         return $this->commands[$name];
@@ -78,43 +89,25 @@ class Console implements ConsoleInterface, InvokerInterface
      */
     public function run(Input $input)
     {
-        $name = $input->getCommandName();
+        $name = $input->getCommand();
 
         if (null === $name) {
-            $commands = [];
-            foreach ($this as $command) {
-                $group = '';
-                if (false !== ($offset = strpos($command->getName(), ':'))) {
-                    $group = substr($command->getName(), 0, $offset);
-                }
-                $commands[$group][] = $command->getName();
-            }
-            foreach ($commands as $gname => $group) {
-                $tab = '';
-                if (!empty($gname)) {
-                    $this->output->writeln('' . $gname . ':');
-                    $tab = ' ➜ ';
-                }
-                foreach ($group as $name) {
-                    $this->output->write($tab);
-                    $this->output->writeln($name, Output::STYLE_SUCCESS);
-                }
-            }
+            $this->output->writeln('<info>Enter your command name:</info>');
             return 0;
         }
 
-        $command = $this->getCommand($name);
+        $this->command = $this->getCommand($name);
+        
+        $this->command->configure();
 
-        $command->configure();
+//        $input->recombination($command);
 
-        $argvInput->recombination($command);
-
-        return $command->execute($argvInput, $this->output);
+        return $this->execute($input, $this->output);
     }
 
     public function execute(Input $input, Output $output)
     {
-        // TODO: Implement execute() method.
+        return $this->command->execute($input, $output);
     }
 
     /**
