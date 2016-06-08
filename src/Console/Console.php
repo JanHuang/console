@@ -22,7 +22,7 @@ use FastD\Console\Input\Input;
  * Class Console
  * @package FastD\Console
  */
-class Console implements ConsoleInterface
+class Console implements ConsoleInterface, InvokerInterface
 {
     /**
      * @var array
@@ -110,6 +110,11 @@ class Console implements ConsoleInterface
         $argvInput->recombination($command);
 
         return $command->execute($argvInput, $this->output);
+    }
+
+    public function execute(Input $input, Output $output)
+    {
+        // TODO: Implement execute() method.
     }
 
     /**

@@ -18,7 +18,7 @@ namespace FastD\Console\Output;
  *
  * @package FastD\Console\Format
  */
-class Output implements OutputInterface
+class Output
 {
     protected $env = '*unix';
 

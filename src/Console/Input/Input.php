@@ -17,8 +17,8 @@ use Exception;
 
 /**
  * Class Input
- *
- * @package FastD\Console\IO
+ * 
+ * @package FastD\Console\Input
  */
 class Input
 {
@@ -35,7 +35,7 @@ class Input
     protected $argv;
 
     /**
-     * 长选项 "--option"
+     * 长选项 "--option" 长选项会自动追加短选项到参数中 (默认), 可覆盖
      *
      * @var array
      */
