@@ -15,10 +15,10 @@
 namespace FastD\Console;
 
 use FastD\Console\Command\Command;
-use FastD\Console\Output\Output;
 use FastD\Console\Input\Input;
-use Iterator;
+use FastD\Console\Output\Output;
 use RuntimeException;
+use Iterator;
 
 /**
  * Class Console

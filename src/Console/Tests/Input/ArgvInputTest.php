@@ -14,7 +14,9 @@
 
 namespace FastD\Console\Tests\Input;
 
+use FastD\Console\Input\ArgvInput;
 use FastD\Console\Input\Input;
+use FastD\Console\Tests\Command\BaseCommand;
 
 class ArgvInputTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,5 +39,27 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $argvInput = new Input();
 
         $this->assertEquals('base', $argvInput->getCommand());
+    }
+
+    public function testCommandRecombination()
+    {
+        $_SERVER['argv'] = [
+            'demo.php',
+            'base',
+            '-f',
+            'value for f',
+            '-v',
+            '-a=all',
+            '--required=request',
+            'value',
+            '--optional="optional value"',
+            '--option'
+        ];
+
+        $argvInput = new ArgvInput();
+
+        $argvInput->recombination(new BaseCommand());
+
+        print_r($argvInput);
     }
 }
