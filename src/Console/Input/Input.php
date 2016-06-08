@@ -17,7 +17,7 @@ use Exception;
 
 /**
  * Class Input
- * 
+ *
  * @package FastD\Console\Input
  */
 class Input

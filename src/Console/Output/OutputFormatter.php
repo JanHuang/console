@@ -13,5 +13,12 @@ namespace FastD\Console\Output;
 
 class OutputFormatter implements OutputFormatterInterface
 {
-
+    /**
+     * @param $message
+     * @return string
+     */
+    public function format($message)
+    {
+        // TODO: Implement format() method.
+    }
 }

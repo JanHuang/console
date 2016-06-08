@@ -11,7 +11,20 @@
 
 namespace FastD\Console\Output;
 
+/**
+ * Interface OutputFormatterInterface
+ * @package FastD\Console\Output
+ */
 interface OutputFormatterInterface
 {
+    const SUCCESS = '';
+    const WARNING = '';
+    const NOTICE = '';
+    const INFO = '';
 
+    /**
+     * @param $message
+     * @return string
+     */
+    public function format($message);
 }

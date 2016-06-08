@@ -12,7 +12,7 @@
  * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Console\Tests;
+namespace FastD\Console\Tests\Input;
 
 use FastD\Console\Input\Input;
 
