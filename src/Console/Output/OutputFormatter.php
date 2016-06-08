@@ -11,14 +11,28 @@
 
 namespace FastD\Console\Output;
 
+/**
+ * Class OutputFormatter
+ * 
+ * @package FastD\Console\Output
+ */
 class OutputFormatter implements OutputFormatterInterface
 {
     /**
      * @param $message
      * @return string
      */
-    public function format($message)
+    public static function format($message)
     {
-        // TODO: Implement format() method.
+        $message = preg_replace_callback('/\<(?<tag>\/?[a-z]+)\>/', function ($match) {
+            if ('/' === $match['tag']{0}) {
+                // If tag ending.
+                return chr(27) . "[0m";
+            }
+
+            return chr(27) . OutputFormatterInterface::TAGS[$match['tag']];
+        }, $message);
+
+        return $message;
     }
 }

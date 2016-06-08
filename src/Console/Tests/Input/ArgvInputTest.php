@@ -37,7 +37,5 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $argvInput = new Input();
 
         $this->assertEquals('base', $argvInput->getCommand());
-
-        print_r($argvInput->getShortOptions());
     }
 }

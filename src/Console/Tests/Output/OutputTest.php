@@ -12,13 +12,26 @@
 namespace FastD\Console\Tests\Output;
 
 use FastD\Console\Output\Output;
+use FastD\Console\Output\OutputFormatter;
 
+/**
+ * Class OutputTest
+ * @package FastD\Console\Tests\Output
+ */
 class OutputTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @outputBuffering Hello World
+     */
     public function testFormatter()
     {
+        $message = OutputFormatter::format('<success>Hello</success> <info>World</info>');
+    }
+
+    public function testOutput()
+    {
         $output = new Output();
-        
-        
+
+        $output->write('Hello <warning>World</warning>');
     }
 }

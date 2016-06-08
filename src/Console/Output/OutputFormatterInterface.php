@@ -17,14 +17,25 @@ namespace FastD\Console\Output;
  */
 interface OutputFormatterInterface
 {
-    const SUCCESS = '';
-    const WARNING = '';
-    const NOTICE = '';
-    const INFO = '';
+    const OUTPUT_FAILURE = "[31m";
+    const OUTPUT_SUCCESS = "[32m";
+    const OUTPUT_WARNING = "[33m";
+    const OUTPUT_NOTICE = "[34m";
+    const OUTPUT_INFO = "[36m";
+    const OUTPUT_DEFAULT = "[37m";
+    
+    const TAGS = [
+        'failure' => OutputFormatterInterface::OUTPUT_FAILURE,
+        'success' => OutputFormatterInterface::OUTPUT_SUCCESS,
+        'warning' => OutputFormatterInterface::OUTPUT_WARNING,
+        'notice' => OutputFormatterInterface::OUTPUT_NOTICE,
+        'info' => OutputFormatterInterface::OUTPUT_INFO,
+        'default' => OutputFormatterInterface::OUTPUT_INFO
+    ];
 
     /**
      * @param $message
      * @return string
      */
-    public function format($message);
+    public static function format($message);
 }
