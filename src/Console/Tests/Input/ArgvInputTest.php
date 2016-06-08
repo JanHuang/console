@@ -58,8 +58,12 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
 
         $argvInput = new ArgvInput();
 
-        $argvInput->recombination(new BaseCommand());
+        $command = new BaseCommand();
 
-        print_r($argvInput);
+        $command->configure();
+
+        $argvInput->recombination($command);
+
+        $this->assertEquals('value for f', $argvInput->get('name'));
     }
 }

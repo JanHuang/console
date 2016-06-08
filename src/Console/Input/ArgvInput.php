@@ -12,11 +12,31 @@
 namespace FastD\Console\Input;
 
 use FastD\Console\Command\Command;
+use ErrorException;
 
+/**
+ * Class ArgvInput
+ * @package FastD\Console\Input
+ */
 class ArgvInput extends Input
 {
+    /**
+     * @var array
+     */
+    protected $options = [];
+
+    /**
+     * @param Command $command
+     * @throws ErrorException
+     */
     public function recombination(Command $command)
     {
-        
+        $argv = $command->getArgument();
+
+        $inputArguments = $this->getArguments();
+
+        if (!empty($argv)) {
+            $this->arguments = array_merge($this->arguments, array_combine(array_keys($argv), array_splice($inputArguments, 0, count($argv))));
+        }
     }
 }

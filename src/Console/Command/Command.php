@@ -46,7 +46,7 @@ abstract class Command
      */
     public function setOption($name, $help = null)
     {
-        $this->help[$name] = $help;
+        $this->options[$name] = $help;
 
         return $this;
     }
@@ -76,7 +76,7 @@ abstract class Command
      */
     public function setArgument($name, $help = null)
     {
-        $this->help[$name] = $help;
+        $this->arguments[$name] = '';
 
         return $this;
     }
