@@ -40,9 +40,8 @@ class InputDefinition
      */
     public function __construct()
     {
-        foreach ($this->getDefaultInputOptions() as $option) {
-            $this->setOption($option);
-        }
+        $this->resetInputOptions();
+        $this->resetInputArguments();
     }
 
     /**
@@ -77,6 +76,10 @@ class InputDefinition
      */
     public function hasOption($name)
     {
+        if (isset($this->shortcuts[$name])) {
+            $name = $this->shortcuts[$name];
+        }
+
         return isset($this->options[$name]);
     }
 
@@ -132,8 +135,54 @@ class InputDefinition
     public function getDefaultInputOptions()
     {
         return [
-            new InputOption('debug', '-d'),
-            new InputOption('help', '-h'),
+            new InputOption('debug', '-d', InputOption::VALUE_NONE, 'Console debug.'),
+            new InputOption('help', '-h', InputOption::VALUE_NONE, 'Console or argument help information.'),
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultInputArguments()
+    {
+        return [
+            new InputArgument('command', InputArgument::REQUIRED, 'Console execute command name.'),
+        ];
+    }
+
+    /**
+     * Reset definition option.
+     */
+    public function resetInputOptions()
+    {
+        $this->mergeInputOptions($this->getDefaultInputOptions());
+    }
+
+    /**
+     * Reset definition argument.
+     */
+    public function resetInputArguments()
+    {
+        $this->mergeInputArguments($this->getDefaultInputArguments());
+    }
+
+    /**
+     * @param array $options
+     */
+    public function mergeInputOptions(array $options)
+    {
+        foreach ($options as $option) {
+            $this->setOption($option);
+        }
+    }
+
+    /**
+     * @param array $arguments
+     */
+    public function mergeInputArguments(array $arguments)
+    {
+        foreach ($arguments as $argument) {
+            $this->setArgument($argument);
+        }
     }
 }

@@ -11,7 +11,20 @@
 
 namespace FastD\Console\Input;
 
+/**
+ * Interface InputInterface
+ *
+ * @package FastD\Console\Input
+ */
 interface InputInterface
 {
+    /**
+     * @return mixed
+     */
+    public function resetOptions();
 
+    /**
+     * @return mixed
+     */
+    public function resetArguments();
 }

@@ -31,9 +31,9 @@ class InputOption
     protected $name;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $shortcuts;
+    protected $shortcut;
 
     /**
      * @var int

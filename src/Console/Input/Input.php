@@ -18,7 +18,7 @@ namespace FastD\Console\Input;
  *
  * @package FastD\Console\Input
  */
-class Input
+class Input implements InputInterface
 {
     /**
      * @var InputDefinition
@@ -33,18 +33,9 @@ class Input
     protected $argv;
 
     /**
-     * 长选项 "--option" 长选项会自动追加短选项到参数中 (默认), 可覆盖
-     *
      * @var array
      */
     protected $options = [];
-
-    /**
-     * 短选项 "-o"
-     *
-     * @var array
-     */
-    protected $shortcuts = [];
 
     /**
      * @var array
@@ -63,15 +54,9 @@ class Input
 
         array_shift($this->argv);
 
-        if (null === $inputDefinition) {
-            $inputDefinition = new InputDefinition();
-        }
-
         if (null !== $inputDefinition) {
             $this->bind($inputDefinition);
         }
-
-        $this->parse($this->argv);
     }
 
     /**
@@ -79,15 +64,24 @@ class Input
      */
     public function bind(InputDefinition $definition)
     {
+        $this->resetArguments();
+        $this->resetOptions();
+
         $this->definition = $definition;
+
+        $this->parse($this->argv);
     }
 
     /**
      * @param array $argv
      * @return void
      */
-    protected function parse(array $argv = [])
+    protected function parse(array $argv = null)
     {
+        if (null === $argv) {
+            $argv = $this->argv;
+        }
+
         foreach ($argv as $value) {
             if ('--' === substr($value, 0, 2)) {
                 $this->parseLongOptions($value);
@@ -105,7 +99,17 @@ class Input
      */
     protected function parseArguments($argument)
     {
+        $keys = array_keys($this->definition->getArguments());
+
         $this->arguments[] = $argument;
+
+        $name = $keys[count($this->arguments) - 1];
+
+        array_pop($this->arguments);
+
+        if ($this->definition->hasArgument($name)) {
+            $this->arguments[$name] = $argument;
+        }
 
         return $this;
     }
@@ -117,14 +121,17 @@ class Input
     protected function parseLongOptions($option)
     {
         if (false === ($index = strpos($option, '='))) {
-            $key = $option;
+            $key = substr($option, 2);
             $value = null;
         } else {
-            $key = substr($option, 0, $index - 2);
-            $value = trim(substr($option, ($index + 1)), "\'\"");
+            list($key, $value) = explode('=', $option);
+            $key = substr($key, 2);
+            $value = trim($value, "\'\"");
         }
 
-        $this->longOptions[$key] = $value;
+        if ($this->definition->hasOption($key)) {
+            $this->options[$key] = $value;
+        }
 
         return $this;
     }
@@ -136,14 +143,17 @@ class Input
     protected function parseShortOptions($option)
     {
         if (false === ($index = strpos($option, '='))) {
-            $key = substr($option, 0);
+            $key = substr($option, 1);
             $value = null;
         } else {
-            $key = substr($option, 0, $index);
-            $value = trim(substr($option, ($index + 1)), "\'\"");
+            list($key, $value) = explode('=', $option);
+            $key = substr($key, 1);
+            $value = trim($value, "\'\"");
         }
 
-        $this->shortOptions[$key] = $value;
+        if ($this->definition->hasOption($key)) {
+            $this->options[$key] = $value;
+        }
 
         return $this;
     }
@@ -168,12 +178,12 @@ class Input
 
     public function getOptions()
     {
-        return array_merge($this->longOptions, $this->shortOptions);
+
     }
 
     public function getOption($name)
     {
-
+        
     }
 
     /**
@@ -183,5 +193,21 @@ class Input
     public function hasOption($name)
     {
 
+    }
+
+    /**
+     *
+     */
+    public function resetOptions()
+    {
+        $this->options = [];
+    }
+
+    /**
+     *
+     */
+    public function resetArguments()
+    {
+        $this->arguments = [];
     }
 }
