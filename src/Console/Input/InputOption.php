@@ -31,9 +31,9 @@ class InputOption
     protected $name;
 
     /**
-     * @var null
+     * @var array
      */
-    protected $shortcut;
+    protected $shortcuts;
 
     /**
      * @var int
@@ -51,7 +51,7 @@ class InputOption
     protected $default;
 
     /**
-     * @var
+     * @var mixed
      */
     protected $value;
 
@@ -77,7 +77,7 @@ class InputOption
 
         $this->name = $name;
 
-        $this->shortcut = $shortcut;
+        $this->shortcut = str_replace('-', '', $shortcut);
 
         $this->optional = $optional;
 

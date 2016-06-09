@@ -17,11 +17,11 @@ class InputOptionTest extends \PHPUnit_Framework_TestCase
 {
     public function testOption()
     {
-        $option = new InputOption('name', '-a');
+        $option = new InputOption('name', 'a');
 
         $this->assertEquals('name', $option->getName());
 
-        $this->assertEquals('-a', $option->getShortcut());
+        $this->assertEquals('a', $option->getShortcut());
 
         $this->assertTrue($option->isOptional());
 
@@ -35,7 +35,7 @@ class InputOptionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('hello world', $option->getDescription());
 
-        $this->assertEquals('-a|-aa', $option->getShortcut());
+        $this->assertEquals('a|aa', $option->getShortcut());
 
         $this->assertTrue($option->isNone());
     }

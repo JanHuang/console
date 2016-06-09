@@ -13,8 +13,6 @@
 
 namespace FastD\Console\Input;
 
-use Exception;
-
 /**
  * Class Input
  *
@@ -23,9 +21,9 @@ use Exception;
 class Input
 {
     /**
-     * @var string
+     * @var InputDefinition
      */
-    protected $command;
+    protected $definition;
 
     /**
      * Server argv.
@@ -39,14 +37,14 @@ class Input
      *
      * @var array
      */
-    protected $longOptions = [];
+    protected $options = [];
 
     /**
      * 短选项 "-o"
      *
      * @var array
      */
-    protected $shortOptions = [];
+    protected $shortcuts = [];
 
     /**
      * @var array
@@ -54,37 +52,34 @@ class Input
     protected $arguments = [];
 
     /**
-     * Constructor
+     * Input constructor.
+     *
+     * @param array|null $argv
+     * @param InputDefinition|null $inputDefinition
      */
-    public function __construct()
+    public function __construct(array $argv = null, InputDefinition $inputDefinition = null)
     {
-        $this->argv = $_SERVER['argv'];
+        $this->argv = null === $argv ? $_SERVER['argv'] : $argv;
 
-        array_shift($this->argv); // 去除执行脚本
+        array_shift($this->argv);
 
-        $this->command = array_shift($this->argv);
+        if (null === $inputDefinition) {
+            $inputDefinition = new InputDefinition();
+        }
 
-        // 保留关键字, 可被覆盖
-        $this->shortOptions['-h'] = null;
-        $this->longOptions['--help'] = null;
+        if (null !== $inputDefinition) {
+            $this->bind($inputDefinition);
+        }
 
         $this->parse($this->argv);
     }
 
     /**
-     * @return bool
+     * @param InputDefinition $definition
      */
-    public function isEmpty()
+    public function bind(InputDefinition $definition)
     {
-        return empty($this->argv);
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getCommand()
-    {
-        return $this->command;
+        $this->definition = $definition;
     }
 
     /**
@@ -154,86 +149,39 @@ class Input
     }
 
     /**
-     * @param $name
-     * @return bool|null
+     * @return mixed|null
      */
-    public function has($name)
+    public function getFirstArgument()
     {
-        try {
-            return $this->get($name);
-        } catch (Exception $e) {
-            return false;
-        }
+        return $this->arguments[0] ?? null;
     }
 
-    /**
-     * @param $name
-     * @return bool|null
-     */
-    public function get($name)
-    {
-        $get = function ($name) {
-            if (array_key_exists('--' . $name, $this->longOptions)) {
-                return $this->longOptions['--' . $name];
-            }
-            if (array_key_exists('-' . $name, $this->shortOptions)) {
-                return $this->shortOptions['-' . $name];
-            }
-            if (array_key_exists($name, $this->arguments)) {
-                return $this->arguments[$name];
-            }
-            throw new Exception(sprintf('Parameter ["%s"] is undefined.', $name));
-        };
-
-        if (is_array($name)) {
-            foreach ($name as $value) {
-                try {
-                    return $get($value);
-                } catch (Exception $e) {
-                    continue;
-                }
-            }
-            return null;
-        }
-
-        try {
-            return $get($name);
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    /**
-     * @param $name
-     * @param null $default
-     * @return mixed
-     */
-    public function hasGet($name, $default = null)
-    {
-        return null === ($value = $this->get($name)) ? $default : $value;
-    }
-
-    /**
-     * @return array
-     */
-    public function getLongOptions()
-    {
-        return $this->longOptions;
-    }
-
-    /**
-     * @return array
-     */
-    public function getShortOptions()
-    {
-        return $this->shortOptions;
-    }
-
-    /**
-     * @return array
-     */
     public function getArguments()
     {
         return $this->arguments;
+    }
+
+    public function getArgument($name)
+    {
+
+    }
+
+    public function getOptions()
+    {
+        return array_merge($this->longOptions, $this->shortOptions);
+    }
+
+    public function getOption($name)
+    {
+
+    }
+
+    /**
+     * @param $name
+     * @return bool|null
+     */
+    public function hasOption($name)
+    {
+
     }
 }

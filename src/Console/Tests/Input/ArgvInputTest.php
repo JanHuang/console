@@ -38,7 +38,7 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
 
         $argvInput = new Input();
 
-        $this->assertEquals('base', $argvInput->getCommand());
+        $this->assertEquals('base', $argvInput->getFirstArgument());
     }
 
     public function testCommandRecombination()
@@ -58,12 +58,6 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
 
         $argvInput = new ArgvInput();
 
-        $command = new BaseCommand();
-
-        $command->configure();
-
-        $argvInput->bindCommand($command);
-
-        $this->assertEquals('value for f', $argvInput->get('name'));
+        print_r($argvInput);
     }
 }
