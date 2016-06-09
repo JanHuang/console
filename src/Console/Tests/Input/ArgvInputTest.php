@@ -35,5 +35,33 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $argvInput->bind($definition);
 
         $this->assertEquals($argvInput->getArguments(), ['command' => 'test']);
+        $this->assertEquals($argvInput->getOptions(), ['debug' => null]);
+    }
+
+    public function testAnyoneOptionInput()
+    {
+        $definition = new InputDefinition();
+
+        $argvInput = new Input([
+            'demo.php',
+            'test',
+            '-d'
+        ]);
+
+        $argvInput->bind($definition);
+
+        $this->assertEquals($argvInput->getArguments(), ['command' => 'test']);
+        $this->assertEquals($argvInput->getOptions(), ['debug' => null]);
+
+        $argvInput = new Input([
+            'demo.php',
+            'test',
+            '--debug'
+        ]);
+
+        $argvInput->bind($definition);
+
+        $this->assertEquals($argvInput->getArguments(), ['command' => 'test']);
+        $this->assertEquals($argvInput->getOptions(), ['debug' => null]);
     }
 }

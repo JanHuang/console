@@ -152,7 +152,8 @@ class Input implements InputInterface
         }
 
         if ($this->definition->hasOption($key)) {
-            $this->options[$key] = $value;
+            $option = $this->definition->getOption($key);
+            $this->options[$option->getName()] = $value;
         }
 
         return $this;
@@ -161,29 +162,56 @@ class Input implements InputInterface
     /**
      * @return mixed|null
      */
-    public function getFirstArgument()
+    public function getCommandName()
     {
-        return $this->arguments[0] ?? null;
+        if (!isset($this->arguments['command'])) {
+            return false;
+        }
+
+        return $this->arguments['command'];
     }
 
+    /**
+     * @return array
+     */
     public function getArguments()
     {
         return $this->arguments;
     }
 
+    /**
+     * @param $name
+     * @return mixed|null
+     */
     public function getArgument($name)
     {
-
+        return $this->hasArgument($name) ? $this->arguments[$name] : null;
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function hasArgument($name)
+    {
+        return isset($this->arguments[$name]);
+    }
+
+    /**
+     * @return array
+     */
     public function getOptions()
     {
-
+        return $this->options;
     }
 
+    /**
+     * @param $name
+     * @return mixed|null
+     */
     public function getOption($name)
     {
-        
+        return $this->hasOption($name) ? $this->options[$name] : null;
     }
 
     /**
@@ -192,7 +220,7 @@ class Input implements InputInterface
      */
     public function hasOption($name)
     {
-
+        return isset($this->options[$name]);
     }
 
     /**

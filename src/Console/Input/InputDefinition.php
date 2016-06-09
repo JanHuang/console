@@ -89,6 +89,10 @@ class InputDefinition
      */
     public function getOption($name)
     {
+        if (isset($this->shortcuts[$name])) {
+            $name = $this->shortcuts[$name];
+        }
+
         return $this->hasOption($name) ? $this->options[$name] : null;
     }
 
