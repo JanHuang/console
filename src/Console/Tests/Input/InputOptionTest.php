@@ -23,6 +23,8 @@ class InputOptionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('-a', $option->getShortcut());
 
+        $this->assertTrue($option->isOptional());
+
         $option = new InputOption('--name', '-a');
 
         $this->assertEquals('name', $option->getName());
@@ -34,5 +36,7 @@ class InputOptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('hello world', $option->getDescription());
 
         $this->assertEquals('-a|-aa', $option->getShortcut());
+
+        $this->assertTrue($option->isNone());
     }
 }
