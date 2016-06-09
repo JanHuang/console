@@ -219,6 +219,11 @@ class Input
         return null === ($value = $this->get($name)) ? $default : $value;
     }
 
+    public function addLongOption(InputOption $options)
+    {
+
+    }
+
     /**
      * @return array
      */
@@ -233,6 +238,11 @@ class Input
     public function getShortOptions()
     {
         return $this->shortOptions;
+    }
+
+    public function addArgument(InputArgument $argument)
+    {
+
     }
 
     /**
