@@ -54,7 +54,7 @@ class InputArgument
      * @param string $description
      * @param null $default
      */
-    public function __construct($name, $optional = self::OPTIONAL, $description = '', $default = null)
+    public function __construct($name, $optional = InputArgument::OPTIONAL, $description = '', $default = null)
     {
         $this->name = $name;
 

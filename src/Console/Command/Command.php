@@ -14,7 +14,11 @@
 
 namespace FastD\Console\Command;
 
+use FastD\Console\Help\Help;
+use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\Input;
+use FastD\Console\Input\InputArgument;
+use FastD\Console\Input\InputOption;
 use FastD\Console\Output\Output;
 
 /**
@@ -27,56 +31,73 @@ abstract class Command
     /**
      * @var string
      */
-    protected $help = '';
+    protected $help;
 
     /**
-     * @var array
+     * @var InputOption[]
      */
     protected $options = [];
 
     /**
-     * @var array
+     * @var InputArgument[]
      */
     protected $arguments = [];
 
     /**
-     * @param        $name
-     * @param null   $help
+     * @param $name
+     * @param null $shortcut
+     * @param int $optional
+     * @param string $description
+     * @param null $default
      * @return $this
      */
-    public function setOption($name, $help = null)
+    public function setOption($name, $shortcut = null, $optional = InputOption::VALUE_OPTIONAL, $description = '', $default = null)
     {
-        $this->options[$name] = $help;
+        $option = new InputOption($name, $shortcut, $optional, $description, $default);
+
+        $this->options[$option->getName()] = $option;
+
+        unset($option);
 
         return $this;
     }
 
     /**
      * @param $name
-     * @return mixed
+     * @return InputOption
      * @throws \ErrorException
      */
-    public function getOption($name = null)
+    public function getOption($name)
     {
-        if (null === $name) {
-            return $this->options;
-        }
-
         if (array_key_exists($name, $this->options)) {
-            throw new \ErrorException(sprintf('Options %s is undefined.', $name));
+            throw new \InvalidArgumentException(sprintf('Options %s is undefined.', $name));
         }
 
         return $this->options[$name];
     }
 
     /**
-     * @param        $name
-     * @param null   $help
+     * @return InputOption[]
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param $name
+     * @param $optional
+     * @param string $description
+     * @param null $default
      * @return $this
      */
-    public function setArgument($name, $help = null)
+    public function setArgument($name, $optional = InputArgument::OPTIONAL, $description = '', $default = null)
     {
-        $this->arguments[$name] = '';
+        $argument = new InputArgument($name, $optional, $description, $default);
+
+        $this->arguments[$argument->getName()] = $argument;
+
+        unset($argument);
 
         return $this;
     }
@@ -86,17 +107,21 @@ abstract class Command
      * @return mixed
      * @throws \ErrorException
      */
-    public function getArgument($name = null)
+    public function getArgument($name)
     {
-        if (null === $name) {
-            return $this->arguments;
-        }
-
         if (!isset($this->arguments[$name])) {
-            throw new \ErrorException(sprintf('Argument %s is undefined.', $name));
+            throw new \InvalidArgumentException(sprintf('Argument %s is undefined.', $name));
         }
 
         return $this->arguments[$name];
+    }
+
+    /**
+     * @return InputArgument[]
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 
     /**
@@ -105,13 +130,13 @@ abstract class Command
      */
     public function setHelp($help)
     {
-        $this->help = $help;
+        $this->help = new UsageHelp($help);
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return Help
      */
     public function getHelp()
     {
@@ -134,12 +159,4 @@ abstract class Command
      * @return int
      */
     abstract public function execute(Input $input, Output $output);
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return sprintf("Command '%s': --help %s %s\n", $this->getName(), '', '');
-    }
 }

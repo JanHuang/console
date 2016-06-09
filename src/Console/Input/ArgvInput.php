@@ -31,7 +31,7 @@ class ArgvInput extends Input
      */
     public function bindCommand(Command $command)
     {
-        $argv = $command->getArgument();
+        $argv = $command->getArguments();
 
         $inputArguments = $this->getArguments();
 

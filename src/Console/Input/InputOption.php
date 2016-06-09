@@ -65,7 +65,7 @@ class InputOption
      * @param null $default
      * @throws InvalidArgumentException
      */
-    public function __construct($name, $shortcut = null, $optional = self::VALUE_OPTIONAL, $description = '', $default = null)
+    public function __construct($name, $shortcut = null, $optional = InputOption::VALUE_OPTIONAL, $description = '', $default = null)
     {
         if (0 === strpos($name, '--')) {
             $name = substr($name, 2);
@@ -144,7 +144,7 @@ class InputOption
      */
     public function isNone()
     {
-        return $this->optional === self::VALUE_NONE;
+        return $this->optional === InputOption::VALUE_NONE;
     }
 
     /**
@@ -152,7 +152,7 @@ class InputOption
      */
     public function isOptional()
     {
-        return $this->optional === self::VALUE_OPTIONAL;
+        return $this->optional === InputOption::VALUE_OPTIONAL;
     }
 
     /**
@@ -160,6 +160,6 @@ class InputOption
      */
     public function isRequired()
     {
-        return $this->optional === self::VALUE_REQUIRED;
+        return $this->optional === InputOption::VALUE_REQUIRED;
     }
 }

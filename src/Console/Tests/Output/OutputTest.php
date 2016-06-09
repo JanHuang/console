@@ -26,8 +26,6 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     public function testFormatter()
     {
         $message = OutputFormatter::format('<success>Hello</success> <info>World</info>');
-
-        echo $message;
     }
 
     public function testOutput()

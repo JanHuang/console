@@ -14,7 +14,6 @@ namespace FastD\Console;
 use FastD\Console\Command\HelpCommand;
 use FastD\Console\Command\ListCommand;
 use FastD\Console\Command\Command;
-use FastD\Console\Input\InputOption;
 
 /**
  * trait Definition
@@ -31,16 +30,6 @@ trait Definition
         return [
             new HelpCommand(),
             new ListCommand(),
-        ];
-    }
-
-    /**
-     * @return InputOption[]
-     */
-    public function getDefaultInputOptions()
-    {
-        return [
-            
         ];
     }
 }

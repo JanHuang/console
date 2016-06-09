@@ -131,12 +131,6 @@ class Input
 
         $this->longOptions[$key] = $value;
 
-        $shortOption = substr($key, 1, 2);
-
-        if (!isset($this->shortOptions[$shortOption])) {
-            $this->shortOptions[$shortOption] = $value;
-        }
-
         return $this;
     }
 
@@ -219,11 +213,6 @@ class Input
         return null === ($value = $this->get($name)) ? $default : $value;
     }
 
-    public function addLongOption(InputOption $options)
-    {
-
-    }
-
     /**
      * @return array
      */
@@ -238,11 +227,6 @@ class Input
     public function getShortOptions()
     {
         return $this->shortOptions;
-    }
-
-    public function addArgument(InputArgument $argument)
-    {
-
     }
 
     /**

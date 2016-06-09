@@ -12,14 +12,22 @@
 namespace FastD\Console\Help;
 
 /**
- * Interface HelpInterface
+ * Class Help
  *
  * @package FastD\Console\Help
  */
 abstract class Help
 {
+    /**
+     * @var string
+     */
     protected $help;
 
+    /**
+     * Help constructor.
+     *
+     * @param string $help
+     */
     public function __construct($help = '')
     {
         $this->help = $help;
