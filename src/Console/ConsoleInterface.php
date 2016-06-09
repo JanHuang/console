@@ -14,7 +14,6 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Command\Command;
 use FastD\Console\Input\ArgvInput;
 
 /**
@@ -29,22 +28,4 @@ interface ConsoleInterface
      * @return mixed
      */
     public function run(ArgvInput $input);
-
-    /**
-     * @param $name
-     * @return Command
-     */
-    public function getCommand($name);
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function hasCommand($name);
-
-    /**
-     * @param Command $command
-     * @return $this
-     */
-    public function setCommand(Command $command);
 }

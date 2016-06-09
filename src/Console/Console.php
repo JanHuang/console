@@ -14,7 +14,6 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Command\Command;
 use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\ArgvInput;
 use FastD\Console\Output\ConsoleOutput;
@@ -26,24 +25,14 @@ use RuntimeException;
  *
  * @package FastD\Console
  */
-class Console implements ConsoleInterface, InvokerInterface
+class Console extends Collections implements ConsoleInterface, InvokerInterface
 {
-    /**
-     * @var Command[]
-     */
-    protected $commands = [];
-
-    /**
-     * @var Command
-     */
-    protected $command;
+    use Definition;
 
     /**
      * @var Output
      */
     protected $output;
-
-    protected $collection;
 
     /**
      * Console constructor.
@@ -51,39 +40,10 @@ class Console implements ConsoleInterface, InvokerInterface
     public function __construct()
     {
         $this->output = new ConsoleOutput();
-    }
 
-    /**
-     * @param $name
-     * @return Command
-     */
-    public function getCommand($name)
-    {
-        if (null === $name || !$this->hasCommand($name)) {
-            throw new RuntimeException(sprintf('Command "%s" is not exists.', $name));
+        foreach ($this->getDefaultCommands() as $command) {
+            $this->addCommand($command);
         }
-
-        return $this->commands[$name];
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function hasCommand($name)
-    {
-        return isset($this->commands[$name]) ? $this->commands[$name] : null;
-    }
-
-    /**
-     * @param Command $command
-     * @return $this
-     */
-    public function setCommand(Command $command)
-    {
-        $this->commands[$command->getName()] = $command;
-
-        return $this;
     }
     
     /**

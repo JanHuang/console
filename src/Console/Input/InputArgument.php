@@ -14,4 +14,8 @@ namespace FastD\Console\Input;
 class InputArgument
 {
 
+    public function __construct($name)
+    {
+
+    }
 }
