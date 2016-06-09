@@ -18,7 +18,7 @@ namespace FastD\Console\Output;
  * 
  * @package FastD\Console\Output
  */
-class Output
+abstract class Output
 {
     /**
      * @param $message

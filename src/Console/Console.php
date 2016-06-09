@@ -16,7 +16,7 @@ namespace FastD\Console;
 
 use FastD\Console\Command\Command;
 use FastD\Console\Input\ArgvInput;
-use FastD\Console\Input\Input;
+use FastD\Console\Output\ConsoleOutput;
 use FastD\Console\Output\Output;
 use RuntimeException;
 use Iterator;
@@ -48,7 +48,7 @@ class Console implements ConsoleInterface, InvokerInterface, Iterator
      */
     public function __construct()
     {
-        $this->output = new Output();
+        $this->output = new ConsoleOutput();
     }
 
     /**
@@ -106,19 +106,23 @@ class Console implements ConsoleInterface, InvokerInterface, Iterator
 
         $this->command->configure();
 
-        $input->recombination($this->command);
+        $input->bindCommand($this->command);
 
         return $this->execute($input, $this->output);
     }
 
     /**
-     * @param Input $input
-     * @param Output $output
+     * @param ArgvInput $input
+     * @param ConsoleOutput $output
      * @return int
      */
-    public function execute(Input $input, Output $output)
+    public function execute(ArgvInput $input, ConsoleOutput $output)
     {
-        return $this->command->execute($input, $output);
+        $return = $this->command->execute($input, $output);
+
+        $input->resetCommand();
+
+        return $return;
     }
 
     /**

@@ -11,7 +11,7 @@
 
 namespace FastD\Console\Tests\Output;
 
-use FastD\Console\Output\Output;
+use FastD\Console\Output\ConsoleOutput;
 use FastD\Console\Output\OutputFormatter;
 
 /**
@@ -30,7 +30,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
 
     public function testOutput()
     {
-        $output = new Output();
+        $output = new ConsoleOutput();
 
         $output->write('Hello <warning>World</warning>');
     }

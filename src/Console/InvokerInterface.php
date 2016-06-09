@@ -11,8 +11,8 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Input\Input;
-use FastD\Console\Output\Output;
+use FastD\Console\Output\ConsoleOutput;
+use FastD\Console\Input\ArgvInput;
 
 /**
  * Interface InvokerInterface
@@ -22,9 +22,9 @@ use FastD\Console\Output\Output;
 interface InvokerInterface
 {
     /**
-     * @param Input $input
-     * @param Output $output
-     * @return mixed
+     * @param ArgvInput $input
+     * @param ConsoleOutput $output
+     * @return int
      */
-    public function execute(Input $input, Output $output);
+    public function execute(ArgvInput $input, ConsoleOutput $output);
 }

@@ -29,7 +29,7 @@ class ArgvInput extends Input
      * @param Command $command
      * @throws ErrorException
      */
-    public function recombination(Command $command)
+    public function bindCommand(Command $command)
     {
         $argv = $command->getArgument();
 
@@ -37,6 +37,18 @@ class ArgvInput extends Input
 
         if (!empty($argv)) {
             $this->arguments = array_merge($this->arguments, array_combine(array_keys($argv), array_splice($inputArguments, 0, count($argv))));
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function resetCommand()
+    {
+        foreach ($this->getArguments() as $key => $argument) {
+            if (is_string($key)) {
+                unset($this->arguments[$key]);
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ namespace FastD\Console\Output;
 
 /**
  * Interface OutputFormatterInterface
+ * 
  * @package FastD\Console\Output
  */
 interface OutputFormatterInterface
