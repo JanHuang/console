@@ -130,7 +130,7 @@ class Input implements InputInterface
         }
 
         if ($this->definition->hasOption($key)) {
-            $this->options[$key] = $value;
+            $this->options[$key] = $this->definition->getOption($key)->isNone() ? null : $value;
         }
 
         return $this;
@@ -153,7 +153,7 @@ class Input implements InputInterface
 
         if ($this->definition->hasOption($key)) {
             $option = $this->definition->getOption($key);
-            $this->options[$option->getName()] = $value;
+            $this->options[$option->getName()] = $option->isNone() ? null : $value;
         }
 
         return $this;
