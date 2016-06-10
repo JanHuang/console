@@ -125,17 +125,6 @@ abstract class Command
     }
 
     /**
-     * @param $help
-     * @return $this
-     */
-    public function setHelp($help)
-    {
-        $this->help = new UsageHelp($help);
-
-        return $this;
-    }
-
-    /**
      * @return Help
      */
     public function getHelp()

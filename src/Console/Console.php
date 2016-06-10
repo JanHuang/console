@@ -93,7 +93,7 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
     public function execute(ArgvInput $input, ConsoleOutput $output)
     {
         if ($input->hasOption('help')) {
-            $output->writeHelp(new UsageHelp());
+            $output->writeHelp(new UsageHelp($this->command));
             return 0;
         }
 

@@ -11,14 +11,27 @@
 
 namespace FastD\Console\Help;
 
+use FastD\Console\Command\Command;
 use FastD\Console\Console;
 
 class UsageHelp extends Help
 {
-    /**
-     * @return string
-     */
-    public function getHelp()
+    public function __construct(Command $command = null)
+    {
+        $help = $this->getConsoleUsageHelp();
+
+        if (null !== $command) {
+            $help = $command->getHelp();
+
+            if (empty($help)) {
+                $help = sprintf('Usage %s ', $command->getName());
+            }
+        }
+
+        parent::__construct($help);
+    }
+
+    public function getConsoleUsageHelp()
     {
         $version = Console::VERSION;
 
