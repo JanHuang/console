@@ -20,7 +20,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $command = new BaseCommand();
 
         $command->setArgument('name', InputArgument::REQUIRED);
-        $command->setOption('age');
-        $command->setHelp('help');
+        $command->setOption('age', '-a');
     }
 }

@@ -24,7 +24,21 @@ class UsageHelp extends Help
             $help = $command->getHelp();
 
             if (empty($help)) {
-                $help = sprintf('Usage %s ', $command->getName());
+                $options = [];
+                foreach ($command->getOptions() as $option) {
+                    $shortcut = '';
+                    if (!empty($option->getShortcut())) {
+                        $shortcut = '|-' . str_replace('|', '-|', $option->getShortcut());
+                    }
+                    $options[] = '[--' . $option->getName() . $shortcut . ']';
+                }
+
+                echo html_entity_decode($str);
+                $arguments = array_keys($command->getArguments());
+                $arguments = array_map(function ($v) {
+                    return (sprintf('[<%s>]', $v));
+                }, $arguments);
+                $help = sprintf('<info>Usage</info> <notice>%s</notice> <warning>%s %s</warning>', $command->getName(), implode(' ', $options), implode(' ', $arguments));
             }
         }
 

@@ -34,7 +34,7 @@ class BaseCommand extends Command
     public function configure()
     {
         $this->setArgument('name');
-        $this->setOption('age');
+        $this->setOption('age', '-a');
     }
 
     /**
