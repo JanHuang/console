@@ -21,7 +21,7 @@ use FastD\Console\Tests\Command\BaseCommand;
 $input = new ArgvInput();
 
 $console = new Console();
-$console->setCommand(new BaseCommand());
+$console->addCommand(new BaseCommand());
 $console->run($input);
 
 

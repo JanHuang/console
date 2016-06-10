@@ -44,6 +44,6 @@ class BaseCommand extends Command
      */
     public function execute(Input $input, Output $output)
     {
-        $output->writeln('<success>Success</success>');
+        $output->writeln("hello <success>" . $input->getArgument('name') . "</success>");
     }
 }

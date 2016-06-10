@@ -54,6 +54,8 @@ class Input implements InputInterface
 
         array_shift($this->argv);
 
+        $this->arguments['command'] = array_shift($this->argv);
+        
         if (null !== $inputDefinition) {
             $this->bind($inputDefinition);
         }
@@ -236,6 +238,8 @@ class Input implements InputInterface
      */
     public function resetArguments()
     {
-        $this->arguments = [];
+        $this->arguments = [
+            'command' => $this->arguments['command']
+        ];
     }
 }

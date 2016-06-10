@@ -52,7 +52,7 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
      */
     public function run(ArgvInput $input)
     {
-        $name = $input->getCommand();
+        $name = $input->getCommandName();
 
         if (null === $name) {
             $this->output->writeHelp(new UsageHelp());
@@ -65,7 +65,7 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
             $this->output->writeln(sprintf('Do you has mean ["<warning>%s</warning>"]?', $name));
             return 0;
         }
-
+        
         $this->command->configure();
 
         $input->bindCommand($this->command);

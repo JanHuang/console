@@ -31,13 +31,17 @@ class ArgvInput extends Input
      */
     public function bindCommand(Command $command)
     {
-        $argv = $command->getArguments();
+        $definition = new InputDefinition();
 
-        $inputArguments = $this->getArguments();
-
-        if (!empty($argv)) {
-            $this->arguments = array_merge($this->arguments, array_combine(array_keys($argv), array_splice($inputArguments, 0, count($argv))));
+        foreach ($command->getArguments() as $argument) {
+            $definition->setArgument($argument);
         }
+
+        foreach ($command->getOptions() as $option) {
+            $definition->setOption($option);
+        }
+
+        $this->bind($definition);
     }
 
     /**

@@ -104,7 +104,7 @@ abstract class Command
 
     /**
      * @param $name
-     * @return mixed
+     * @return InputArgument
      * @throws \ErrorException
      */
     public function getArgument($name)

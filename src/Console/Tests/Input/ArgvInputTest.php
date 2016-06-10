@@ -79,5 +79,6 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($argvInput->getArguments(), ['command' => 'test']);
         $this->assertEquals($argvInput->getOptions(), ['debug' => null]);
+        $this->assertEquals('test', $argvInput->getCommandName());
     }
 }
