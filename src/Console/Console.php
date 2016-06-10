@@ -14,10 +14,12 @@
 
 namespace FastD\Console;
 
+use FastD\Console\Help\MeanHelp;
 use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\ArgvInput;
 use FastD\Console\Output\ConsoleOutput;
 use FastD\Console\Output\Output;
+use FastD\Console\Command\Command;
 use RuntimeException;
 
 /**
@@ -30,6 +32,11 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
     const VERSION = 'v2.0.0';
 
     use Definition;
+
+    /**
+     * @var Command
+     */
+    protected $command;
 
     /**
      * @var Output
@@ -57,7 +64,7 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
         $name = $input->getCommandName();
 
         if (null == $name) {
-            $this->output->writeln((new UsageHelp())->getHelp());
+            $this->output->writeHelp(new UsageHelp());
             return 0;
         }
 
@@ -68,7 +75,7 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
                 throw new RuntimeException(null);
             }
         } catch (RuntimeException $e) {
-            $this->output->writeln(sprintf('Do you has mean ["<warning>%s</warning>"]?', $name));
+            $this->output->writeHelp(new MeanHelp($name, $this));
             return 0;
         }
         

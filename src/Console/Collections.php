@@ -13,19 +13,13 @@ namespace FastD\Console;
 
 use FastD\Console\Command\Command;
 use Iterator;
-use Countable;
 
-abstract class Collections
+abstract class Collections implements Iterator
 {
     /**
      * @var Command[]
      */
     protected $commands = [];
-
-    /**
-     * @var Command
-     */
-    protected $command;
 
     /**
      * @param array $commands
@@ -84,6 +78,69 @@ abstract class Collections
      */
     public function setCommandDir($path, $recursive = true)
     {
-        $find = new Finder();
+        $find = function ($path) use (&$find) {
+
+        };
+    }
+
+    /**
+     * Return the current element
+     *
+     * @link  http://php.net/manual/en/iterator.current.php
+     * @return Command Can return any type.
+     * @since 5.0.0
+     */
+    public function current()
+    {
+        return $this->commands[$this->key()];
+    }
+
+    /**
+     * Move forward to next element
+     *
+     * @link  http://php.net/manual/en/iterator.next.php
+     * @return void Any returned value is ignored.
+     * @since 5.0.0
+     */
+    public function next()
+    {
+        next($this->commands);
+    }
+
+    /**
+     * Return the key of the current element
+     *
+     * @link  http://php.net/manual/en/iterator.key.php
+     * @return mixed scalar on success, or null on failure.
+     * @since 5.0.0
+     */
+    public function key()
+    {
+        return key($this->commands);
+    }
+
+    /**
+     * Checks if current position is valid
+     *
+     * @link  http://php.net/manual/en/iterator.valid.php
+     * @return boolean The return value will be casted to boolean and then evaluated.
+     *        Returns true on success or false on failure.
+     * @since 5.0.0
+     */
+    public function valid()
+    {
+        return isset($this->commands[$this->key()]);
+    }
+
+    /**
+     * Rewind the Iterator to the first element
+     *
+     * @link  http://php.net/manual/en/iterator.rewind.php
+     * @return void Any returned value is ignored.
+     * @since 5.0.0
+     */
+    public function rewind()
+    {
+        reset($this->commands);
     }
 }
