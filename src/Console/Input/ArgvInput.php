@@ -21,11 +21,6 @@ use ErrorException;
 class ArgvInput extends Input
 {
     /**
-     * @var array
-     */
-    protected $options = [];
-
-    /**
      * @param Command $command
      * @throws ErrorException
      */
@@ -42,6 +37,8 @@ class ArgvInput extends Input
         }
 
         $this->bind($definition);
+
+        unset($definition);
     }
 
     /**

@@ -187,7 +187,7 @@ class Input implements InputInterface
      */
     public function getArgument($name)
     {
-        return $this->hasArgument($name) ? $this->arguments[$name] : null;
+        return $this->hasArgument($name) ? $this->arguments[$name] : $this->definition->getArgument($name)->getDefault();
     }
 
     /**
@@ -213,7 +213,7 @@ class Input implements InputInterface
      */
     public function getOption($name)
     {
-        return $this->hasOption($name) ? $this->options[$name] : null;
+        return $this->hasOption($name) ? $this->options[$name] : $this->definition->getOption($name)->getDefault();
     }
 
     /**

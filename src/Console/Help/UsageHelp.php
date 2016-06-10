@@ -11,6 +11,8 @@
 
 namespace FastD\Console\Help;
 
+use FastD\Console\Console;
+
 class UsageHelp extends Help
 {
     /**
@@ -18,33 +20,29 @@ class UsageHelp extends Help
      */
     public function getHelp()
     {
+        $version = Console::VERSION;
+
         return <<<EOF
-Usage:
+Console Tool: <success>{$version}</success>
+        
+<info>Usage</info>:
   help [options] [--] [<command_name>]
 
-Arguments:
+<info>Arguments</info>:
   command               The command to execute
-  command_name          The command name [default: "help"]
 
-Options:
-      --format=FORMAT   The output format (txt, xml, json, or md) [default: "txt"]
-      --raw             To output raw command help
+<info>Options</info>:
   -h, --help            Display this help message
-  -q, --quiet           Do not output any message
-  -V, --version         Display this application version
-      --ansi            Force ANSI output
-      --no-ansi         Disable ANSI output
-  -n, --no-interaction  Do not ask any interactive question
-  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+  -d, --debug           Display console debug message.
 
-Help:
+<info>Help</info>:
  The help command displays help for a given command:
 
-   php demo.php help list
+   <notice>php demo.php help list</notice>
 
- You can also output the help in other formats by using the --format option:
+ You can also output the help in other formats by using the --debug option:
 
-   php demo.php help --format=xml list
+   <notice>php demo.php help --debug</notice>
 
  To display the list of available commands, please use the list command.
 EOF;

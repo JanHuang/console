@@ -12,10 +12,11 @@
  */
 
 namespace FastD\Console\Output;
+use FastD\Console\Help\Help;
 
 /**
  * Class Output
- * 
+ *
  * @package FastD\Console\Output
  */
 abstract class Output
@@ -45,5 +46,13 @@ abstract class Output
         $message = $this->write($message, true);
 
         echo $message . PHP_EOL;
+    }
+
+    /**
+     * @param Help $help
+     */
+    public function writeHelp(Help $help)
+    {
+        $this->writeln($help->getHelp());
     }
 }

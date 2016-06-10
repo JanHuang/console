@@ -27,6 +27,8 @@ use RuntimeException;
  */
 class Console extends Collections implements ConsoleInterface, InvokerInterface
 {
+    const VERSION = 'v2.0.0';
+
     use Definition;
 
     /**
@@ -54,13 +56,17 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
     {
         $name = $input->getCommandName();
 
-        if (null === $name) {
-            $this->output->writeHelp(new UsageHelp());
+        if (null == $name) {
+            $this->output->writeln((new UsageHelp())->getHelp());
             return 0;
         }
 
         try {
             $this->command = $this->getCommand($name);
+            if (null === $this->command) {
+                // Not command setting.
+                throw new RuntimeException(null);
+            }
         } catch (RuntimeException $e) {
             $this->output->writeln(sprintf('Do you has mean ["<warning>%s</warning>"]?', $name));
             return 0;

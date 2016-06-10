@@ -11,12 +11,11 @@
 
 namespace FastD\Console\Output;
 
-use FastD\Console\Help\Help;
-
+/**
+ * Class ConsoleOutput
+ *
+ * @package FastD\Console\Output
+ */
 class ConsoleOutput extends Output
 {
-    public function writeHelp(Help $help)
-    {
-        echo $help->getHelp();
-    }
 }

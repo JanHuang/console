@@ -51,11 +51,6 @@ class InputOption
     protected $default;
 
     /**
-     * @var mixed
-     */
-    protected $value;
-
-    /**
      * InputOption constructor.
      *
      * @param $name
@@ -83,9 +78,7 @@ class InputOption
 
         $this->description = OutputFormatter::format($description);
 
-        if (null !== $default) {
-            $this->setValue($default);
-        }
+        $this->default = $default;
     }
 
     /**
@@ -121,22 +114,11 @@ class InputOption
     }
 
     /**
-     * @param $value
-     * @return $this
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
      * @return null
      */
-    public function getValue()
+    public function getDefault()
     {
-        return $this->value;
+        return $this->default;
     }
 
     /**
