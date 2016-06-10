@@ -196,7 +196,7 @@ class Input implements InputInterface
      */
     public function hasArgument($name)
     {
-        return isset($this->arguments[$name]);
+        return array_key_exists($name, $this->arguments);
     }
 
     /**
@@ -222,7 +222,7 @@ class Input implements InputInterface
      */
     public function hasOption($name)
     {
-        return isset($this->options[$name]);
+        return array_key_exists($name, $this->options);
     }
 
     /**

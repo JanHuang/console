@@ -64,8 +64,7 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
         $name = $input->getCommandName();
 
         if (null == $name) {
-            $this->output->writeHelp(new UsageHelp());
-            return 0;
+            $name = 'help';
         }
 
         try {
@@ -93,6 +92,11 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
      */
     public function execute(ArgvInput $input, ConsoleOutput $output)
     {
+        if ($input->hasOption('help')) {
+            $output->writeHelp(new UsageHelp());
+            return 0;
+        }
+
         $return = $this->command->execute($input, $output);
 
         $input->resetCommand();

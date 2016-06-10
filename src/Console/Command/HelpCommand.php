@@ -11,6 +11,7 @@
 
 namespace FastD\Console\Command;
 
+use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\Input;
 use FastD\Console\Output\Output;
 
@@ -39,6 +40,6 @@ class HelpCommand extends Command
      */
     public function execute(Input $input, Output $output)
     {
-        // TODO: Implement execute() method.
+        $output->writeHelp(new UsageHelp());
     }
 }
