@@ -16,6 +16,7 @@ namespace FastD\Console\Tests\Command;
 
 use FastD\Console\Command\Command;
 use FastD\Console\Input\Input;
+use FastD\Console\Input\InputArgument;
 use FastD\Console\Output\Output;
 
 class BaseCommand extends Command
@@ -33,7 +34,7 @@ class BaseCommand extends Command
      */
     public function configure()
     {
-        $this->setArgument('name');
+        $this->setArgument('name', InputArgument::REQUIRED, 'God damn.');
         $this->setOption('age', '-a');
     }
 

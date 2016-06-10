@@ -29,6 +29,10 @@ class OutputFormatter implements OutputFormatterInterface
                 return '';
             }
 
+            if (!array_key_exists($match['tag'], OutputFormatterInterface::TAGS) && !array_key_exists(substr($match['tag'], 1), OutputFormatterInterface::TAGS)) {
+                return '<' . $match['tag'] . '>';
+            }
+
             if ('/' === $match['tag']{0}) {
                 // If tag ending.
                 return chr(27) . "[0m";

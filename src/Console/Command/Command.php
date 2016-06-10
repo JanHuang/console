@@ -15,7 +15,6 @@
 namespace FastD\Console\Command;
 
 use FastD\Console\Help\Help;
-use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\Input;
 use FastD\Console\Input\InputArgument;
 use FastD\Console\Input\InputOption;
@@ -28,11 +27,6 @@ use FastD\Console\Output\Output;
  */
 abstract class Command
 {
-    /**
-     * @var string
-     */
-    protected $help;
-
     /**
      * @var InputOption[]
      */
@@ -69,8 +63,8 @@ abstract class Command
      */
     public function getOption($name)
     {
-        if (array_key_exists($name, $this->options)) {
-            throw new \InvalidArgumentException(sprintf('Options %s is undefined.', $name));
+        if (!array_key_exists($name, $this->options)) {
+            throw new \InvalidArgumentException(sprintf('Options "%s" is undefined.', $name));
         }
 
         return $this->options[$name];
@@ -127,10 +121,7 @@ abstract class Command
     /**
      * @return Help
      */
-    public function getHelp()
-    {
-        return $this->help;
-    }
+    public function getHelp(){}
 
     /**
      * @return string

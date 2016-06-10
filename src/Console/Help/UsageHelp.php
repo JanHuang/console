@@ -14,8 +14,18 @@ namespace FastD\Console\Help;
 use FastD\Console\Command\Command;
 use FastD\Console\Console;
 
+/**
+ * Class UsageHelp
+ *
+ * @package FastD\Console\Help
+ */
 class UsageHelp extends Help
 {
+    /**
+     * UsageHelp constructor.
+     *
+     * @param Command|null $command
+     */
     public function __construct(Command $command = null)
     {
         $help = $this->getConsoleUsageHelp();
@@ -33,18 +43,46 @@ class UsageHelp extends Help
                     $options[] = '[--' . $option->getName() . $shortcut . ']';
                 }
 
-                echo html_entity_decode($str);
-                $arguments = array_keys($command->getArguments());
-                $arguments = array_map(function ($v) {
-                    return (sprintf('[<%s>]', $v));
-                }, $arguments);
-                $help = sprintf('<info>Usage</info> <notice>%s</notice> <warning>%s %s</warning>', $command->getName(), implode(' ', $options), implode(' ', $arguments));
+                $arguments = [];
+
+                foreach ($command->getArguments() as $argument) {
+                    $arguments[] = sprintf('[<%s>]', $argument->getName());
+                }
+
+                $help = <<<EOF
+Usage: 
+  %s %s %s
+
+<info>Arguments:</info>
+  %s
+  
+<info>Options:</info>
+  %s
+EOF;
+
+                $help = sprintf($help,
+                    $command->getName(),
+                    implode(' ', $options),
+                    implode(' ', $arguments),
+                    implode(PHP_EOL, array_map(function ($v) use ($command) {
+                        $name = str_replace(['<', '>', '[', ']'], '', $v);
+                        return $name  . "\t" . '<notice>' . $command->getArgument($name)->getDescription() . '</notice>';
+                    }, $arguments)),
+                    implode(PHP_EOL, array_map(function ($v) use ($command) {
+                        $name = str_replace(['<', '>', '[', ']'], '', $v);
+                        $key = trim(explode('|', $name)[0], '-');
+                        return $name  . "\t" . '<notice>' . $command->getOption($key)->getDescription() . '</notice>';
+                    }, $options))
+                );
             }
         }
 
         parent::__construct($help);
     }
 
+    /**
+     * @return string
+     */
     public function getConsoleUsageHelp()
     {
         $version = Console::VERSION;
