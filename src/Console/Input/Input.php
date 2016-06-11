@@ -240,7 +240,7 @@ class Input implements InputInterface
         }
 
         foreach ($name as $value) {
-            if (array_key_exists($name, $this->options)) {
+            if (array_key_exists($value, $this->options)) {
                 return true;
             }
         }
