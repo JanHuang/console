@@ -52,14 +52,14 @@ class ListCommand extends Command
                     $outputed[$name] = true;
                 }
             }
-            $output->writeln(sprintf('  %s %s', $command->getName(), $command->getHelp()));
+            $output->writeln(sprintf('  %s %s', $command->getName(), $command->getDescription()));
         }
     }
 
     /**
      * @return string
      */
-    public function getHelp()
+    public function getDescription()
     {
         return '获取命令列表';
     }

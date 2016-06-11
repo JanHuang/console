@@ -30,26 +30,23 @@ class UsageHelp extends Help
     {
         $help = $this->getConsoleUsageHelp();
 
-        if (null !== $command) {
-            $help = $command->getHelp();
-
-            if (empty($help)) {
-                $options = [];
-                foreach ($command->getOptions() as $option) {
-                    $shortcut = '';
-                    if (!empty($option->getShortcut())) {
-                        $shortcut = '|-' . str_replace('|', '-|', $option->getShortcut());
-                    }
-                    $options[] = '[--' . $option->getName() . $shortcut . ']';
+        if (empty($help)) {
+            $options = [];
+            foreach ($command->getOptions() as $option) {
+                $shortcut = '';
+                if (!empty($option->getShortcut())) {
+                    $shortcut = '|-' . str_replace('|', '-|', $option->getShortcut());
                 }
+                $options[] = '[--' . $option->getName() . $shortcut . ']';
+            }
 
-                $arguments = [];
+            $arguments = [];
 
-                foreach ($command->getArguments() as $argument) {
-                    $arguments[] = sprintf('[<%s>]', $argument->getName());
-                }
+            foreach ($command->getArguments() as $argument) {
+                $arguments[] = sprintf('[<%s>]', $argument->getName());
+            }
 
-                $help = <<<EOF
+            $help = <<<EOF
 Usage: 
   %s %s %s
 
@@ -60,21 +57,20 @@ Usage:
   %s
 EOF;
 
-                $help = sprintf($help,
-                    $command->getName(),
-                    implode(' ', $options),
-                    implode(' ', $arguments),
-                    implode(PHP_EOL, array_map(function ($v) use ($command) {
-                        $name = str_replace(['<', '>', '[', ']'], '', $v);
-                        return $name  . "\t" . '<notice>' . $command->getArgument($name)->getDescription() . '</notice>';
-                    }, $arguments)),
-                    implode(PHP_EOL, array_map(function ($v) use ($command) {
-                        $name = str_replace(['<', '>', '[', ']'], '', $v);
-                        $key = trim(explode('|', $name)[0], '-');
-                        return $name  . "\t" . '<notice>' . $command->getOption($key)->getDescription() . '</notice>';
-                    }, $options))
-                );
-            }
+            $help = sprintf($help,
+                $command->getName(),
+                implode(' ', $options),
+                implode(' ', $arguments),
+                implode(PHP_EOL, array_map(function ($v) use ($command) {
+                    $name = str_replace(['<', '>', '[', ']'], '', $v);
+                    return $name . "\t" . '<notice>' . $command->getArgument($name)->getDescription() . '</notice>';
+                }, $arguments)),
+                implode(PHP_EOL, array_map(function ($v) use ($command) {
+                    $name = str_replace(['<', '>', '[', ']'], '', $v);
+                    $key = trim(explode('|', $name)[0], '-');
+                    return $name . "\t" . '<notice>' . $command->getOption($key)->getDescription() . '</notice>';
+                }, $options))
+            );
         }
 
         parent::__construct($help);

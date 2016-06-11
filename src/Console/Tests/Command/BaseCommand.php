@@ -52,7 +52,7 @@ class BaseCommand extends Command
     /**
      * @return string
      */
-    public function getHelp()
+    public function getDescription()
     {
         // TODO: Implement getHelp() method.
     }

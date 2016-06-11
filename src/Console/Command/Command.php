@@ -145,7 +145,7 @@ abstract class Command
     /**
      * @return string
      */
-    abstract public function getHelp();
+    abstract public function getDescription();
 
     /**
      * @return string
