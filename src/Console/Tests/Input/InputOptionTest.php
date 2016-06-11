@@ -31,7 +31,7 @@ class InputOptionTest extends \PHPUnit_Framework_TestCase
 
         $option = new InputOption('name', '-a|-aa', InputOption::VALUE_NONE, 'hello world', 'default');
 
-        $this->assertEquals('default', $option->getDefault());
+        $this->assertEquals(null, $option->getDefault());
 
         $this->assertEquals('hello world', $option->getDescription());
 

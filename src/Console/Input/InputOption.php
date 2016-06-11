@@ -78,7 +78,7 @@ class InputOption
 
         $this->description = OutputFormatter::format($description);
 
-        $this->default = $default;
+        $this->default = $optional === InputOption::VALUE_NONE ? null : $default;
     }
 
     /**

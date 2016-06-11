@@ -4,7 +4,7 @@
  * User: janhuang
  * Date: 15/3/16
  * Time: 下午2:11
- * Github: https://www.github.com/janhuang 
+ * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
  * Blog: http://segmentfault.com/blog/janhuang
@@ -55,7 +55,7 @@ class Input implements InputInterface
         array_shift($this->argv);
 
         $this->arguments['command'] = array_shift($this->argv);
-        
+
         if (null !== $inputDefinition) {
             $this->bind($inputDefinition);
         }
@@ -213,7 +213,20 @@ class Input implements InputInterface
      */
     public function getOption($name)
     {
-        return $this->hasOption($name) ? $this->options[$name] : $this->definition->getOption($name)->getDefault();
+        if (is_string($name)) {
+            $name = [$name];
+        }
+
+        foreach ($name as $item) {
+            if ($this->hasOption($item)) {
+                $value = $this->options[$item];
+                return empty($value) ? $this->definition->getOption($item)->getDefault() : $value;
+            } else if ($this->definition->hasOption($item)) {
+                return $this->definition->getOption($item)->getDefault();
+            }
+        }
+
+        return null;
     }
 
     /**
