@@ -30,7 +30,7 @@ class UsageHelp extends Help
     {
         $help = $this->getConsoleUsageHelp();
 
-        if (empty($help)) {
+        if (null !== $command) {
             $options = [];
             foreach ($command->getOptions() as $option) {
                 $shortcut = '';

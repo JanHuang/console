@@ -44,19 +44,17 @@ class MeanHelp extends Help
             }
         }
 
-        $mean = '';
-
-        if (!empty($like)) {
-            $mean = 'Did you mean this?' . PHP_EOL;
-            $mean .= '    <info>' . implode('    ' . PHP_EOL, $like) . '</info>';
-        }
-
         $help = <<<EOF
 Command "%s" is not found.
-  %s
-  Or
-  %s
 EOF;
-        parent::__construct(sprintf($help, $commandName, $mean, '  <info>' . implode(PHP_EOL . '    ', $list)) . '</info>');
+
+        if (!empty($like)) {
+            $help .= PHP_EOL . 'Did you mean this?' . PHP_EOL;
+            $help .= '    <info>' . implode('    ' . PHP_EOL, $like) . '</info>';
+        } else {
+            $help .= PHP_EOL . 'You can: ' . PHP_EOL . '    <info>' . implode(PHP_EOL . '    ', $list) . '</info>';
+        }
+
+        parent::__construct(sprintf($help, $commandName));
     }
 }

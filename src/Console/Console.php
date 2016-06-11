@@ -66,8 +66,9 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
     {
         $name = $input->getCommandName();
 
-        if (null == $name) {
-            $name = 'list';
+        if (empty($name)) {
+            $this->output->writeHelp(new UsageHelp());
+            return 0;
         }
 
         try {
