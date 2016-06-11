@@ -235,7 +235,17 @@ class Input implements InputInterface
      */
     public function hasOption($name)
     {
-        return array_key_exists($name, $this->options);
+        if (is_string($name)) {
+            $name = [$name];
+        }
+
+        foreach ($name as $value) {
+            if (array_key_exists($name, $this->options)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
