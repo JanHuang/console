@@ -126,7 +126,7 @@ class InputOption
      */
     public function isNone()
     {
-        return $this->optional === InputOption::VALUE_NONE;
+        return $this->getOptional() === InputOption::VALUE_NONE;
     }
 
     /**
@@ -134,7 +134,7 @@ class InputOption
      */
     public function isOptional()
     {
-        return $this->optional === InputOption::VALUE_OPTIONAL;
+        return $this->getOptional() === InputOption::VALUE_OPTIONAL;
     }
 
     /**
@@ -142,6 +142,6 @@ class InputOption
      */
     public function isRequired()
     {
-        return $this->optional === InputOption::VALUE_REQUIRED;
+        return $this->getOptional() === InputOption::VALUE_REQUIRED;
     }
 }

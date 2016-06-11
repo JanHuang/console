@@ -42,4 +42,12 @@ class HelpCommand extends Command
     {
         $output->writeHelp(new UsageHelp());
     }
+
+    /**
+     * @return string
+     */
+    public function getHelp()
+    {
+        return '获取命令帮助';
+    }
 }

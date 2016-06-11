@@ -13,8 +13,19 @@ namespace FastD\Console\Help;
 
 use FastD\Console\Collections;
 
+/**
+ * Class MeanHelp
+ *
+ * @package FastD\Console\Help
+ */
 class MeanHelp extends Help
 {
+    /**
+     * MeanHelp constructor.
+     *
+     * @param string $commandName
+     * @param Collections $collections
+     */
     public function __construct($commandName, Collections $collections)
     {
         $like = [];
@@ -47,10 +58,5 @@ Command "%s" is not found.
   %s
 EOF;
         parent::__construct(sprintf($help, $commandName, $mean, '  <info>' . implode(PHP_EOL . '    ', $list)) . '</info>');
-    }
-
-    public function findLikeCommand($name)
-    {
-
     }
 }

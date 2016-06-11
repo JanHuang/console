@@ -38,7 +38,30 @@ class ArgvInput extends Input
 
         $this->bind($definition);
 
-        unset($definition);
+        return $this->validationArguments($definition);
+    }
+
+    /**
+     * @param InputDefinition $definition
+     * @return array
+     */
+    public function validationArguments(InputDefinition $definition)
+    {
+        $missing = [];
+
+        foreach ($definition->getRequiredInputArgumentsAndOptions() as $argumentsAndOption) {
+            if ($argumentsAndOption instanceof InputOption) {
+                if (!array_key_exists($argumentsAndOption->getName(), $this->options)) {
+                    $missing[] = $argumentsAndOption;
+                }
+            } else if ($argumentsAndOption instanceof InputArgument) {
+                if (!array_key_exists($argumentsAndOption->getName(), $this->arguments)) {
+                    $missing[] = $argumentsAndOption;
+                }
+            }
+        }
+        
+        return $missing;
     }
 
     /**

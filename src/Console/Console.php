@@ -15,11 +15,14 @@
 namespace FastD\Console;
 
 use FastD\Console\Help\MeanHelp;
+use FastD\Console\Help\MissingHelp;
 use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\ArgvInput;
 use FastD\Console\Output\ConsoleOutput;
 use FastD\Console\Output\Output;
 use FastD\Console\Command\Command;
+use FastD\Console\Command\HelpCommand;
+use FastD\Console\Command\ListCommand;
 use RuntimeException;
 
 /**
@@ -30,9 +33,7 @@ use RuntimeException;
 class Console extends Collections implements ConsoleInterface, InvokerInterface
 {
     const VERSION = 'v2.0.0';
-
-    use Definition;
-
+    
     /**
      * @var Command
      */
@@ -80,7 +81,12 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
         
         $this->command->configure();
 
-        $input->bindCommand($this->command);
+        $missing = $input->bindCommand($this->command);
+        
+        if (count($missing) > 0) {
+            $this->output->writeHelp(new MissingHelp($this->command, $missing));
+            return 0;
+        }
 
         return $this->execute($input, $this->output);
     }
@@ -102,5 +108,16 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
         $input->resetCommand();
 
         return $return;
+    }
+
+    /**
+     * @return Command[]
+     */
+    public function getDefaultCommands()
+    {
+        return [
+            new HelpCommand(),
+            new ListCommand(),
+        ];
     }
 }

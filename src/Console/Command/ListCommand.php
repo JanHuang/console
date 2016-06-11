@@ -41,4 +41,12 @@ class ListCommand extends Command
     {
         // TODO: Implement execute() method.
     }
+
+    /**
+     * @return string
+     */
+    public function getHelp()
+    {
+        return '获取命令列表';
+    }
 }

@@ -113,5 +113,7 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('18', $argvInput->getOption('age'));
         $this->assertEquals('jan', $argvInput->getOption(['name', 'n']));
         $this->assertEquals('abc', $argvInput->getArgument('d'));
+
+        print_r($argvInput);
     }
 }

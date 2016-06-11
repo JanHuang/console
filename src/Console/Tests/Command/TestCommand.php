@@ -45,4 +45,12 @@ class TestCommand extends Command
     {
         // TODO: Implement execute() method.
     }
+
+    /**
+     * @return string
+     */
+    public function getHelp()
+    {
+        // TODO: Implement getHelp() method.
+    }
 }

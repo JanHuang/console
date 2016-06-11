@@ -119,9 +119,9 @@ abstract class Command
     }
 
     /**
-     * @return Help
+     * @return string
      */
-    public function getHelp(){}
+    abstract public function getHelp();
 
     /**
      * @return string

@@ -239,7 +239,7 @@ class Input implements InputInterface
     }
 
     /**
-     *
+     * Reset input options.
      */
     public function resetOptions()
     {
@@ -247,7 +247,7 @@ class Input implements InputInterface
     }
 
     /**
-     *
+     * Reset input arguments.
      */
     public function resetArguments()
     {

@@ -118,4 +118,20 @@ class InputArgument
     {
         return $this->default;
     }
+
+    /**
+     * @return bool
+     */
+    public function isRequired()
+    {
+        return $this->getOptional() === static::REQUIRED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOptional()
+    {
+        return $this->getOptional() === static::OPTIONAL;
+    }
 }

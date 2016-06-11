@@ -16,7 +16,7 @@ namespace FastD\Console\Input;
  *
  * @package FastD\Console\Input
  */
-class InputDefinition
+class InputDefinition implements InputDefinitionInterface
 {
     /**
      * @var InputOption[]
@@ -36,6 +36,11 @@ class InputDefinition
     protected $arguments = [];
 
     /**
+     * @var array
+     */
+    protected $required = [];
+
+    /**
      * InputDefinition constructor.
      */
     public function __construct()
@@ -51,6 +56,10 @@ class InputDefinition
     public function setOption(InputOption $option)
     {
         $this->options[$option->getName()] = $option;
+
+        if ($option->isRequired() && null === $option->getDefault()) {
+            $this->required[$option->getName()] = $option;
+        }
 
         if (null !== $shortcut = $option->getShortcut()) {
             $shortcuts = explode('|', $shortcut);
@@ -104,6 +113,10 @@ class InputDefinition
     {
         $this->arguments[$argument->getName()] = $argument;
 
+        if ($argument->isRequired() && null === $argument->getDefault()) {
+            $this->required[$argument->getName()] = $argument;
+        }
+
         return $this;
     }
 
@@ -150,8 +163,16 @@ class InputDefinition
     public function getDefaultInputArguments()
     {
         return [
-            new InputArgument('command', InputArgument::REQUIRED, 'Console execute command name.'),
+            new InputArgument('command', InputArgument::REQUIRED, 'Console execute command name.', 'list'),
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequiredInputArgumentsAndOptions()
+    {
+        return $this->required;
     }
 
     /**
