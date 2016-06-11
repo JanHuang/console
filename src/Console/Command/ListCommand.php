@@ -12,7 +12,6 @@
 namespace FastD\Console\Command;
 
 use FastD\Console\Console;
-use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\Input;
 use FastD\Console\Output\Output;
 
@@ -43,10 +42,15 @@ class ListCommand extends Command
     {
         $output->writeln('Console Tool <success>' . Console::VERSION . '</success>' . PHP_EOL);
 
+        $outputed = [];
+
         foreach ($this->getCollections() as $command) {
             if (false !== $index = strpos($command->getName(), ':')) {
                 $name = substr($command->getName(), 0, $index);
-                $output->writeln(sprintf('<info>%s</info>', $name));
+                if (!isset($outputed[$name])) {
+                    $output->writeln(sprintf('<info>%s</info>', $name));
+                    $outputed[$name] = true;
+                }
             }
             $output->writeln(sprintf('  %s %s', $command->getName(), $command->getHelp()));
         }
