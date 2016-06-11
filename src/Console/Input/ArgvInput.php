@@ -13,6 +13,7 @@ namespace FastD\Console\Input;
 
 use FastD\Console\Command\Command;
 use ErrorException;
+use FastD\Console\Console;
 
 /**
  * Class ArgvInput
@@ -21,15 +22,28 @@ use ErrorException;
 class ArgvInput extends Input
 {
     /**
+     * @param Console $console
      * @param Command $command
-     * @throws ErrorException
+     * @return array
      */
-    public function bindCommand(Command $command)
+    public function bindCommand(Console $console, Command $command)
     {
         $definition = new InputDefinition();
 
+        if (!empty($console->getDefaultInputArguments())) {
+            foreach ($console->getDefaultInputArguments() as $argument) {
+                $definition->setArgument($argument);
+            }
+        }
+
         foreach ($command->getArguments() as $argument) {
             $definition->setArgument($argument);
+        }
+
+        if (!empty($console->getDefaultInputOptions())) {
+            foreach ($console->getDefaultInputOptions() as $option) {
+                $definition->setOption($option);
+            }
         }
 
         foreach ($command->getOptions() as $option) {

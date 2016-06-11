@@ -14,6 +14,7 @@
 
 namespace FastD\Console\Command;
 
+use FastD\Console\Collections;
 use FastD\Console\Help\Help;
 use FastD\Console\Input\Input;
 use FastD\Console\Input\InputArgument;
@@ -36,6 +37,29 @@ abstract class Command
      * @var InputArgument[]
      */
     protected $arguments = [];
+
+    /**
+     * @var Collections
+     */
+    protected $collections;
+
+    /**
+     * @return Collections
+     */
+    public function getCollections()
+    {
+        return $this->collections;
+    }
+
+    /**
+     * @param Collections $collections
+     * @return $this
+     */
+    public function setCollections(Collections $collections)
+    {
+        $this->collections = $collections;
+        return $this;
+    }
 
     /**
      * @param $name

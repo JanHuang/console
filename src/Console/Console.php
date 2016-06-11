@@ -18,6 +18,8 @@ use FastD\Console\Help\MeanHelp;
 use FastD\Console\Help\MissingHelp;
 use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\ArgvInput;
+use FastD\Console\Input\InputArgument;
+use FastD\Console\Input\InputOption;
 use FastD\Console\Output\ConsoleOutput;
 use FastD\Console\Output\Output;
 use FastD\Console\Command\Command;
@@ -65,7 +67,7 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
         $name = $input->getCommandName();
 
         if (null == $name) {
-            $name = 'help';
+            $name = 'list';
         }
 
         try {
@@ -78,11 +80,16 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
             $this->output->writeHelp(new MeanHelp($name, $this));
             return 0;
         }
-        
+
         $this->command->configure();
 
-        $missing = $input->bindCommand($this->command);
-        
+        $missing = $input->bindCommand($this, $this->command);
+
+        if ($input->hasOption('help')) {
+            $this->output->writeHelp(new UsageHelp($this->command));
+            return 0;
+        }
+
         if (count($missing) > 0) {
             $this->output->writeHelp(new MissingHelp($this->command, $missing));
             return 0;
@@ -98,11 +105,6 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
      */
     public function execute(ArgvInput $input, ConsoleOutput $output)
     {
-        if ($input->hasOption('help')) {
-            $output->writeHelp(new UsageHelp($this->command));
-            return 0;
-        }
-
         $return = $this->command->execute($input, $output);
 
         $input->resetCommand();
@@ -116,8 +118,19 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
     public function getDefaultCommands()
     {
         return [
-            new HelpCommand(),
             new ListCommand(),
         ];
     }
+
+    /**
+     * @return InputOption[]
+     */
+    public function getDefaultInputOptions()
+    {}
+
+    /**
+     * @return InputArgument[]
+     */
+    public function getDefaultInputArguments()
+    {}
 }

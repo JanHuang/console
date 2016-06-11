@@ -31,7 +31,6 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
             'demo.php',
             'test',
             '--debug',
-            '-d'
         ]);
 
         $argvInput->bind($definition);
@@ -47,7 +46,7 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $argvInput = new Input([
             'demo.php',
             'test',
-            '-d'
+            '--debug'
         ]);
 
         $argvInput->bind($definition);
@@ -74,7 +73,7 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $argvInput = new Input([
             'demo.php',
             'test',
-            '-d=debug'
+            '--debug'
         ]);
 
         $argvInput->bind($definition);
@@ -111,9 +110,8 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ddddd', $argvInput->getOption('default'));
         $this->assertEquals('123', $argvInput->getArgument('ok'));
         $this->assertEquals('18', $argvInput->getOption('age'));
+//        $this->assertEquals('18', $argvInput->getOption('a'));
         $this->assertEquals('jan', $argvInput->getOption(['name', 'n']));
         $this->assertEquals('abc', $argvInput->getArgument('d'));
-
-        print_r($argvInput);
     }
 }

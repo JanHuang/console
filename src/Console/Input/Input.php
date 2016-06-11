@@ -105,7 +105,9 @@ class Input implements InputInterface
 
         $this->arguments[] = $argument;
 
-        $name = $keys[count($this->arguments) - 1];
+        $offset = count($this->arguments) - 1;
+        
+        $name = isset($keys[$offset]) ? $keys[$offset] : null;
 
         array_pop($this->arguments);
 

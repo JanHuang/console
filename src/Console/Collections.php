@@ -40,6 +40,8 @@ abstract class Collections implements Iterator
      */
     public function addCommand(Command $command)
     {
+        $command->setCollections($this);
+
         $this->commands[$command->getName()] = $command;
 
         return $this;
