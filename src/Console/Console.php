@@ -23,7 +23,6 @@ use FastD\Console\Input\InputOption;
 use FastD\Console\Output\ConsoleOutput;
 use FastD\Console\Output\Output;
 use FastD\Console\Command\Command;
-use FastD\Console\Command\HelpCommand;
 use FastD\Console\Command\ListCommand;
 use RuntimeException;
 
@@ -65,6 +64,8 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
     public function run(ArgvInput $input)
     {
         $name = $input->getCommandName();
+
+        $name = empty($name) ? $this->getDefaultCommandName() : $name;
 
         if (empty($name)) {
             $this->output->writeHelp(new UsageHelp());
@@ -121,6 +122,14 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
         return [
             new ListCommand(),
         ];
+    }
+
+    /**
+     * @return null
+     */
+    public function getDefaultCommandName()
+    {
+        return null;
     }
 
     /**
