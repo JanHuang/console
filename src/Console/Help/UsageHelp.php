@@ -47,29 +47,36 @@ class UsageHelp extends Help
             }
 
             $help = <<<EOF
-Usage: 
+<info>Usage:</info> 
   %s %s %s
-
-<info>Arguments:</info>
-  %s
   
-<info>Options:</info>
-  %s
+%s
+
+%s
 EOF;
+            $argString = '';
+            if (!empty($arguments)) {
+                $argString .= sprintf('<info>Arguments:</info> %s', PHP_EOL . implode(PHP_EOL, array_map(function ($v) use ($command) {
+                    $name = str_replace(['<', '>', '[', ']'], '', $v);
+                    return '  ' . $name . "\t" . '<notice>' . $command->getArgument($name)->getDescription() . '</notice>';
+                }, $arguments)));
+            }
+
+            $optString = '';
+            if (!empty($options)) {
+                $optString .= sprintf('<info>Options:</info> %s', PHP_EOL . implode(PHP_EOL, array_map(function ($v) use ($command) {
+                        $name = str_replace(['<', '>', '[', ']'], '', $v);
+                        $key = trim(explode('|', $name)[0], '-');
+                        return '  ' . $name . "\t" . '<notice>' . $command->getOption($key)->getDescription() . '</notice>';
+                    }, $options)));
+            }
 
             $help = sprintf($help,
                 $command->getName(),
                 implode(' ', $options),
                 implode(' ', $arguments),
-                implode(PHP_EOL, array_map(function ($v) use ($command) {
-                    $name = str_replace(['<', '>', '[', ']'], '', $v);
-                    return $name . "\t" . '<notice>' . $command->getArgument($name)->getDescription() . '</notice>';
-                }, $arguments)),
-                implode(PHP_EOL, array_map(function ($v) use ($command) {
-                    $name = str_replace(['<', '>', '[', ']'], '', $v);
-                    $key = trim(explode('|', $name)[0], '-');
-                    return $name . "\t" . '<notice>' . $command->getOption($key)->getDescription() . '</notice>';
-                }, $options))
+                $argString,
+                $optString
             );
         }
 
