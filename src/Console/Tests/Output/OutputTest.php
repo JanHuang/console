@@ -32,6 +32,11 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     {
         $output = new ConsoleOutput();
 
-        $output->write('Hello <warning>World</warning>');
+        $output->writeln('Hello <error>World</error>');
+        $output->writeln('Hello <success>World</success>');
+        $output->writeln('Hello <warning>World</warning>');
+        $output->writeln('Hello <notice>World</notice>');
+        $output->writeln('Hello <info>World</info>');
+        $output->writeln('Hello <default>World</default>');
     }
 }

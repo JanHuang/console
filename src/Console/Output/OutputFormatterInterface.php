@@ -31,7 +31,7 @@ interface OutputFormatterInterface
         'warning'   => OutputFormatterInterface::OUTPUT_WARNING,
         'notice'    => OutputFormatterInterface::OUTPUT_NOTICE,
         'info'      => OutputFormatterInterface::OUTPUT_INFO,
-        'default'   => OutputFormatterInterface::OUTPUT_INFO
+        'default'   => OutputFormatterInterface::OUTPUT_DEFAULT
     ];
 
     /**
