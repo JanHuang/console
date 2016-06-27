@@ -61,7 +61,7 @@ class InputDefinition implements InputDefinitionInterface
             $this->required[$option->getName()] = $option;
         }
 
-        if (null !== $shortcut = $option->getShortcut()) {
+        if (!empty($shortcut = $option->getShortcut())) {
             $shortcuts = explode('|', $shortcut);
             foreach ($shortcuts as $shortcut) {
                 $this->shortcuts[$shortcut] = $option->getName();

@@ -114,4 +114,21 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('jan', $argvInput->getOption(['name', 'n']));
         $this->assertEquals('abc', $argvInput->getArgument('d'));
     }
+
+    public function testShortOptionValueArrayGet()
+    {
+        $definition = new InputDefinition();
+        $definition->setOption(new InputOption('name', '-n'));
+
+        $argvInput = new Input([
+            'demo.php',
+            'test',
+            '-njan',
+        ]);
+
+        $argvInput->bind($definition);
+
+        $this->assertEquals('jan', $argvInput->getOption('name'));
+        $this->assertEquals('jan', $argvInput->getOption('n'));
+    }
 }

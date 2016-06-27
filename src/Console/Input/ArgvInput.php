@@ -12,7 +12,6 @@
 namespace FastD\Console\Input;
 
 use FastD\Console\Command\Command;
-use ErrorException;
 use FastD\Console\Console;
 
 /**

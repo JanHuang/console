@@ -147,8 +147,13 @@ class Input implements InputInterface
     protected function parseShortOptions($option)
     {
         if (false === ($index = strpos($option, '='))) {
-            $key = substr($option, 1);
-            $value = null;
+            if (2 == strlen($option)) {
+                $key = substr($option, 1);
+                $value = null;
+            } else {
+                $key = substr($option, 1, 1);
+                $value = substr($option, 2);
+            }
         } else {
             list($key, $value) = explode('=', $option);
             $key = substr($key, 1);
@@ -158,6 +163,9 @@ class Input implements InputInterface
         if ($this->definition->hasOption($key)) {
             $option = $this->definition->getOption($key);
             $this->options[$option->getName()] = $option->isNone() ? null : $value;
+            if (!empty($option->getShortcut())) {
+                $this->options[$option->getShortcut()] = $option->isNone() ? null : $value;
+            }
         }
 
         return $this;
