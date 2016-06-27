@@ -18,20 +18,20 @@ namespace FastD\Console\Output;
  */
 interface OutputFormatterInterface
 {
-    const OUTPUT_FAILURE = "[31m";
-    const OUTPUT_SUCCESS = "[32m";
-    const OUTPUT_WARNING = "[33m";
-    const OUTPUT_NOTICE = "[34m";
-    const OUTPUT_INFO = "[36m";
-    const OUTPUT_DEFAULT = "[37m";
+    const OUTPUT_ERROR = "0;31";
+    const OUTPUT_SUCCESS = "0;32";
+    const OUTPUT_WARNING = "0;33";
+    const OUTPUT_NOTICE = "0;36";
+    const OUTPUT_INFO = "0;34";
+    const OUTPUT_DEFAULT = "0;37";
     
     const TAGS = [
-        'failure' => OutputFormatterInterface::OUTPUT_FAILURE,
-        'success' => OutputFormatterInterface::OUTPUT_SUCCESS,
-        'warning' => OutputFormatterInterface::OUTPUT_WARNING,
-        'notice' => OutputFormatterInterface::OUTPUT_NOTICE,
-        'info' => OutputFormatterInterface::OUTPUT_INFO,
-        'default' => OutputFormatterInterface::OUTPUT_INFO
+        'error'     => OutputFormatterInterface::OUTPUT_ERROR,
+        'success'   => OutputFormatterInterface::OUTPUT_SUCCESS,
+        'warning'   => OutputFormatterInterface::OUTPUT_WARNING,
+        'notice'    => OutputFormatterInterface::OUTPUT_NOTICE,
+        'info'      => OutputFormatterInterface::OUTPUT_INFO,
+        'default'   => OutputFormatterInterface::OUTPUT_INFO
     ];
 
     /**

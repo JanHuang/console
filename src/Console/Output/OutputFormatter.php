@@ -35,10 +35,10 @@ class OutputFormatter implements OutputFormatterInterface
 
             if ('/' === $match['tag']{0}) {
                 // If tag ending.
-                return chr(27) . "[0m";
+                return "\033[0m";
             }
 
-            return chr(27) . OutputFormatterInterface::TAGS[$match['tag']];
+            return "\033[" . OutputFormatterInterface::TAGS[$match['tag']] . "m";
         }, $message);
 
         return $message;
