@@ -153,7 +153,7 @@ class InputDefinition implements InputDefinitionInterface
     {
         return [
             new InputOption('debug', null, InputOption::VALUE_NONE, 'Console debug.'),
-            new InputOption('help', '-h', InputOption::VALUE_NONE, 'Console or argument help information.'),
+            new InputOption('help', '-h', InputOption::VALUE_NONE, 'Console or argument help information.'),m
         ];
     }
 
