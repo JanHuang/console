@@ -53,7 +53,9 @@ class Console extends Collections implements ConsoleInterface, InvokerInterface
         $this->output = new ConsoleOutput();
 
         foreach ($this->getDefaultCommands() as $command) {
-            $this->addCommand($command);
+            if ('' != $command->getName()) {
+                $this->addCommand($command);
+            }
         }
     }
     
