@@ -10,44 +10,60 @@
 namespace FastD\Console\Input;
 
 use FastD\Console\Command\Command;
-use FastD\Console\Console;
 
 /**
  * Class ArgvInput
+ *
  * @package FastD\Console\Input
  */
 class ArgvInput extends Input
 {
     /**
-     * @param Console $console
+     * @var InputDefinition
+     */
+    protected $definition;
+
+    /**
+     * Input constructor.
+     *
+     * @param array|null $argv
+     * @param InputDefinition|null $inputDefinition
+     */
+    public function __construct(array $argv = null, InputDefinition $inputDefinition = null)
+    {
+        $this->bind($inputDefinition);
+
+        parent::__construct($argv);
+    }
+
+    /**
+     * @param InputDefinition $definition
+     * @return void
+     */
+    public function bind(InputDefinition $definition = null)
+    {
+        if (null === $definition) {
+            $definition = new InputDefinition();
+        }
+
+        $this->definition = $definition;
+    }
+
+    /**
      * @param Command $command
      * @return array
      */
-    public function bindCommand(Console $console, Command $command)
+    public function bindCommand(Command $command)
     {
-        $definition = new InputDefinition();
-
-        if (!empty($console->getDefaultInputArguments())) {
-            foreach ($console->getDefaultInputArguments() as $argument) {
-                $definition->setArgument($argument);
-            }
-        }
+        $definition = $this->definition;
 
         foreach ($command->getArguments() as $argument) {
             $definition->setArgument($argument);
         }
 
-        if (!empty($console->getDefaultInputOptions())) {
-            foreach ($console->getDefaultInputOptions() as $option) {
-                $definition->setOption($option);
-            }
-        }
-
         foreach ($command->getOptions() as $option) {
             $definition->setOption($option);
         }
-
-        $this->bind($definition);
 
         return $this->validationArguments($definition);
     }
@@ -56,7 +72,7 @@ class ArgvInput extends Input
      * @param InputDefinition $definition
      * @return array
      */
-    public function validationArguments(InputDefinition $definition)
+    protected function validationArguments(InputDefinition $definition)
     {
         $missing = [];
 
@@ -76,7 +92,7 @@ class ArgvInput extends Input
     }
 
     /**
-     * @return array
+     * @return void
      */
     public function resetCommand()
     {

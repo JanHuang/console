@@ -19,10 +19,32 @@ interface InputInterface
     /**
      * @return mixed
      */
-    public function resetOptions();
+    public function parse();
 
     /**
      * @return mixed
      */
-    public function resetArguments();
+    public function getOptions();
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getOption($name);
+
+    /**
+     * @return mixed
+     */
+    public function getFirstArgument();
+
+    /**
+     * @return mixed
+     */
+    public function getArguments();
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getArgument($name);
 }

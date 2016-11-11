@@ -17,11 +17,6 @@ namespace FastD\Console\Input;
 class Input implements InputInterface
 {
     /**
-     * @var InputDefinition
-     */
-    protected $definition;
-
-    /**
      * Server argv.
      *
      * @var array
@@ -42,43 +37,19 @@ class Input implements InputInterface
      * Input constructor.
      *
      * @param array|null $argv
-     * @param InputDefinition|null $inputDefinition
      */
-    public function __construct(array $argv = null, InputDefinition $inputDefinition = null)
+    public function __construct(array $argv = null)
     {
         $this->argv = null === $argv ? $_SERVER['argv'] : $argv;
 
         array_shift($this->argv);
 
-        $this->arguments['command'] = array_shift($this->argv);
-
-        if (null !== $inputDefinition) {
-            $this->bind($inputDefinition);
-        }
+        $this->parse();
     }
 
-    /**
-     * @param InputDefinition $definition
-     */
-    public function bind(InputDefinition $definition)
+    public function parse()
     {
-        $this->resetArguments();
-        $this->resetOptions();
-
-        $this->definition = $definition;
-
-        $this->parse($this->argv);
-    }
-
-    /**
-     * @param array $argv
-     * @return void
-     */
-    protected function parse(array $argv = null)
-    {
-        if (null === $argv) {
-            $argv = $this->argv;
-        }
+        $argv = $this->argv;
 
         foreach ($argv as $value) {
             if ('--' === substr($value, 0, 2)) {
@@ -97,19 +68,7 @@ class Input implements InputInterface
      */
     protected function parseArguments($argument)
     {
-        $keys = array_keys($this->definition->getArguments());
-
         $this->arguments[] = $argument;
-
-        $offset = count($this->arguments) - 1;
-        
-        $name = isset($keys[$offset]) ? $keys[$offset] : null;
-
-        array_pop($this->arguments);
-
-        if ($this->definition->hasArgument($name)) {
-            $this->arguments[$name] = $argument;
-        }
 
         return $this;
     }
@@ -129,9 +88,7 @@ class Input implements InputInterface
             $value = trim($value, "\'\"");
         }
 
-        if ($this->definition->hasOption($key)) {
-            $this->options[$key] = $this->definition->getOption($key)->isNone() ? null : $value;
-        }
+        $this->options[$key] = $value;
 
         return $this;
     }
@@ -156,13 +113,7 @@ class Input implements InputInterface
             $value = trim($value, "\'\"");
         }
 
-        if ($this->definition->hasOption($key)) {
-            $option = $this->definition->getOption($key);
-            $this->options[$option->getName()] = $option->isNone() ? null : $value;
-            if (!empty($option->getShortcut())) {
-                $this->options[$option->getShortcut()] = $option->isNone() ? null : $value;
-            }
-        }
+        $this->options[$key] = $value;
 
         return $this;
     }
@@ -170,13 +121,9 @@ class Input implements InputInterface
     /**
      * @return mixed|null
      */
-    public function getCommandName()
+    public function getFirstArgument()
     {
-        if (!isset($this->arguments['command'])) {
-            return false;
-        }
-
-        return $this->arguments['command'];
+        return isset($this->arguments[0]) ? $this->arguments[0] : false;
     }
 
     /**
@@ -193,7 +140,7 @@ class Input implements InputInterface
      */
     public function getArgument($name)
     {
-        return $this->hasArgument($name) ? $this->arguments[$name] : $this->definition->getArgument($name)->getDefault();
+        return $this->hasArgument($name) ? $this->arguments[$name] : false;
     }
 
     /**
@@ -225,10 +172,7 @@ class Input implements InputInterface
 
         foreach ($name as $item) {
             if ($this->hasOption($item)) {
-                $value = $this->options[$item];
-                return empty($value) ? $this->definition->getOption($item)->getDefault() : $value;
-            } else if ($this->definition->hasOption($item)) {
-                return $this->definition->getOption($item)->getDefault();
+                return $this->options[$item];
             }
         }
 
@@ -252,23 +196,5 @@ class Input implements InputInterface
         }
 
         return false;
-    }
-
-    /**
-     * Reset input options.
-     */
-    public function resetOptions()
-    {
-        $this->options = [];
-    }
-
-    /**
-     * Reset input arguments.
-     */
-    public function resetArguments()
-    {
-        $this->arguments = [
-            'command' => $this->arguments['command']
-        ];
     }
 }

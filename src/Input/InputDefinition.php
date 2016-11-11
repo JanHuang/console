@@ -22,16 +22,16 @@ class InputDefinition implements InputDefinitionInterface
     protected $options = [];
 
     /**
+     * @var InputArgument[]
+     */
+    protected $arguments = [];
+
+    /**
      * Shortcuts. Long option map.
      *
      * @var array
      */
     protected $shortcuts = [];
-
-    /**
-     * @var InputArgument[]
-     */
-    protected $arguments = [];
 
     /**
      * @var array
