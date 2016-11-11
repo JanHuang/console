@@ -32,6 +32,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     {
         $output = new ConsoleOutput();
 
+        echo PHP_EOL;
         $output->writeln('Hello <error>World</error>');
         $output->writeln('Hello <success>World</success>');
         $output->writeln('Hello <warning>World</warning>');

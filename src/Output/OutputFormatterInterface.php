@@ -1,12 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: janhuang
- * Date: 16/6/8
- * Time: 下午12:02
- * Github: https://www.github.com/janhuang
- * Coding: https://www.coding.net/janhuang
- * Blog: http://segmentfault.com/blog/janhuang
+ * @author    jan huang <bboyjanhuang@gmail.com>
+ * @copyright 2016
+ *
+ * @link      https://www.github.com/janhuang
+ * @link      http://www.fast-d.cn/
  */
 
 namespace FastD\Console\Output;
@@ -18,6 +16,18 @@ namespace FastD\Console\Output;
  */
 interface OutputFormatterInterface
 {
+    const FOR_COLORS = array(
+        'black' => array('set' => 30, 'unset' => 39),
+        'red' => array('set' => 31, 'unset' => 39),
+        'green' => array('set' => 32, 'unset' => 39),
+        'yellow' => array('set' => 33, 'unset' => 39),
+        'blue' => array('set' => 34, 'unset' => 39),
+        'magenta' => array('set' => 35, 'unset' => 39),
+        'cyan' => array('set' => 36, 'unset' => 39),
+        'white' => array('set' => 37, 'unset' => 39),
+        'default' => array('set' => 39, 'unset' => 39),
+    );
+
     const OUTPUT_ERROR = "0;31";
     const OUTPUT_SUCCESS = "0;32";
     const OUTPUT_WARNING = "0;33";
