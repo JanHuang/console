@@ -85,7 +85,7 @@ class Input implements InputInterface
         } else {
             list($key, $value) = explode('=', $option);
             $key = substr($key, 2);
-            $value = trim($value, "\'\"");
+            $value = trim($value, '\'"');
         }
 
         $this->options[$key] = $value;
@@ -110,7 +110,7 @@ class Input implements InputInterface
         } else {
             list($key, $value) = explode('=', $option);
             $key = substr($key, 1);
-            $value = trim($value, "\'\"");
+            $value = trim($value, '\'"');
         }
 
         $this->options[$key] = $value;
@@ -176,7 +176,7 @@ class Input implements InputInterface
             }
         }
 
-        return null;
+        return false;
     }
 
     /**

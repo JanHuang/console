@@ -9,12 +9,11 @@
 
 namespace FastD\Console\Tests\Input;
 
-use FastD\Console\Command\ListCommand;
 use FastD\Console\Input\ArgvInput;
 
 class ArgvInputTest extends \PHPUnit_Framework_TestCase
 {
-    public function testArgvInputDefinition()
+    public function testArgvInputDefinitionOptions()
     {
         $argvInput = new ArgvInput([
             'demo.php',
@@ -24,9 +23,25 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
             '-a=b'
         ]);
 
-        $missing = $argvInput->bindCommand(new ListCommand());
+        $this->assertEquals('test', $argvInput->getFirstArgument());
+        $helpOption = $argvInput->getOption('help');
+        $this->assertNull($helpOption);
+        $short = $argvInput->getOption(['e']);
+        $long = $argvInput->getOption(['env']);
+        $this->assertEquals($short, $long);
+        $this->assertEquals('b', $argvInput->getOption('a'));
+    }
+
+    public function testArgvInputDefinitionArguments()
+    {
+        $argvInput = new ArgvInput([
+            'demo.php',
+            'test',
+            '--debug',
+            '-d',
+            '-a=b'
+        ]);
 
         print_r($argvInput);
-        print_r($missing);
     }
 }

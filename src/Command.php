@@ -7,7 +7,7 @@
  * @link      http://www.fast-d.cn/
  */
 
-namespace FastD\Console\Command;
+namespace FastD\Console;
 
 use FastD\Console\Collections;
 use FastD\Console\Help\Help;

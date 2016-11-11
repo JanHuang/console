@@ -9,7 +9,7 @@
 
 namespace FastD\Console\Input;
 
-use FastD\Console\Command\Command;
+use FastD\Console\Command;
 
 /**
  * Class ArgvInput
@@ -87,7 +87,7 @@ class ArgvInput extends Input
                 }
             }
         }
-        
+
         return $missing;
     }
 
@@ -101,5 +101,27 @@ class ArgvInput extends Input
                 unset($this->arguments[$key]);
             }
         }
+    }
+
+    /**
+     * @param $name
+     * @return mixed|null
+     */
+    public function getOption($name)
+    {
+        if (($input = parent::getOption($name)) === false) {
+            if (is_string($name)) {
+                $name = [$name];
+            }
+
+            while (list(, $value) = each($name)) {
+                if (false !== $option = $this->definition->getOption($value)) {
+                    $input = $option->getDefault();
+                    break;
+                }
+            }
+        }
+
+        return $input;
     }
 }

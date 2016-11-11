@@ -92,7 +92,7 @@ class InputDefinition implements InputDefinitionInterface
 
     /**
      * @param $name
-     * @return InputOption|null
+     * @return InputOption|false
      */
     public function getOption($name)
     {
@@ -100,7 +100,7 @@ class InputDefinition implements InputDefinitionInterface
             $name = $this->shortcuts[$name];
         }
 
-        return $this->hasOption($name) ? $this->options[$name] : null;
+        return $this->hasOption($name) ? $this->options[$name] : false;
     }
 
     /**
@@ -137,11 +137,11 @@ class InputDefinition implements InputDefinitionInterface
 
     /**
      * @param $name
-     * @return InputArgument|null
+     * @return InputArgument|bool
      */
     public function getArgument($name)
     {
-        return $this->hasArgument($name) ? $this->arguments[$name] : null;
+        return $this->hasArgument($name) ? $this->arguments[$name] : false;
     }
 
     /**
@@ -150,9 +150,9 @@ class InputDefinition implements InputDefinitionInterface
     public function getDefaultInputOptions()
     {
         return [
-            new InputOption('debug', null, InputOption::VALUE_NONE, 'Console debug.'),
-            new InputOption('help', '-h', InputOption::VALUE_NONE, 'Console or argument help information.'),
-            new InputOption('env', '-e', InputOption::VALUE_OPTIONAL, 'Console running environment.'),
+            new InputOption('debug', '-vv', InputOption::VALUE_NONE, 'debug'),
+            new InputOption('help', '-h', InputOption::VALUE_NONE, 'help information'),
+            new InputOption('env', '-e', InputOption::VALUE_OPTIONAL, 'runtime environment', 'dev'),
         ];
     }
 
@@ -162,7 +162,7 @@ class InputDefinition implements InputDefinitionInterface
     public function getDefaultInputArguments()
     {
         return [
-            new InputArgument('command', InputArgument::REQUIRED, 'Console execute command name.', 'list'),
+            new InputArgument('command', InputArgument::REQUIRED, 'default execute command', 'list'),
         ];
     }
 
