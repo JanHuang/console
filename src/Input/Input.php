@@ -165,7 +165,9 @@ class Input implements InputInterface
     }
 
     /**
-     * @return mixed|null
+     * Execute command name.
+     *
+     * @return string|null
      */
     public function getFirstArgument()
     {

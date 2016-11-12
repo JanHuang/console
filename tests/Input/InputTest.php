@@ -75,23 +75,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
         ], $args);
     }
 
-    public function testArgumentWithCombinationFormat()
-    {
-        $input = new Input([
-            'demo.php',
-            'test',
-            '-a=b',
-            '-c',
-            'd',
-            '-vv',
-            '-h127.0.0.1',
-            '-e=prod'
-        ]);
-
-        $args = $input->formatInputArguments();
-        print_r($args);
-    }
-
     public function testArgumentsMixinFormat()
     {
         $input = new Input([
@@ -135,7 +118,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('list', $argvInput->getFirstArgument());
     }
 
-    public function testInputCommandArgument()
+    public function testInputCommandOptions()
     {
         $input = new Input([
             'demo.php',
@@ -158,11 +141,10 @@ class InputTest extends \PHPUnit_Framework_TestCase
             '-vv',
         ]);
 
-        $this->assertEquals('list', $input->getFirstArgument());
-        $this->assertEquals('list', $input->getArgument('command'));
+        $this->assertEquals($input->getFirstArgument(), $input->getArgument('command'));
     }
 
-    public function testDefaultEqualsAssignArguments()
+    public function testDefaultEqualsAssignOptions()
     {
         $input = new Input([
             'demo.php',
@@ -174,7 +156,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($input->getOption('vv'));
     }
 
-    public function testCombinationAssignArguments()
+    public function testCombinationAssignOptions()
     {
         $input = new Input([
             'demo.php',
@@ -184,16 +166,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->assertEquals('b', $input->getOption('a'));
-    }
-
-    public function testWithArguments()
-    {
-        $input = new Input([
-            'demo.php',
-            '-a',
-            'b',
-            '-vv',
-        ]);
+        $this->assertEquals(['command' => 'list'], $input->getArguments());
     }
 
     public function testShortcutOptions()
@@ -202,10 +175,13 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'demo.php',
             '-a',
             'b',
-            '-vv',
+            '-vv=1',
         ]);
 
         $this->assertEquals('b', $input->getOption('a'));
+        $this->assertNull($input->getOption('vv'));
+        $this->assertFalse($input->hasOption('debug'));
+        $this->assertTrue($input->hasOption(['vv', 'debug']));
     }
 
     public function testLongOptions()
@@ -215,9 +191,12 @@ class InputTest extends \PHPUnit_Framework_TestCase
             '-a',
             'b',
             '--foo=bar',
+            '--debug=test'
         ]);
 
         $this->assertEquals('bar', $input->getOption('foo'));
+        $this->assertNull($input->getOption('debug'));
+        $this->assertTrue($input->hasOption(['vv', 'debug']));
     }
 
     public function testShortcutLongMixinOptions()
@@ -227,9 +206,58 @@ class InputTest extends \PHPUnit_Framework_TestCase
             '-a',
             'b',
             '--foo=bar',
+            '--bar=b'
         ]);
 
         $this->assertEquals('bar', $input->getOption('foo'));
         $this->assertEquals('b', $input->getOption('a'));
+        $this->assertEquals($input->getOption('bar'), $input->getOption('a'));
+    }
+
+    public function testDefinitionOptions()
+    {
+        include_once __DIR__ . '/DemoDefinition.php';
+
+        $input = new Input([
+            'demo.php',
+            'test',
+            '-a',
+            'b',
+            '--foo=bar',
+            '--bar=b'
+        ], new DemoDefinition());
+
+
+    }
+
+    public function testInputArguments()
+    {
+        $input = new Input([
+            'demo.php',
+            'test',
+            '-a',
+            'b',
+            '--foo=bar',
+            '--bar=b'
+        ]);
+
+        $this->assertEquals('test', $input->getFirstArgument());
+        $this->assertEquals([
+            'command' => 'test'
+        ], $input->getArguments());
+    }
+
+    public function testDefinitionArguments()
+    {
+        $input = new Input([
+            'demo.php',
+            'test',
+            'foo',
+            'bar',
+            '-a',
+            'b',
+            '--foo=bar',
+            '--bar=b'
+        ]);
     }
 }

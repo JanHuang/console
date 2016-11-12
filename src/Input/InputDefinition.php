@@ -9,8 +9,6 @@
 
 namespace FastD\Console\Input;
 
-use FastD\Console\Command;
-
 /**
  * Class InputDefinition
  *
