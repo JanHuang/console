@@ -150,7 +150,7 @@ class InputDefinition implements InputDefinitionInterface
     public function getDefaultInputOptions()
     {
         return [
-            new InputOption('debug', '-vv', InputOption::VALUE_NONE, 'debug'),
+            new InputOption('debug', '-vvv', InputOption::VALUE_NONE, 'debug'),
             new InputOption('help', '-h', InputOption::VALUE_NONE, 'help information'),
             new InputOption('env', '-e', InputOption::VALUE_OPTIONAL, 'runtime environment', 'dev'),
         ];

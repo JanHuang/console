@@ -27,7 +27,7 @@ class InputArgument
     /**
      * @var mixed
      */
-    protected $value;
+    protected $default;
 
     /**
      * @var int
@@ -38,11 +38,6 @@ class InputArgument
      * @var string
      */
     protected $description;
-
-    /**
-     * @var null
-     */
-    protected $default;
 
     /**
      * InputArgument constructor.
@@ -61,28 +56,6 @@ class InputArgument
         $this->description = $description;
 
         $this->default = $default;
-
-        if (null !== $default) {
-            $this->setValue($default);
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param mixed $value
-     * @return $this
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-        return $this;
     }
 
     /**

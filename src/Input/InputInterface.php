@@ -19,6 +19,17 @@ interface InputInterface
     /**
      * @return mixed
      */
+    public function parse();
+
+    /**
+     * @param InputDefinitionInterface $inputDefinition
+     * @return mixed
+     */
+    public function bind(InputDefinitionInterface $inputDefinition);
+
+    /**
+     * @return mixed
+     */
     public function getOptions();
 
     /**

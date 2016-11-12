@@ -9,19 +9,15 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Collections;
-use FastD\Console\Help\Help;
-use FastD\Console\Input\Input;
 use FastD\Console\Input\InputArgument;
 use FastD\Console\Input\InputOption;
-use FastD\Console\Output\Output;
 
 /**
  * Class Command
  *
- * @package FastD\Console\Command
+ * @package FastD\Console
  */
-abstract class Command
+abstract class Command implements CommandInterface
 {
     /**
      * @var InputOption[]
@@ -34,27 +30,9 @@ abstract class Command
     protected $arguments = [];
 
     /**
-     * @var Collections
+     * @var string
      */
-    protected $collections;
-
-    /**
-     * @return Collections
-     */
-    public function getCollections()
-    {
-        return $this->collections;
-    }
-
-    /**
-     * @param Collections $collections
-     * @return $this
-     */
-    public function setCollections(Collections $collections)
-    {
-        $this->collections = $collections;
-        return $this;
-    }
+    protected $description;
 
     /**
      * @param $name
@@ -77,16 +55,11 @@ abstract class Command
 
     /**
      * @param $name
-     * @return InputOption
-     * @throws \ErrorException
+     * @return InputOption|false
      */
     public function getOption($name)
     {
-        if (!array_key_exists($name, $this->options)) {
-            throw new \InvalidArgumentException(sprintf('Options "%s" is undefined.', $name));
-        }
-
-        return $this->options[$name];
+        return array_key_exists($name, $this->options) ? $this->options[$name] : false;
     }
 
     /**
@@ -117,16 +90,11 @@ abstract class Command
 
     /**
      * @param $name
-     * @return InputArgument
-     * @throws \ErrorException
+     * @return InputArgument|false
      */
     public function getArgument($name)
     {
-        if (!isset($this->arguments[$name])) {
-            throw new \InvalidArgumentException(sprintf('Argument %s is undefined.', $name));
-        }
-
-        return $this->arguments[$name];
+        return isset($this->arguments[$name]) ? $this->arguments[$name] : false;
     }
 
     /**
@@ -138,9 +106,23 @@ abstract class Command
     }
 
     /**
+     * @param $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
-    abstract public function getDescription();
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
     /**
      * @return string
@@ -151,11 +133,4 @@ abstract class Command
      * @return void
      */
     abstract public function configure();
-
-    /**
-     * @param Input  $input
-     * @param Output $output
-     * @return int
-     */
-    abstract public function execute(Input $input, Output $output);
 }

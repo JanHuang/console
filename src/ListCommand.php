@@ -13,6 +13,11 @@ use FastD\Console\Console;
 use FastD\Console\Input\Input;
 use FastD\Console\Output\Output;
 
+/**
+ * Class ListCommand
+ *
+ * @package FastD\Console
+ */
 class ListCommand extends Command
 {
     /**
@@ -28,7 +33,7 @@ class ListCommand extends Command
      */
     public function configure()
     {
-        // TODO: Implement configure() method.
+        $this->setDescription('get commands collections.');
     }
 
     /**
@@ -52,13 +57,5 @@ class ListCommand extends Command
             }
             $output->writeln(sprintf('  %s %s', $command->getName(), $command->getDescription()));
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return '获取命令列表';
     }
 }

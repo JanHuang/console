@@ -44,18 +44,27 @@ class Input implements InputInterface
      * Input constructor.
      *
      * @param array|null $argv
-     * @param InputDefinition|null $inputDefinition
+     * @param InputDefinitionInterface|null $inputDefinition
      */
-    public function __construct(array $argv = null, InputDefinition $inputDefinition = null)
+    public function __construct(array $argv = null, InputDefinitionInterface $inputDefinition = null)
     {
         $this->argv = null === $argv ? $_SERVER['argv'] : $argv;
         // remove script file
         array_shift($this->argv);
 
-        if (null === $inputDefinition) {
-            $inputDefinition = new InputDefinition();
+        if (null !== $inputDefinition) {
+            $this->bind($inputDefinition);
+        } else {
+            $this->definition = new InputDefinition();
         }
+    }
 
+    /**
+     * @param InputDefinitionInterface $inputDefinition
+     * @return mixed
+     */
+    public function bind(InputDefinitionInterface $inputDefinition)
+    {
         $this->definition = $inputDefinition;
 
         $this->parse();
@@ -64,7 +73,7 @@ class Input implements InputInterface
     /**
      * @return array
      */
-    public function formatInputArguments()
+    protected function formatInputArguments()
     {
         $args = [];
         // filter input arguments
@@ -100,7 +109,7 @@ class Input implements InputInterface
      *
      * @return void
      */
-    protected function parse()
+    public function parse()
     {
         $args = $this->formatInputArguments();
 
@@ -165,13 +174,22 @@ class Input implements InputInterface
     }
 
     /**
-     * Execute command name.
+     * get first argument
      *
      * @return string|null
      */
     public function getFirstArgument()
     {
-        return reset($this->arguments);
+        foreach ($this->argv as $value) {
+            if ($value && '-' === $value[0]) {
+                continue;
+            }
+
+            return $value;
+        }
+
+        return isset($this->definition->getDefaultInputArguments()[0]) ?
+            $this->definition->getDefaultInputArguments()[0]->getDefault() : false;
     }
 
     /**
@@ -188,7 +206,15 @@ class Input implements InputInterface
      */
     public function getArgument($name)
     {
-        return $this->hasArgument($name) ? $this->arguments[$name] : false;
+        if ($this->hasArgument($name)) {
+            return $this->arguments[$name];
+        }
+
+        if (($argument = $this->definition->getArgument($name)) instanceof InputArgument) {
+            return $argument->getDefault();
+        }
+
+        return false;
     }
 
     /**
@@ -221,8 +247,13 @@ class Input implements InputInterface
         foreach ($name as $item) {
             if (isset($this->options[$item])) {
                 return $this->options[$item];
-            } else if ($this->definition->hasOption($item)) {
-                return $this->definition->getOption($item)->getDefault();
+            }
+        }
+
+        foreach ($name as $item) {
+            if (($option = $this->definition->getOption($item)) instanceof InputOption) {
+                $key = $option->getName() == $item ? $option->getShortcut() : $option->getName();
+                return isset($this->options[$key]) ? $this->options[$key] : $option->getDefault();
             }
         }
 
