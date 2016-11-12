@@ -9,6 +9,8 @@
 
 namespace FastD\Console\Input;
 
+use ArrayIterator;
+
 /**
  * Class Input
  *
@@ -34,30 +36,87 @@ class Input implements InputInterface
     protected $arguments = [];
 
     /**
+     * @var InputDefinition
+     */
+    protected $definition;
+
+    /**
      * Input constructor.
      *
      * @param array|null $argv
+     * @param InputDefinition|null $inputDefinition
      */
-    public function __construct(array $argv = null)
+    public function __construct(array $argv = null, InputDefinition $inputDefinition = null)
     {
         $this->argv = null === $argv ? $_SERVER['argv'] : $argv;
-
+        // remove script file
         array_shift($this->argv);
+
+        if (null === $inputDefinition) {
+            $inputDefinition = new InputDefinition();
+        }
+
+        $this->definition = $inputDefinition;
 
         $this->parse();
     }
 
-    public function parse()
+    /**
+     * @return array
+     */
+    public function formatInputArguments()
     {
-        $argv = $this->argv;
-
-        foreach ($argv as $value) {
-            if ('--' === substr($value, 0, 2)) {
-                $this->parseLongOptions($value);
-            } else if ('-' === substr($value, 0, 1)) {
-                $this->parseShortOptions($value);
+        $args = [];
+        // filter input arguments
+        $iterator = new ArrayIterator($this->argv);
+        while ($iterator->valid()) {
+            $value = $iterator->current();
+            if (false === strpos($value, '=') && false !== strpos($value, '-')) {
+                $iterator->next();
+                $next = $iterator->current();
+                if (!empty($next)) {
+                    if (false === strpos($next, '-')) {
+                        $args[] = $value . '=' . $next;
+                    } else {
+                        $args[] = $value;
+                        $args[] = $next;
+                    }
+                } else {
+                    $args[] = $value;
+                }
             } else {
-                $this->parseArguments($value);
+                $args[] = $value;
+            }
+            $iterator->next();
+        }
+
+        unset($iterator);
+
+        return $args;
+    }
+
+    /**
+     * Parse CLI input arguments.
+     *
+     * @return void
+     */
+    protected function parse()
+    {
+        $args = $this->formatInputArguments();
+
+        foreach ($args as $value) {
+            if ('--' === substr($value, 0, 2)) {
+                $this->parseOption(substr($value, 2));
+            } else if ('-' === substr($value, 0, 1)) {
+                $this->parseOption(substr($value, 1));
+            } else {
+                $this->parseArgument($value);
+            }
+        }
+
+        if (empty($this->arguments)) {
+            foreach ($this->definition->getDefaultInputArguments() as $inputArgument) {
+                $this->arguments[$inputArgument->getName()] = $inputArgument->getDefault();
             }
         }
     }
@@ -66,10 +125,17 @@ class Input implements InputInterface
      * @param $argument
      * @return $this
      */
-    protected function parseArguments($argument)
+    protected function parseArgument($argument)
     {
+        $keys = array_keys($this->definition->getArguments());
         $this->arguments[] = $argument;
+        $offset = count($this->arguments) - 1;
 
+        $name = isset($keys[$offset]) ? $keys[$offset] : null;
+        array_pop($this->arguments);
+        if ($this->definition->hasArgument($name)) {
+            $this->arguments[$name] = $argument;
+        }
         return $this;
     }
 
@@ -77,43 +143,23 @@ class Input implements InputInterface
      * @param $option
      * @return $this
      */
-    protected function parseLongOptions($option)
+    protected function parseOption($option)
     {
-        if (false === ($index = strpos($option, '='))) {
-            $key = substr($option, 2);
+        if (false === strpos($option, '=')) {
+            $key = $option;
             $value = null;
         } else {
             list($key, $value) = explode('=', $option);
-            $key = substr($key, 2);
             $value = trim($value, '\'"');
+        }
+
+        if ($this->definition->hasOption($key) && $this->definition->getOption($key)->isNone()) {
+            $value = null;
         }
 
         $this->options[$key] = $value;
 
-        return $this;
-    }
-
-    /**
-     * @param $option
-     * @return $this
-     */
-    protected function parseShortOptions($option)
-    {
-        if (false === ($index = strpos($option, '='))) {
-            if (2 == strlen($option)) {
-                $key = substr($option, 1);
-                $value = null;
-            } else {
-                $key = substr($option, 1, 1);
-                $value = substr($option, 2);
-            }
-        } else {
-            list($key, $value) = explode('=', $option);
-            $key = substr($key, 1);
-            $value = trim($value, '\'"');
-        }
-
-        $this->options[$key] = $value;
+        unset($option, $key, $value);
 
         return $this;
     }
@@ -123,7 +169,7 @@ class Input implements InputInterface
      */
     public function getFirstArgument()
     {
-        return isset($this->arguments[0]) ? $this->arguments[0] : false;
+        return reset($this->arguments);
     }
 
     /**
@@ -171,8 +217,10 @@ class Input implements InputInterface
         }
 
         foreach ($name as $item) {
-            if ($this->hasOption($item)) {
+            if (isset($this->options[$item])) {
                 return $this->options[$item];
+            } else if ($this->definition->hasOption($item)) {
+                return $this->definition->getOption($item)->getDefault();
             }
         }
 

@@ -9,6 +9,8 @@
 
 namespace FastD\Console\Input;
 
+use FastD\Console\Command;
+
 /**
  * Class InputDefinition
  *
@@ -70,14 +72,6 @@ class InputDefinition implements InputDefinitionInterface
     }
 
     /**
-     * @return InputOption[]
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
      * @param $name
      * @return bool
      */
@@ -88,6 +82,14 @@ class InputDefinition implements InputDefinitionInterface
         }
 
         return isset($this->options[$name]);
+    }
+
+    /**
+     * @return InputOption[]
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     /**
@@ -119,20 +121,20 @@ class InputDefinition implements InputDefinitionInterface
     }
 
     /**
-     * @return InputArgument[]
-     */
-    public function getArguments()
-    {
-        return $this->arguments;
-    }
-
-    /**
      * @param $name
      * @return bool
      */
     public function hasArgument($name)
     {
         return isset($this->arguments[$name]);
+    }
+
+    /**
+     * @return InputArgument[]
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 
     /**
@@ -157,7 +159,7 @@ class InputDefinition implements InputDefinitionInterface
     }
 
     /**
-     * @return array
+     * @return InputArgument[]
      */
     public function getDefaultInputArguments()
     {
@@ -169,7 +171,7 @@ class InputDefinition implements InputDefinitionInterface
     /**
      * @return array
      */
-    public function getRequiredInputArgumentsAndOptions()
+    public function getRequires()
     {
         return $this->required;
     }

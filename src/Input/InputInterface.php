@@ -19,11 +19,6 @@ interface InputInterface
     /**
      * @return mixed
      */
-    public function parse();
-
-    /**
-     * @return mixed
-     */
     public function getOptions();
 
     /**

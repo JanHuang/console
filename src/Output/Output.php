@@ -8,6 +8,7 @@
  */
 
 namespace FastD\Console\Output;
+
 use FastD\Console\Help\Help;
 
 /**
@@ -15,7 +16,7 @@ use FastD\Console\Help\Help;
  *
  * @package FastD\Console\Output
  */
-abstract class Output
+class Output
 {
     /**
      * @param $message

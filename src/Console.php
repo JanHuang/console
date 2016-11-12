@@ -26,7 +26,7 @@ use RuntimeException;
  *
  * @package FastD\Console
  */
-class Console extends Collections implements ConsoleInterface, InvokerInterface
+class Console extends Collections implements ConsoleInterface
 {
     const VERSION = 'v3.0.0-dev';
     

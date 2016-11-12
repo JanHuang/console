@@ -16,4 +16,37 @@ namespace FastD\Console\Input;
  */
 interface InputDefinitionInterface
 {
+    /**
+     * @param InputOption $inputOption
+     * @return InputDefinitionInterface
+     */
+    public function setOption(InputOption $inputOption);
+
+    /**
+     * @param $name
+     * @return InputOption
+     */
+    public function getOption($name);
+
+    /**
+     * @param InputArgument $inputArgument
+     * @return InputDefinitionInterface
+     */
+    public function setArgument(InputArgument $inputArgument);
+
+    /**
+     * @param $name
+     * @return InputArgument
+     */
+    public function getArgument($name);
+
+    /**
+     * @return InputOption[]
+     */
+    public function getDefaultInputOptions();
+
+    /**
+     * @return InputArgument[]
+     */
+    public function getDefaultInputArguments();
 }

@@ -18,69 +18,218 @@ use FastD\Console\Input\Input;
 
 class InputTest extends \PHPUnit_Framework_TestCase
 {
-    public function testInputArgumentsParse()
+    public function testArgumentDefaultFormat()
     {
-        $argvInput = new Input([
+        $input = new Input([
             'demo.php',
-            'test',
-            '--debug',
+            '-a',
+            'b',
+            '-vv',
         ]);
 
-        $arguments = $argvInput->getArguments();
-        $options = $argvInput->getOptions();
-
-        $this->assertArrayHasKey('debug', $options);
-        $this->assertEquals([
-            'debug' => null,
-        ], $options);
-        $this->assertEquals(['test'], $arguments);
-        $this->assertEquals('test',  $argvInput->getFirstArgument());
-        $this->assertNull($argvInput->getOption('debug'));
-        $this->assertNull($argvInput->getOption([
-            'debug'
-        ]));
-        $this->assertTrue($argvInput->hasOption('debug'));
-    }
-
-    public function testInputMultiArgumentsParse()
-    {
-        $argvInput = new Input([
-            'demo.php',
-            'test',
-            '--debug',
-            '-d',
-            '-a=b'
-        ]);
+        $args = $input->formatInputArguments();
 
         $this->assertEquals([
-            'debug' => null,
-            'd' => null,
-            'a' => 'b'
-        ], $argvInput->getOptions());
-
-        $this->assertEquals(['test'], $argvInput->getArguments());
+            '-a=b',
+            '-vv'
+        ], $args);
     }
 
-    public function testInputArrayOptions()
+    public function testArgumentCombinationFormat()
     {
-        $argvInput = new Input([
+        $input = new Input([
             'demo.php',
+            '-a',
+            'b',
+            '-vv=1',
             'test',
-            '-d',
-            '-a=b'
         ]);
 
+        $args = $input->formatInputArguments();
+        $this->assertEquals([
+            '-a=b',
+            '-vv=1',
+            'test'
+        ], $args);
+    }
+
+    public function testArgumentShortcutFormat()
+    {
+        $input = new Input([
+            'demo.php',
+            'test',
+            '-a=b',
+            '-c',
+            'd',
+            '-vv',
+            '-e=prod'
+        ]);
+
+        $args = $input->formatInputArguments();
+        $this->assertEquals([
+            'test',
+            '-a=b',
+            '-c=d',
+            '-vv',
+            '-e=prod'
+        ], $args);
+    }
+
+    public function testArgumentWithCombinationFormat()
+    {
+        $input = new Input([
+            'demo.php',
+            'test',
+            '-a=b',
+            '-c',
+            'd',
+            '-vv',
+            '-h127.0.0.1',
+            '-e=prod'
+        ]);
+
+        $args = $input->formatInputArguments();
+        print_r($args);
+    }
+
+    public function testArgumentsMixinFormat()
+    {
+        $input = new Input([
+            'demo.php',
+            'test',
+            '-a=b',
+            '-c',
+            'd',
+            'e',
+            '-vv',
+            '-e=prod'
+        ]);
+
+        $args = $input->formatInputArguments();
+        $this->assertEquals([
+            'test',
+            '-a=b',
+            '-c=d',
+            'e',
+            '-vv',
+            '-e=prod'
+        ], $args);
+    }
+
+    public function testEmptyInput()
+    {
+        $argvInput = new Input([]);
+
+        $this->assertEquals($argvInput->getArguments(), [
+            'command' => 'list'
+        ]);
+        $this->assertEmpty($argvInput->getOptions());
+        // has CLI input arg?
         $this->assertFalse($argvInput->hasOption('debug'));
-        $this->assertNull($argvInput->getOption(['debug', 'd']));
+        $this->assertFalse($argvInput->hasOption('env'));
+        // get InputDefinition option.
+        $this->assertEquals('dev', $argvInput->getOption('env'));
+        $this->assertEquals($argvInput->getOption('e'), $argvInput->getOption('env'));
+        $isDebug = $argvInput->getOption('debug');
+        $this->assertNull($isDebug);
+        $this->assertEquals('list', $argvInput->getFirstArgument());
+    }
 
-        $argvInput = new Input([
+    public function testInputCommandArgument()
+    {
+        $input = new Input([
             'demo.php',
             'test',
-            '--debug',
-            '-a=b'
+            '-a=b',
+            '-vv',
+            '-e=prod'
         ]);
 
-        $this->assertTrue($argvInput->hasOption('debug'));
-        $this->assertNull($argvInput->getOption(['d', 'debug']));
+        $this->assertTrue($input->hasOption(['debug', 'vv']));
+        $this->assertNull($input->getOption('vv'));
+        $this->assertEquals('prod', $input->getOption(['e', 'env']));
+    }
+
+    public function testDefaultCommandExecute()
+    {
+        $input = new Input([
+            'demo.php',
+            '-a=b',
+            '-vv',
+        ]);
+
+        $this->assertEquals('list', $input->getFirstArgument());
+        $this->assertEquals('list', $input->getArgument('command'));
+    }
+
+    public function testDefaultEqualsAssignArguments()
+    {
+        $input = new Input([
+            'demo.php',
+            '-a=b',
+            '-vv',
+        ]);
+
+        $this->assertEquals('b', $input->getOption('a'));
+        $this->assertNull($input->getOption('vv'));
+    }
+
+    public function testCombinationAssignArguments()
+    {
+        $input = new Input([
+            'demo.php',
+            '-a',
+            'b',
+            '-vv',
+        ]);
+
+        $this->assertEquals('b', $input->getOption('a'));
+    }
+
+    public function testWithArguments()
+    {
+        $input = new Input([
+            'demo.php',
+            '-a',
+            'b',
+            '-vv',
+        ]);
+    }
+
+    public function testShortcutOptions()
+    {
+        $input = new Input([
+            'demo.php',
+            '-a',
+            'b',
+            '-vv',
+        ]);
+
+        $this->assertEquals('b', $input->getOption('a'));
+    }
+
+    public function testLongOptions()
+    {
+        $input = new Input([
+            'demo.php',
+            '-a',
+            'b',
+            '--foo=bar',
+        ]);
+
+        $this->assertEquals('bar', $input->getOption('foo'));
+    }
+
+    public function testShortcutLongMixinOptions()
+    {
+        $input = new Input([
+            'demo.php',
+            '-a',
+            'b',
+            '--foo=bar',
+        ]);
+
+        $this->assertEquals('bar', $input->getOption('foo'));
+        $this->assertEquals('b', $input->getOption('a'));
     }
 }
