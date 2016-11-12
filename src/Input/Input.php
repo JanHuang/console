@@ -10,6 +10,7 @@
 namespace FastD\Console\Input;
 
 use ArrayIterator;
+use FastD\Console\Command;
 
 /**
  * Class Input
@@ -61,13 +62,28 @@ class Input implements InputInterface
 
     /**
      * @param InputDefinitionInterface $inputDefinition
-     * @return mixed
+     * @return $this
      */
     public function bind(InputDefinitionInterface $inputDefinition)
     {
         $this->definition = $inputDefinition;
 
         $this->parse();
+
+        return $this;
+    }
+
+    /**
+     * @param Command $command
+     * @return $this
+     */
+    public function bindCommand(Command $command)
+    {
+        $this->definition->bindCommand($command);
+
+        $this->bind($this->definition);
+
+        return $this;
     }
 
     /**
@@ -245,7 +261,7 @@ class Input implements InputInterface
         }
 
         foreach ($name as $item) {
-            if (isset($this->options[$item])) {
+            if (array_key_exists($item, $this->options)) {
                 return $this->options[$item];
             }
         }

@@ -9,8 +9,6 @@
  * Blog: http://segmentfault.com/blog/janhuang
  */
 
-namespace FastD\Console\Tests\Input;
-
 use FastD\Console\Input\InputOption;
 
 class InputOptionTest extends \PHPUnit_Framework_TestCase

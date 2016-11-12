@@ -12,12 +12,10 @@
  * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Console\Tests\Input;
-
 use FastD\Console\Input\Input;
 use FastD\Console\Input\InputDefinition;
 
-class InputTest extends \PHPUnit_Framework_TestCase
+class InputTest extends PHPUnit_Framework_TestCase
 {
     protected $definition;
 
@@ -74,5 +72,33 @@ class InputTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('prod', $input->getOption('e'));
         $this->assertEquals('prod', $input->getOption('env'));
         $this->assertEquals($input->getOption(['env', 'e']), $input->getOption('e'));
+    }
+
+    public function testEmptyInputBindEmptyDefinition()
+    {
+        include_once __DIR__ . '/EmptyDefinition.php';
+
+        $input = new Input([], new EmptyDefinition());
+
+        $this->assertFalse($input->getFirstArgument());
+        $this->assertEmpty($input->getOptions());
+        $this->assertEmpty($input->getArguments());
+    }
+
+    public function testInputBindEmptyDefinition()
+    {
+        include_once __DIR__ . '/EmptyDefinition.php';
+
+        $input = new Input([
+            'demo.php',
+            'demo',
+            '--debug=true',
+            '--help',
+            '-e=prod'
+        ], new EmptyDefinition());
+
+        $this->assertEquals('demo', $input->getFirstArgument());
+        $this->assertEquals('true', $input->getOption('debug'));
+        $this->assertNull($input->getOption('help'));
     }
 }
