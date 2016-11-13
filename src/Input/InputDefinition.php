@@ -8,6 +8,7 @@
  */
 
 namespace FastD\Console\Input;
+
 use FastD\Console\Command;
 
 /**
@@ -54,6 +55,7 @@ class InputDefinition implements InputDefinitionInterface
      */
     public function bindCommand(Command $command)
     {
+        $command->configure();
         $this->mergeInputArguments($command->getArguments());
         $this->mergeInputOptions($command->getOptions());
         return $this;

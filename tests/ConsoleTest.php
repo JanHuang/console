@@ -9,16 +9,14 @@
  * Blog: http://segmentfault.com/blog/janhuang
  */
 
-namespace FastD\Console\Tests;
-
 use FastD\Console\Console;
 
-class ConsoleTest extends \PHPUnit_Framework_TestCase
+class ConsoleTest extends PHPUnit_Framework_TestCase
 {
     public function testConsole()
     {
         $console = new Console();
 
-//        print_r($console);
+        $console->run();
     }
 }

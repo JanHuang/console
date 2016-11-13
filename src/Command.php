@@ -123,14 +123,4 @@ abstract class Command implements CommandInterface
     {
         return $this->description;
     }
-
-    /**
-     * @return string
-     */
-    abstract public function getName();
-
-    /**
-     * @return void
-     */
-    abstract public function configure();
 }

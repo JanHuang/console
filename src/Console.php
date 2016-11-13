@@ -9,12 +9,10 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Help\MeanHelp;
-use FastD\Console\Help\MissingHelp;
 use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\Input;
+use FastD\Console\Input\InputDefinition;
 use FastD\Console\Input\InputInterface;
-use FastD\Console\Output\ConsoleOutput;
 use FastD\Console\Output\Output;
 use FastD\Console\Output\OutputInterface;
 use RuntimeException;
@@ -24,15 +22,23 @@ use RuntimeException;
  *
  * @package FastD\Console
  */
-class Console extends Collections implements ConsoleInterface
+class Console implements ConsoleInterface
 {
     const VERSION = 'v3.0.0-dev';
-    
+
     /**
-     * @var Command
+     * @var CommandInterface
      */
     protected $command;
 
+    /**
+     * @var Command[]
+     */
+    protected $commands = [];
+
+    /**
+     * @var Input|InputInterface
+     */
     protected $input;
 
     /**
@@ -40,6 +46,12 @@ class Console extends Collections implements ConsoleInterface
      */
     protected $output;
 
+    /**
+     * Console constructor.
+     *
+     * @param InputInterface|null $input
+     * @param OutputInterface|null $output
+     */
     public function __construct(InputInterface $input = null, OutputInterface $output = null)
     {
         if (null === $input) {
@@ -55,6 +67,51 @@ class Console extends Collections implements ConsoleInterface
         $this->output = $output;
     }
 
+    /**
+     * @param array $commands
+     * @return $this
+     */
+    public function setCommand(array $commands = [])
+    {
+        foreach ($commands as $command) {
+            $this->addCommand($command);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Command $command
+     * @return $this
+     */
+    public function addCommand(Command $command)
+    {
+        $this->commands[$command->getName()] = $command;
+
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function hasCommand($name)
+    {
+        return isset($this->commands[$name]);
+    }
+
+    /**
+     * @param $name
+     * @return mixed|null
+     */
+    public function getCommand($name)
+    {
+        return $this->hasCommand($name) ? $this->commands[$name] : false;
+    }
+
+    /**
+     * @return int
+     */
     public function run()
     {
         $name = $this->input->getFirstArgument();
@@ -66,34 +123,20 @@ class Console extends Collections implements ConsoleInterface
 
         try {
             $this->command = $this->getCommand($name);
-            if (null === $this->command) {
-                // Not command setting.
+            if (false === $this->command) {
+                // Not command do something.
                 throw new RuntimeException(null);
             }
         } catch (RuntimeException $e) {
-            $this->output->writeHelp(new MeanHelp($name, $this));
+            echo '';
             return 0;
         }
 
-        $this->command->configure();
-
-        $missing = $input->bindCommand($this, $this->command);
-
-        if ($input->hasOption('help')) {
+        if ($this->input->hasOption(['h', 'help'])) {
             $this->output->writeHelp(new UsageHelp($this->command));
             return 0;
         }
 
-        if (count($missing) > 0) {
-            $this->output->writeHelp(new MissingHelp($this->command, $missing));
-            return 0;
-        }
-
-        return $this->execute($input, $this->output);
-    }
-
-    public function execute()
-    {
         return $this->command->execute($this->input, $this->output);
     }
 
@@ -103,5 +146,13 @@ class Console extends Collections implements ConsoleInterface
     public function getDefaultCommand()
     {
         return new ListCommand();
+    }
+
+    /**
+     * @return InputDefinition
+     */
+    public function getDefaultDefinition()
+    {
+        return new InputDefinition();
     }
 }

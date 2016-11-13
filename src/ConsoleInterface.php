@@ -9,6 +9,8 @@
 
 namespace FastD\Console;
 
+use FastD\Console\Input\InputDefinitionInterface;
+
 /**
  * Interface ConsoleInterface
  * 
@@ -22,7 +24,12 @@ interface ConsoleInterface
     public function run();
 
     /**
-     * @return Command
+     * @return CommandInterface
      */
     public function getDefaultCommand();
+
+    /**
+     * @return InputDefinitionInterface
+     */
+    public function getDefaultDefinition();
 }

@@ -9,5 +9,15 @@
  */
 class InputDefinitionTest extends PHPUnit_Framework_TestCase
 {
+    public function testDefinitionBindCommand()
+    {
+        include_once __DIR__ . '/ArgumentCommand.php';
 
+        $definition = new \FastD\Console\Input\InputDefinition();
+
+        $definition->bindCommand(new ArgumentCommand());
+
+        $this->assertCount(4, $definition->getOptions());
+        $this->assertCount(2, $definition->getArguments());
+    }
 }

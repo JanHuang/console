@@ -9,9 +9,8 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Console;
-use FastD\Console\Input\Input;
-use FastD\Console\Output\Output;
+use FastD\Console\Input\InputInterface;
+use FastD\Console\Output\OutputInterface;
 
 /**
  * Class ListCommand
@@ -37,11 +36,10 @@ class ListCommand extends Command
     }
 
     /**
-     * @param Input $input
-     * @param Output $output
-     * @return int
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
-    public function execute(Input $input, Output $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Console Tool <success>' . Console::VERSION . '</success>' . PHP_EOL);
 
