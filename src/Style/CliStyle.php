@@ -9,18 +9,17 @@
 
 namespace FastD\Console\Style;
 
+/**
+ * Class CliStyle
+ *
+ * @package FastD\Console\Style
+ */
 class CliStyle implements StyleInterface
 {
-    public function getForegroundColor()
-    {
-        // TODO: Implement getForegroundColor() method.
-    }
-
-    public function getBackgroundColor()
-    {
-        // TODO: Implement getBackgroundColor() method.
-    }
-
+    /**
+     * @param $content
+     * @return mixed
+     */
     public function format($content)
     {
         $content = preg_replace_callback('/\<(?<tag>\/?[a-z]+)\>/', function ($match) {

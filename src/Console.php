@@ -174,16 +174,19 @@ Console Tool: <success>{$version}</success>
 <info>Help</info>:
  The help command displays help for a given command:
 
-   <notice>php demo.php help list</notice>
+   <notice>php cli.php help list</notice>
 
  You can also output the help in other formats by using the --debug option:
 
-   <notice>php demo.php help --debug</notice>
+   <notice>php cli.php help --debug</notice>
+   
+ Example:
+
+   <notice>php cli.php hello</notice>
 
  To display the list of available commands, please use the list command.
 
 <info>Available commands</info>:
-    
 EOF;
         $this->output->writeln($usage);
 

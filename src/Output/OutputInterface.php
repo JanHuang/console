@@ -11,9 +11,24 @@ namespace FastD\Console\Output;
 
 use FastD\Console\Style\StyleInterface;
 
+/**
+ * Interface OutputInterface
+ *
+ * @package FastD\Console\Output
+ */
 interface OutputInterface
 {
+    /**
+     * @param $content
+     * @param StyleInterface|null $style
+     * @return mixed
+     */
     public function write($content, StyleInterface $style = null);
 
+    /**
+     * @param $content
+     * @param StyleInterface|null $style
+     * @return mixed
+     */
     public function writeln($content, StyleInterface $style = null);
 }

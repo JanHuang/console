@@ -27,9 +27,14 @@ interface StyleInterface
         'default'   => StyleInterface::OUTPUT_DEFAULT
     ];
 
-    public function getForegroundColor();
-
-    public function getBackgroundColor();
+    const COLORS = [
+        'red'     => StyleInterface::OUTPUT_ERROR,
+        'green'   => StyleInterface::OUTPUT_SUCCESS,
+        'yellow'   => StyleInterface::OUTPUT_WARNING,
+        'cyan'    => StyleInterface::OUTPUT_NOTICE,
+        'blue'      => StyleInterface::OUTPUT_INFO,
+        'gray'   => StyleInterface::OUTPUT_DEFAULT
+    ];
 
     public function format($content);
 }

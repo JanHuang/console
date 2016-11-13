@@ -19,8 +19,16 @@ use FastD\Console\Style\StyleInterface;
  */
 class Output implements OutputInterface
 {
+    /**
+     * @var StyleInterface
+     */
     protected $style;
 
+    /**
+     * Output constructor.
+     *
+     * @param StyleInterface $style
+     */
     public function __construct(StyleInterface $style = null)
     {
         if (null === $style) {
@@ -30,13 +38,29 @@ class Output implements OutputInterface
         $this->style = $style;
     }
 
+    /**
+     * @param $content
+     * @param StyleInterface|null $style
+     * @return mixed
+     */
     public function write($content, StyleInterface $style = null)
     {
-        echo $this->style->format($content);
+        if (null !== $style) {
+            echo $style->format($content);
+        } else {
+            echo $this->style->format($content);
+        }
     }
 
+    /**
+     * @param $content
+     * @param StyleInterface|null $style
+     * @return mixed
+     */
     public function writeln($content, StyleInterface $style = null)
     {
-        echo $this->style->format($content) . PHP_EOL;
+        $this->write($content, $style);
+
+        echo PHP_EOL;
     }
 }
