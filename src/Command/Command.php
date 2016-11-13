@@ -7,7 +7,7 @@
  * @link      http://www.fast-d.cn/
  */
 
-namespace FastD\Console;
+namespace FastD\Console\Command;
 
 use FastD\Console\Input\InputArgument;
 use FastD\Console\Input\InputOption;

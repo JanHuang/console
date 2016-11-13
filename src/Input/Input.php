@@ -10,7 +10,7 @@
 namespace FastD\Console\Input;
 
 use ArrayIterator;
-use FastD\Console\Command;
+use FastD\Console\Command\CommandInterface;
 
 /**
  * Class Input
@@ -74,10 +74,10 @@ class Input implements InputInterface
     }
 
     /**
-     * @param Command $command
+     * @param CommandInterface $command
      * @return $this
      */
-    public function bindCommand(Command $command)
+    public function bindCommand(CommandInterface $command)
     {
         $this->definition->bindCommand($command);
 

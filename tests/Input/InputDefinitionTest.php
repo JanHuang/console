@@ -18,6 +18,6 @@ class InputDefinitionTest extends PHPUnit_Framework_TestCase
         $definition->bindCommand(new ArgumentCommand());
 
         $this->assertCount(4, $definition->getOptions());
-        $this->assertCount(2, $definition->getArguments());
+        $this->assertCount(1, $definition->getArguments());
     }
 }

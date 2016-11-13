@@ -7,11 +7,9 @@
  * @link      http://www.fast-d.cn/
  */
 
-namespace FastD\Console\Tests;
+namespace FastD\Console\Output;
 
-class CommandTest extends \PHPUnit_Framework_TestCase
+interface StyleInterface
 {
-    public function testEmptyCommand()
-    {
-    }
+
 }

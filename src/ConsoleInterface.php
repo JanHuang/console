@@ -9,6 +9,7 @@
 
 namespace FastD\Console;
 
+use FastD\Console\Command\CommandInterface;
 use FastD\Console\Input\InputDefinitionInterface;
 
 /**

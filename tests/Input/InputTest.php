@@ -28,14 +28,11 @@ class InputTest extends PHPUnit_Framework_TestCase
     {
         $input = new Input([]);
 
-        $this->assertEquals('list', $input->getFirstArgument());
         $this->assertEquals('dev', $input->getOption(['e', 'env']));
         $this->assertEmpty($input->getArguments());
         $this->assertEmpty($input->getOptions());
 
         $input = new Input([], $this->definition);
-        $this->assertEquals('list', $input->getFirstArgument());
-        $this->assertEquals($input->getFirstArgument(), $input->getArgument('command'));
         $this->assertEmpty($input->getArguments());
         $this->assertEmpty($input->getOptions());
     }
@@ -51,12 +48,8 @@ class InputTest extends PHPUnit_Framework_TestCase
         $input->parse();
 
         $this->assertEquals('test', $input->getFirstArgument());
-        $this->assertEquals($input->getFirstArgument(), $input->getArgument('command'));
         $this->assertNull($input->getOption('vvv'));
         $this->assertEquals($input->getOption('debug'), $input->getOption('vvv'));
-        $this->assertEquals([
-            'command' => 'test'
-        ], $input->getArguments());
         $this->assertEquals([
             'vv' => null
         ], $input->getOptions());
@@ -73,7 +66,6 @@ class InputTest extends PHPUnit_Framework_TestCase
         ], $this->definition);
 
         $this->assertEquals('demo', $input->getFirstArgument());
-        $this->assertEquals($input->getFirstArgument(), $input->getArgument('command'));
 
         $this->assertNull($input->getOption('debug'));
         $this->assertEquals($input->getOption('vvv'), $input->getOption('debug'));
@@ -84,9 +76,6 @@ class InputTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('prod', $input->getOption('env'));
         $this->assertEquals($input->getOption(['env', 'e']), $input->getOption('e'));
 
-        $this->assertEquals([
-            'command' => 'demo'
-        ], $input->getArguments());
         $this->assertEquals([
             'debug' => null,
             'help' => null,

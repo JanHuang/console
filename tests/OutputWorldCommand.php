@@ -7,7 +7,7 @@
  * @link      https://www.github.com/janhuang
  * @link      http://www.fast-d.cn/
  */
-class OutputWorldCommand extends \FastD\Console\Command
+class OutputWorldCommand extends \FastD\Console\Command\Command
 {
     public function getName()
     {

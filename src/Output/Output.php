@@ -16,6 +16,12 @@ namespace FastD\Console\Output;
  */
 class Output implements OutputInterface
 {
+    public function __construct(StyleInterface $style = null)
+    {
+        if (null === $style) {
+        }
+    }
+
     public function write($content, $frontendColor, $backendColor)
     {
         echo $content;

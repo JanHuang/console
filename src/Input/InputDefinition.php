@@ -9,7 +9,7 @@
 
 namespace FastD\Console\Input;
 
-use FastD\Console\Command;
+use FastD\Console\Command\CommandInterface;
 
 /**
  * Class InputDefinition
@@ -50,10 +50,10 @@ class InputDefinition implements InputDefinitionInterface
     }
 
     /**
-     * @param Command $command
+     * @param CommandInterface $command
      * @return $this
      */
-    public function bindCommand(Command $command)
+    public function bindCommand(CommandInterface $command)
     {
         $command->configure();
         $this->mergeInputArguments($command->getArguments());
@@ -164,9 +164,9 @@ class InputDefinition implements InputDefinitionInterface
     public function getDefaultInputOptions()
     {
         return [
-            new InputOption('debug', '-vvv', InputOption::VALUE_NONE, 'debug'),
-            new InputOption('help', '-h', InputOption::VALUE_NONE, 'help information'),
-            new InputOption('env', '-e', InputOption::VALUE_OPTIONAL, 'runtime environment', 'dev'),
+            new InputOption('--debug', '-v|-vv|-vvv', InputOption::VALUE_NONE, 'debug'),
+            new InputOption('--help', '-h', InputOption::VALUE_NONE, 'help information'),
+            new InputOption('--env', '-e', InputOption::VALUE_OPTIONAL, 'runtime environment', 'dev'),
         ];
     }
 
@@ -176,7 +176,6 @@ class InputDefinition implements InputDefinitionInterface
     public function getDefaultInputArguments()
     {
         return [
-            new InputArgument('command', InputArgument::REQUIRED, 'default execute command', 'usage'),
         ];
     }
 

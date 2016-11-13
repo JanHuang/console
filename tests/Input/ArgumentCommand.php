@@ -7,7 +7,7 @@
  * @link      https://www.github.com/janhuang
  * @link      http://www.fast-d.cn/
  */
-class ArgumentCommand extends \FastD\Console\Command
+class ArgumentCommand extends \FastD\Console\Command\Command
 {
     /**
      * @return string

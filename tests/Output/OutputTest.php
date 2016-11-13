@@ -25,19 +25,10 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormatter()
     {
-        $message = OutputFormatter::format('<success>Hello</success> <info>World</info>');
+
     }
 
     public function testOutput()
     {
-        $output = new ConsoleOutput();
-
-        echo PHP_EOL;
-        $output->writeln('Hello <error>World</error>');
-        $output->writeln('Hello <success>World</success>');
-        $output->writeln('Hello <warning>World</warning>');
-        $output->writeln('Hello <notice>World</notice>');
-        $output->writeln('Hello <info>World</info>');
-        $output->writeln('Hello <default>World</default>');
     }
 }

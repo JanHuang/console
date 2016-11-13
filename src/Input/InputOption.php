@@ -9,7 +9,6 @@
 
 namespace FastD\Console\Input;
 
-use FastD\Console\Output\OutputFormatter;
 use InvalidArgumentException;
 
 /**
