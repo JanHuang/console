@@ -31,6 +31,12 @@ interface CommandInterface
     public function setArgument($name, $optional = InputArgument::OPTIONAL, $description = '', $default = null);
 
     /**
+     * @param $name
+     * @return InputArgument
+     */
+    public function getArgument($name);
+
+    /**
      * @return InputArgument[]
      */
     public function getArguments();
@@ -44,6 +50,12 @@ interface CommandInterface
      * @return mixed
      */
     public function setOption($name, $shortcut = null, $optional = InputOption::VALUE_OPTIONAL, $description = '', $default = null);
+
+    /**
+     * @param $name
+     * @return InputOption
+     */
+    public function getOption($name);
 
     /**
      * @return InputOption[]

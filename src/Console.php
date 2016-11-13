@@ -185,13 +185,14 @@ Console Tool: <success>{$version}</success>
 <info>Available commands</info>:
     
 EOF;
-        $this->output->writeln($usage, '', '');
+        $this->output->writeln($usage);
 
         return 0;
     }
 
     /**
      * @param CommandInterface $command
+     * @return int
      */
     public function showCommand(CommandInterface $command)
     {
@@ -243,7 +244,7 @@ EOF;
             $optString
         );
 
-        $this->output->writeln($help, '', '');
+        $this->output->writeln($help);
 
         return 0;
     }
@@ -278,7 +279,7 @@ EOF;
             $help .= PHP_EOL . 'You can: ' . PHP_EOL . '    <info>' . implode(PHP_EOL . '    ', $list) . '</info>';
         }
 
-        $this->output->writeln(sprintf($help, $name), '', '');
+        $this->output->writeln(sprintf($help, $name));
 
         return 0;
     }

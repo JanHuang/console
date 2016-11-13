@@ -9,9 +9,11 @@
 
 namespace FastD\Console\Output;
 
+use FastD\Console\Style\StyleInterface;
+
 interface OutputInterface
 {
-    public function write($content, $frontendColor, $backendColor);
+    public function write($content, StyleInterface $style = null);
 
-    public function writeln($content, $frontendColor, $backendColor);
+    public function writeln($content, StyleInterface $style = null);
 }

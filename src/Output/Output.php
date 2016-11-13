@@ -9,6 +9,9 @@
 
 namespace FastD\Console\Output;
 
+use FastD\Console\Style\CliStyle;
+use FastD\Console\Style\StyleInterface;
+
 /**
  * Class Output
  *
@@ -16,19 +19,24 @@ namespace FastD\Console\Output;
  */
 class Output implements OutputInterface
 {
+    protected $style;
+
     public function __construct(StyleInterface $style = null)
     {
         if (null === $style) {
+            $style = new CliStyle();
         }
+
+        $this->style = $style;
     }
 
-    public function write($content, $frontendColor, $backendColor)
+    public function write($content, StyleInterface $style = null)
     {
-        echo $content;
+        echo $this->style->format($content);
     }
 
-    public function writeln($content, $frontendColor, $backendColor)
+    public function writeln($content, StyleInterface $style = null)
     {
-        echo $content . PHP_EOL;
+        echo $this->style->format($content) . PHP_EOL;
     }
 }
