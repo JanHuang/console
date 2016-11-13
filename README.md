@@ -5,17 +5,17 @@
 
 PHP CLI Application.
 
-## 要求
+### Requirements
 
 * PHP >= 5.6
 
-## Composer
+### Installation
 
 ```json
 composer require "fastd/console:3.0.x-dev" -vvv
 ```
 
-## 使用
+### Usage
 
 ```php
 use FastD\Console\Console;
@@ -29,6 +29,12 @@ $console->addCommand(new OutputWorldCommand());
 $console->addCommand(new OutputHelloCommand());
 
 $console->run();
+```
+
+###
+
+```php
+phpunit
 ```
 
 ## License MIT
