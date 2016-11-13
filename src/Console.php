@@ -12,13 +12,11 @@ namespace FastD\Console;
 use FastD\Console\Help\MeanHelp;
 use FastD\Console\Help\MissingHelp;
 use FastD\Console\Help\UsageHelp;
-use FastD\Console\Input\ArgvInput;
-use FastD\Console\Input\InputArgument;
-use FastD\Console\Input\InputOption;
+use FastD\Console\Input\Input;
+use FastD\Console\Input\InputInterface;
 use FastD\Console\Output\ConsoleOutput;
 use FastD\Console\Output\Output;
-use FastD\Console\Command\Command;
-use FastD\Console\Command\ListCommand;
+use FastD\Console\Output\OutputInterface;
 use RuntimeException;
 
 /**
@@ -35,34 +33,31 @@ class Console extends Collections implements ConsoleInterface
      */
     protected $command;
 
+    protected $input;
+
     /**
      * @var Output
      */
     protected $output;
 
-    /**
-     * Console constructor.
-     */
-    public function __construct()
+    public function __construct(InputInterface $input = null, OutputInterface $output = null)
     {
-        $this->output = new ConsoleOutput();
-
-        foreach ($this->getDefaultCommands() as $command) {
-            if ('' != $command->getName()) {
-                $this->addCommand($command);
-            }
+        if (null === $input) {
+            $input = new Input();
         }
-    }
-    
-    /**
-     * @param ArgvInput $input
-     * @return int
-     */
-    public function run(ArgvInput $input)
-    {
-        $name = $input->getCommandName();
 
-        $name = empty($name) ? $this->getDefaultCommandName() : $name;
+        $this->input = $input;
+
+        if (null === $output) {
+            $output = new Output();
+        }
+
+        $this->output = $output;
+    }
+
+    public function run()
+    {
+        $name = $this->input->getFirstArgument();
 
         if (empty($name)) {
             $this->output->writeHelp(new UsageHelp());
@@ -97,47 +92,16 @@ class Console extends Collections implements ConsoleInterface
         return $this->execute($input, $this->output);
     }
 
-    /**
-     * @param ArgvInput $input
-     * @param ConsoleOutput $output
-     * @return int
-     */
-    public function execute(ArgvInput $input, ConsoleOutput $output)
+    public function execute()
     {
-        $return = $this->command->execute($input, $output);
-
-        $input->resetCommand();
-
-        return $return;
+        return $this->command->execute($this->input, $this->output);
     }
 
     /**
-     * @return Command[]
+     * @return Command
      */
-    public function getDefaultCommands()
+    public function getDefaultCommand()
     {
-        return [
-            new ListCommand(),
-        ];
+        return new ListCommand();
     }
-
-    /**
-     * @return null
-     */
-    public function getDefaultCommandName()
-    {
-        return null;
-    }
-
-    /**
-     * @return InputOption[]
-     */
-    public function getDefaultInputOptions()
-    {}
-
-    /**
-     * @return InputArgument[]
-     */
-    public function getDefaultInputArguments()
-    {}
 }

@@ -138,12 +138,6 @@ class Input implements InputInterface
                 $this->parseArgument($value);
             }
         }
-
-        if (empty($this->arguments)) {
-            foreach ($this->definition->getDefaultInputArguments() as $inputArgument) {
-                $this->arguments[$inputArgument->getName()] = $inputArgument->getDefault();
-            }
-        }
     }
 
     /**
@@ -159,6 +153,12 @@ class Input implements InputInterface
         $name = isset($keys[$offset]) ? $keys[$offset] : null;
         array_pop($this->arguments);
         if ($this->definition->hasArgument($name)) {
+            if ('true' == $argument) {
+                $argument = true;
+            }
+            if ('false' == $argument) {
+                $argument = true;
+            }
             $this->arguments[$name] = $argument;
         }
         return $this;
@@ -176,6 +176,12 @@ class Input implements InputInterface
         } else {
             list($key, $value) = explode('=', $option);
             $value = trim($value, '\'"');
+            if ('true' == $value) {
+                $value = true;
+            }
+            if (false == $value) {
+                $value = false;
+            }
         }
 
         if ($this->definition->hasOption($key) && $this->definition->getOption($key)->isNone()) {

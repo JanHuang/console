@@ -30,10 +30,14 @@ class InputTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('list', $input->getFirstArgument());
         $this->assertEquals('dev', $input->getOption(['e', 'env']));
+        $this->assertEmpty($input->getArguments());
+        $this->assertEmpty($input->getOptions());
 
         $input = new Input([], $this->definition);
-
         $this->assertEquals('list', $input->getFirstArgument());
+        $this->assertEquals($input->getFirstArgument(), $input->getArgument('command'));
+        $this->assertEmpty($input->getArguments());
+        $this->assertEmpty($input->getOptions());
     }
 
     public function testInputParse()
@@ -49,6 +53,13 @@ class InputTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('test', $input->getFirstArgument());
         $this->assertEquals($input->getFirstArgument(), $input->getArgument('command'));
         $this->assertNull($input->getOption('vvv'));
+        $this->assertEquals($input->getOption('debug'), $input->getOption('vvv'));
+        $this->assertEquals([
+            'command' => 'test'
+        ], $input->getArguments());
+        $this->assertEquals([
+            'vv' => null
+        ], $input->getOptions());
     }
 
     public function testInputParseDefinition()
@@ -65,13 +76,22 @@ class InputTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($input->getFirstArgument(), $input->getArgument('command'));
 
         $this->assertNull($input->getOption('debug'));
-        $this->assertFalse($input->hasOption('vvv'));
         $this->assertEquals($input->getOption('vvv'), $input->getOption('debug'));
+        $this->assertFalse($input->hasOption('vvv'));
         $this->assertTrue($input->hasOption('debug'));
 
         $this->assertEquals('prod', $input->getOption('e'));
         $this->assertEquals('prod', $input->getOption('env'));
         $this->assertEquals($input->getOption(['env', 'e']), $input->getOption('e'));
+
+        $this->assertEquals([
+            'command' => 'demo'
+        ], $input->getArguments());
+        $this->assertEquals([
+            'debug' => null,
+            'help' => null,
+            'e' => 'prod'
+        ], $input->getOptions());
     }
 
     public function testEmptyInputBindEmptyDefinition()
@@ -98,8 +118,14 @@ class InputTest extends PHPUnit_Framework_TestCase
         ], new EmptyDefinition());
 
         $this->assertEquals('demo', $input->getFirstArgument());
-        $this->assertEquals('true', $input->getOption('debug'));
+        $this->assertTrue($input->getOption('debug'));
         $this->assertNull($input->getOption('help'));
+        $this->assertEmpty($input->getArguments());
+        $this->assertEquals([
+            'debug' => true,
+            'help' => null,
+            'e' => 'prod'
+        ], $input->getOptions());
     }
 
     public function testInputBindMultiDefinition()
@@ -116,10 +142,45 @@ class InputTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('demo', $input->getFirstArgument());
         $this->assertEquals($input->getFirstArgument(), $input->getArgument('foo'));
+        $this->assertEquals([
+            'foo' => 'demo'
+        ], $input->getArguments());
+        $this->assertTrue($input->getOption('debug'));
+    }
+
+    public function testInputBindNoneDefinition()
+    {
+        include_once __DIR__ . '/NoneOptionsDefinition.php';
+
+        $input = new Input([
+            'demo.php',
+            'demo',
+            '--foo=true'
+        ], new NoneOptionsDefinition());
+
+        $this->assertNull($input->getOption('foo'));
+        $this->assertEquals('demo', $input->getArgument('name'));
     }
 
     public function testInputCustomDefinition()
     {
+        include_once __DIR__ . '/CustomDefinition.php';
 
+        $input = new Input([
+            'demo.php',
+            'demo',
+            'true',
+            'abc',
+            '--foo=true'
+        ], new CustomDefinition());
+
+        $this->assertTrue($input->getOption('f'));
+        $this->assertEquals($input->getOption('foo'), $input->getOption('f'));
+        $this->assertEquals('demo', $input->getArgument('foo'));
+        $this->assertTrue($input->getArgument('bar'));
+        $this->assertEquals([
+            'foo' => 'demo',
+            'bar' => true,
+        ], $input->getArguments());
     }
 }

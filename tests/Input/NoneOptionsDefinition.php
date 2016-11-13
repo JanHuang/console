@@ -9,21 +9,19 @@
 
 use FastD\Console\Input\InputDefinition;
 
-class CustomDefinition extends InputDefinition
+class NoneOptionsDefinition extends InputDefinition
 {
     public function getDefaultInputArguments()
     {
         return [
-            new \FastD\Console\Input\InputArgument('foo'),
-            new \FastD\Console\Input\InputArgument('bar'),
+            new \FastD\Console\Input\InputArgument('name'),
         ];
     }
 
     public function getDefaultInputOptions()
     {
         return [
-            new \FastD\Console\Input\InputOption('foo', '-f'),
-            new \FastD\Console\Input\InputOption('bar', '-b'),
+             new \FastD\Console\Input\InputOption('foo', '-f', \FastD\Console\Input\InputOption::VALUE_NONE),
         ];
     }
 }

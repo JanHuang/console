@@ -9,11 +9,6 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Command\Command;
-use FastD\Console\Input\ArgvInput;
-use FastD\Console\Input\InputArgument;
-use FastD\Console\Input\InputOption;
-
 /**
  * Interface ConsoleInterface
  * 
@@ -22,30 +17,12 @@ use FastD\Console\Input\InputOption;
 interface ConsoleInterface
 {
     /**
-     * @param ArgvInput $input
      * @return mixed
      */
-    public function run(ArgvInput $input);
+    public function run();
 
     /**
-     * @return Command[]
+     * @return Command
      */
-    public function getDefaultCommands();
-
-    /**
-     * @return InputOption[]
-     */
-    public function getDefaultInputOptions();
-
-    /**
-     * @return InputArgument[]
-     */
-    public function getDefaultInputArguments();
-
-    /**
-     * Get console default command name if cannot enter command.
-     * 
-     * @return string
-     */
-    public function getDefaultCommandName();
+    public function getDefaultCommand();
 }

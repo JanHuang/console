@@ -9,10 +9,10 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Input\Input;
-use FastD\Console\Output\Output;
+use FastD\Console\Input\InputInterface;
+use FastD\Console\Output\OutputInterface;
 
 interface CommandInterface
 {
-    public function execute(Input $input, Output $output);
+    public function execute(InputInterface $input, OutputInterface $output);
 }
