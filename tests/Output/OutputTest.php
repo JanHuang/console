@@ -1,18 +1,15 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: janhuang
- * Date: 16/6/8
- * Time: 下午8:58
- * Github: https://www.github.com/janhuang
- * Coding: https://www.coding.net/janhuang
- * Blog: http://segmentfault.com/blog/janhuang
+ * @author    jan huang <bboyjanhuang@gmail.com>
+ * @copyright 2016
+ *
+ * @link      https://www.github.com/janhuang
+ * @link      http://www.fast-d.cn/
  */
 
 namespace FastD\Console\Tests\Output;
 
-use FastD\Console\Output\ConsoleOutput;
-use FastD\Console\Output\OutputFormatter;
+use FastD\Console\Output\Output;
 
 /**
  * Class OutputTest
@@ -20,15 +17,17 @@ use FastD\Console\Output\OutputFormatter;
  */
 class OutputTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @outputBuffering Hello World
-     */
-    public function testFormatter()
-    {
+    protected $output;
 
+    public function setUp()
+    {
+        $this->output = new Output();
     }
 
     public function testOutput()
     {
+        $this->output->write("hello world");
+
+        $this->expectOutputString('hello world');
     }
 }
