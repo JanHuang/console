@@ -9,13 +9,12 @@
 
 namespace FastD\Console;
 
-use FastD\Console\Help\UsageHelp;
 use FastD\Console\Input\Input;
 use FastD\Console\Input\InputDefinition;
+use FastD\Console\Input\InputDefinitionInterface;
 use FastD\Console\Input\InputInterface;
 use FastD\Console\Output\Output;
 use FastD\Console\Output\OutputInterface;
-use RuntimeException;
 
 /**
  * Class Console
@@ -47,6 +46,11 @@ class Console implements ConsoleInterface
     protected $output;
 
     /**
+     * @var bool
+     */
+    protected $debug = false;
+
+    /**
      * Console constructor.
      *
      * @param InputInterface|null $input
@@ -54,37 +58,57 @@ class Console implements ConsoleInterface
      */
     public function __construct(InputInterface $input = null, OutputInterface $output = null)
     {
-        if (null === $input) {
-            $input = new Input();
+        foreach ($this->getDefaultCommands() as $command) {
+            $this->addCommand($command);
         }
 
-        $this->input = $input;
+        $this->configureIO($input, $output);
+    }
+
+    /**
+     * @param InputInterface|null $input
+     * @param OutputInterface|null $output
+     * @return $this
+     */
+    public function configureIO(InputInterface $input = null, OutputInterface $output = null)
+    {
+        if (null === $input) {
+            $input = new Input(null, $this->getDefaultDefinition());
+        }
 
         if (null === $output) {
             $output = new Output();
         }
 
+        $this->input = $input;
         $this->output = $output;
-    }
-
-    /**
-     * @param array $commands
-     * @return $this
-     */
-    public function setCommand(array $commands = [])
-    {
-        foreach ($commands as $command) {
-            $this->addCommand($command);
-        }
 
         return $this;
     }
 
     /**
-     * @param Command $command
      * @return $this
      */
-    public function addCommand(Command $command)
+    public function enableDebug()
+    {
+        $this->debug = true;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDebug()
+    {
+        return $this->debug;
+    }
+
+    /**
+     * @param CommandInterface $command
+     * @return $this
+     */
+    public function addCommand(CommandInterface $command)
     {
         $this->commands[$command->getName()] = $command;
 
@@ -102,7 +126,7 @@ class Console implements ConsoleInterface
 
     /**
      * @param $name
-     * @return mixed|null
+     * @return CommandInterface|bool
      */
     public function getCommand($name)
     {
@@ -110,49 +134,46 @@ class Console implements ConsoleInterface
     }
 
     /**
-     * @return int
+     * @return InputDefinitionInterface
+     */
+    public function getDefaultDefinition()
+    {
+        return new InputDefinition();
+    }
+
+    /**
+     * @return CommandInterface[]
+     */
+    public function getDefaultCommands()
+    {
+        return [
+            new UsageCommand(),
+        ];
+    }
+
+    /**
+     * @return mixed
      */
     public function run()
     {
         $name = $this->input->getFirstArgument();
 
-        if (empty($name)) {
-            $this->output->writeHelp(new UsageHelp());
-            return 0;
+        if (!$this->hasCommand($name)) {
+            $this->output->writeln('Usage', '', '');
+            return 1;
         }
 
-        try {
-            $this->command = $this->getCommand($name);
-            if (false === $this->command) {
-                // Not command do something.
-                throw new RuntimeException(null);
-            }
-        } catch (RuntimeException $e) {
-            echo '';
-            return 0;
+        $this->command = $this->getCommand($name);
+
+        if ($this->input->hasOption(['v', 'vv', 'vvv', 'debug'])) {
+            $this->enableDebug();
         }
 
         if ($this->input->hasOption(['h', 'help'])) {
-            $this->output->writeHelp(new UsageHelp($this->command));
+            $this->output->writeln('Command', '', '');
             return 0;
         }
 
         return $this->command->execute($this->input, $this->output);
-    }
-
-    /**
-     * @return Command
-     */
-    public function getDefaultCommand()
-    {
-        return new ListCommand();
-    }
-
-    /**
-     * @return InputDefinition
-     */
-    public function getDefaultDefinition()
-    {
-        return new InputDefinition();
     }
 }

@@ -176,7 +176,7 @@ class InputDefinition implements InputDefinitionInterface
     public function getDefaultInputArguments()
     {
         return [
-            new InputArgument('command', InputArgument::REQUIRED, 'default execute command', 'list'),
+            new InputArgument('command', InputArgument::REQUIRED, 'default execute command', 'usage'),
         ];
     }
 

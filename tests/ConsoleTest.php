@@ -13,9 +13,12 @@ use FastD\Console\Console;
 
 class ConsoleTest extends PHPUnit_Framework_TestCase
 {
-    public function testConsole()
+    public function testEmptyInputConsole()
     {
-        $console = new Console();
+        include_once __DIR__ . '/OutputHelloCommand.php';
+        include_once __DIR__ . '/OutputWorldCommand.php';
+
+        $console = new Console(new \FastD\Console\Input\Input([]));
 
         $console->run();
     }

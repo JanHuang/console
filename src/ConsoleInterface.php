@@ -24,9 +24,9 @@ interface ConsoleInterface
     public function run();
 
     /**
-     * @return CommandInterface
+     * @return CommandInterface[]
      */
-    public function getDefaultCommand();
+    public function getDefaultCommands();
 
     /**
      * @return InputDefinitionInterface

@@ -9,47 +9,20 @@
 
 namespace FastD\Console\Output;
 
-use FastD\Console\Help\Help;
-
 /**
  * Class Output
  *
  * @package FastD\Console\Output
  */
-class Output
+class Output implements OutputInterface
 {
-    /**
-     * @param $message
-     * @param bool $toReturn
-     * @return string
-     */
-    public function write($message, $toReturn = false)
+    public function write($content, $frontendColor, $backendColor)
     {
-        $message = OutputFormatter::format($message);
-
-        if ($toReturn) {
-            return $message;
-        }
-
-        echo $message;
+        echo $content;
     }
 
-    /**
-     * @param $message
-     * @return void
-     */
-    public function writeln($message)
+    public function writeln($content, $frontendColor, $backendColor)
     {
-        $message = $this->write($message, true);
-
-        echo $message . PHP_EOL;
-    }
-
-    /**
-     * @param Help $help
-     */
-    public function writeHelp(Help $help)
-    {
-        $this->writeln($help->getHelp());
+        echo $content . PHP_EOL;
     }
 }
