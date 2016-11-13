@@ -101,4 +101,25 @@ class InputTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('true', $input->getOption('debug'));
         $this->assertNull($input->getOption('help'));
     }
+
+    public function testInputBindMultiDefinition()
+    {
+        include_once __DIR__ . '/MultiDefinition.php';
+
+        $input = new Input([
+            'demo.php',
+            'demo',
+            '--debug=true',
+            '--help',
+            '-e=prod'
+        ], new MultiDefinition());
+
+        $this->assertEquals('demo', $input->getFirstArgument());
+        $this->assertEquals($input->getFirstArgument(), $input->getArgument('foo'));
+    }
+
+    public function testInputCustomDefinition()
+    {
+
+    }
 }

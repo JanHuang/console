@@ -129,7 +129,7 @@ class Input implements InputInterface
     {
         $args = $this->formatInputArguments();
 
-        foreach ($args as $value) {
+        foreach ($args as $key => $value) {
             if ('--' === substr($value, 0, 2)) {
                 $this->parseOption(substr($value, 2));
             } else if ('-' === substr($value, 0, 1)) {
