@@ -72,9 +72,7 @@ class Output implements OutputInterface
      */
     public function writeln($content, StyleInterface $style = null)
     {
-        $this->write($content, $style);
-
-        echo PHP_EOL;
+        echo ($this->format($content, $style) . PHP_EOL);
     }
 
     /**
