@@ -13,10 +13,14 @@ use FastD\Console\Output\Output;
 
 /**
  * Class OutputTest
+ *
  * @package FastD\Console\Tests\Output
  */
 class OutputTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Output
+     */
     protected $output;
 
     public function setUp()
@@ -29,5 +33,18 @@ class OutputTest extends \PHPUnit_Framework_TestCase
         $this->output->write("hello world");
 
         $this->expectOutputString('hello world');
+    }
+
+    public function testOutputTable()
+    {
+        echo PHP_EOL;
+        $this->output->table(['FOO', 'BAR', 'FIZZ', 'BUZZ'], [
+            ['FOO', 'BAR', 'FIZZ', 'BUZZ'],
+            ['FOO', 'BAR', 'FIZZ', 'BUZZ'],
+            ['FOO', 'BAR', 'FIZZ', 'BUZZ'],
+            ['FOO', 'BAR', 'FIZZ', 'BUZZ'],
+            ['Lorem', 'Ipsum', 'Dolor', 'Emit'],
+            ['Antiquated', 'Porcupine', 'Sandwich', 'Man'],
+        ]);
     }
 }

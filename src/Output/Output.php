@@ -11,6 +11,7 @@ namespace FastD\Console\Output;
 
 use FastD\Console\Style\CliStyle;
 use FastD\Console\Style\StyleInterface;
+use FastD\Console\Style\TableStyle;
 
 /**
  * Class Output
@@ -43,24 +44,50 @@ class Output implements OutputInterface
      * @param StyleInterface|null $style
      * @return mixed
      */
-    public function write($content, StyleInterface $style = null)
+    public function format($content, StyleInterface $style = null)
     {
         if (null !== $style) {
-            echo $style->format($content);
+            $content = $style->format($content);
         } else {
-            echo $this->style->format($content);
+            $content = $this->style->format($content);
         }
+
+        return $content;
     }
 
     /**
      * @param $content
      * @param StyleInterface|null $style
-     * @return mixed
+     * @return void
+     */
+    public function write($content, StyleInterface $style = null)
+    {
+        echo $this->format($content, $style);
+    }
+
+    /**
+     * @param $content
+     * @param StyleInterface|null $style
+     * @return void
      */
     public function writeln($content, StyleInterface $style = null)
     {
         $this->write($content, $style);
 
         echo PHP_EOL;
+    }
+
+    /**
+     * @param array $header
+     * @param array $data
+     * @return void
+     */
+    public function table(array $header = [], array $data = [])
+    {
+        $style = new TableStyle();
+
+        $style->headers($header);
+
+        $this->write($data, $style);
     }
 }
