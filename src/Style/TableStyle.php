@@ -22,11 +22,6 @@ class TableStyle implements TableStyleInterface, StyleInterface
     private $headers = [];
 
     /**
-     * @var array
-     */
-    private $data = [];
-
-    /**
      * @var array max length
      */
     private $maxLength = [];
