@@ -159,34 +159,34 @@ class Console implements ConsoleInterface
         $version = Console::VERSION;
 
         $usage = <<<EOF
-Console Tool: <success>{$version}</success>
+Console Tool: <green>{$version}</green>
         
-<info>Usage</info>:
+<blue>Usage</blue>:
   help [options] [--] [<command_name>]
 
-<info>Arguments</info>:
+<blue>Arguments</blue>:
   command               The command to execute
 
-<info>Options</info>:
+<blue>Options</blue>:
   -h, --help            Display this help message
   -d, --debug           Display console debug message.
 
-<info>Help</info>:
+<blue>Help</blue>:
  The help command displays help for a given command:
 
-   <notice>php cli.php help list</notice>
+   <yellow>php cli.php help list</yellow>
 
  You can also output the help in other formats by using the --debug option:
 
-   <notice>php cli.php help --debug</notice>
+   <yellow>php cli.php help --debug</yellow>
    
  Example:
 
-   <notice>php cli.php hello</notice>
+   <yellow>php cli.php hello</yellow>
 
  To display the list of available commands, please use the list command.
 
-<info>Available commands</info>:
+<blue>Available commands</blue>:
 EOF;
         $this->output->writeln($usage);
 
@@ -215,7 +215,7 @@ EOF;
         }
 
         $help = <<<EOF
-<info>Usage:</info> 
+<blue>Usage:</blue> 
   %s %s %s
   
 %s
@@ -226,7 +226,7 @@ EOF;
         if (!empty($arguments)) {
             $argString .= sprintf('<info>Arguments:</info> %s', PHP_EOL . implode(PHP_EOL, array_map(function ($v) use ($command) {
                     $name = str_replace(['<', '>', '[', ']'], '', $v);
-                    return '  ' . $name . "\t" . '<notice>' . $command->getArgument($name)->getDescription() . '</notice>';
+                    return '  ' . $name . "\t" . '<yellow>' . $command->getArgument($name)->getDescription() . '</yellow>';
                 }, $arguments)));
         }
 
@@ -235,7 +235,7 @@ EOF;
             $optString .= sprintf('<info>Options:</info> %s', PHP_EOL . implode(PHP_EOL, array_map(function ($v) use ($command) {
                     $name = str_replace(['<', '>', '[', ']'], '', $v);
                     $key = trim(explode('|', $name)[0], '-');
-                    return '  ' . $name . "\t" . '<notice>' . $command->getOption($key)->getDescription() . '</notice>';
+                    return '  ' . $name . "\t" . '<yellow>' . $command->getOption($key)->getDescription() . '</yellow>';
                 }, $options)));
         }
 
@@ -279,7 +279,7 @@ EOF;
             $help .= PHP_EOL . 'Did you mean this?' . PHP_EOL;
             $help .= '    <info>' . implode('    ' . PHP_EOL, $like) . '</info>';
         } else {
-            $help .= PHP_EOL . 'You can: ' . PHP_EOL . '    <info>' . implode(PHP_EOL . '    ', $list) . '</info>';
+            $help .= PHP_EOL . 'You can: ' . PHP_EOL . '    <blue>' . implode(PHP_EOL . '    ', $list) . '</blue>';
         }
 
         $this->output->writeln(sprintf($help, $name));

@@ -9,32 +9,29 @@
 
 namespace FastD\Console\Style;
 
+/**
+ * Interface StyleInterface
+ *
+ * @package FastD\Console\Style
+ */
 interface StyleInterface
 {
-    const OUTPUT_ERROR = "0;31";
-    const OUTPUT_SUCCESS = "0;32";
-    const OUTPUT_WARNING = "0;33";
-    const OUTPUT_NOTICE = "0;36";
-    const OUTPUT_INFO = "0;34";
-    const OUTPUT_DEFAULT = "0;37";
+    /**
+     * @param $name
+     * @param ColorInterface $color
+     * @return mixed
+     */
+    public function setColor($name, ColorInterface $color);
 
-    const TAGS = [
-        'error'     => StyleInterface::OUTPUT_ERROR,
-        'success'   => StyleInterface::OUTPUT_SUCCESS,
-        'warning'   => StyleInterface::OUTPUT_WARNING,
-        'notice'    => StyleInterface::OUTPUT_NOTICE,
-        'info'      => StyleInterface::OUTPUT_INFO,
-        'default'   => StyleInterface::OUTPUT_DEFAULT
-    ];
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getColor($name);
 
-    const COLORS = [
-        'red'     => StyleInterface::OUTPUT_ERROR,
-        'green'   => StyleInterface::OUTPUT_SUCCESS,
-        'yellow'   => StyleInterface::OUTPUT_WARNING,
-        'cyan'    => StyleInterface::OUTPUT_NOTICE,
-        'blue'      => StyleInterface::OUTPUT_INFO,
-        'gray'   => StyleInterface::OUTPUT_DEFAULT
-    ];
-
-    public function format($content);
+    /**
+     * @param $text
+     * @return mixed
+     */
+    public function format($text);
 }

@@ -9,9 +9,9 @@
 
 namespace FastD\Console\Output;
 
-use FastD\Console\Style\CliStyle;
 use FastD\Console\Style\StyleInterface;
-use FastD\Console\Style\TableStyle;
+use FastD\Console\Style\Style;
+use FastD\Console\Style\Table;
 
 /**
  * Class Output
@@ -33,7 +33,7 @@ class Output implements OutputInterface
     public function __construct(StyleInterface $style = null)
     {
         if (null === $style) {
-            $style = new CliStyle();
+            $style = new Style();
         }
 
         $this->style = $style;
@@ -82,9 +82,9 @@ class Output implements OutputInterface
      */
     public function table(array $header = [], array $data = [])
     {
-        $style = new TableStyle();
+        $style = new Table();
 
-        $style->headers($header);
+        $style->setHeader($header);
 
         $this->write($data, $style);
     }

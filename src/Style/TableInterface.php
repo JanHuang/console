@@ -9,7 +9,7 @@
 
 namespace FastD\Console\Style;
 
-interface TableStyleInterface
+interface TableInterface
 {
-    public function headers(array $headers);
+    public function setHeader(array $headers);
 }

@@ -14,27 +14,32 @@ namespace FastD\Console\Style;
  *
  * @package FastD\Console\Style
  */
-class TableStyle implements TableStyleInterface, StyleInterface
+class Table extends Style implements TableInterface
 {
     /**
      * @var array
      */
-    private $headers = [];
+    protected $headers = [];
 
     /**
      * @var array max length
      */
-    private $maxLength = [];
+    protected $maxLength = [];
 
     /**
      * @var int
      */
-    private $columns;
+    protected $columns;
 
     /**
      * @var string
      */
-    private $line;
+    protected $line;
+
+    /**
+     * @var string
+     */
+    protected $content;
 
     /**
      * Find maximum lengths for each column
@@ -135,17 +140,27 @@ class TableStyle implements TableStyleInterface, StyleInterface
         $table .= $this->generateHeader($this->headers);
         $table .= $this->generateBody($content);
 
-        return $table;
+        $this->content = parent::format($table);
+
+        return $this->content;
     }
 
     /**
      * @param array $headers
      * @return $this
      */
-    public function headers(array $headers)
+    public function setHeader(array $headers)
     {
         $this->headers = $headers;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->content;
     }
 }
