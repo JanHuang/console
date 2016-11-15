@@ -26,7 +26,7 @@ class StyleTest extends PHPUnit_Framework_TestCase
         $style->setHeader(['Name', "Age"]);
 
         $table = $style->format([
-            ['<green>Ken</green>', '<red>18</red>']
+            ['Ken', '18']
         ]);
 
         echo $table;
