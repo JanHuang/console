@@ -8,6 +8,7 @@
  */
 
 namespace FastD\Console\Style;
+use SebastianBergmann\CodeCoverage\Report\PHP;
 
 /**
  * Class Style
@@ -79,16 +80,16 @@ class Style implements StyleInterface
                 continue;
             }
 
+            $tag = null;
             // open tag.
-            if ('/' != $text[1]) {
-                $tag = $matches[1][$i][0];
-            } else {
+            if ('/' == $text[1]) {
                 $tag = isset($matches[3][$i][0]) ? $matches[3][$i][0] : '';
             }
 
             $content = substr($message, $offset, $pos - $offset);
             $output .= false !== ($color = $this->getColor($tag)) ? $color->render($content) : $content;
             $offset = $pos + strlen($text);
+            // complement space
             unset($color);
         }
 

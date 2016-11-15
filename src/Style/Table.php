@@ -37,11 +37,6 @@ class Table extends Style implements TableInterface
     protected $line;
 
     /**
-     * @var string
-     */
-    protected $content;
-
-    /**
      * Find maximum lengths for each column
      *
      * @param array $data
@@ -52,6 +47,7 @@ class Table extends Style implements TableInterface
         for ($i = 0; $i < $this->columns; $i++) {
             $this->maxLength[$i] = 0;
             foreach ($this->headers as $field) {
+                $field = strip_tags($field);
                 if (strlen($field) > $this->maxLength[$i]) {
                     $this->maxLength[$i] = strlen($field);
                 }
@@ -61,6 +57,7 @@ class Table extends Style implements TableInterface
         foreach ($data as $row) {
             $i = 0;
             foreach ($row as $field) {
+                $field = strip_tags($field);
                 if (strlen($field) > $this->maxLength[$i]) {
                     $this->maxLength[$i] = strlen($field);
                 }
@@ -140,9 +137,7 @@ class Table extends Style implements TableInterface
         $table .= $this->generateHeader($this->headers);
         $table .= $this->generateBody($content);
 
-        $this->content = parent::format($table);
-
-        return $this->content;
+        return parent::format($table);
     }
 
     /**
@@ -154,13 +149,5 @@ class Table extends Style implements TableInterface
         $this->headers = $headers;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->content;
     }
 }

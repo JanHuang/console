@@ -14,7 +14,7 @@ class StyleTest extends PHPUnit_Framework_TestCase
     {
         $style = new Style();
 
-        $text = $style->format('<error>hello</error><info>world</info>');
+        $text = $style->format('<error>hello</error>asdadsf<info>world</info>');
 
         echo $text;
     }
@@ -26,7 +26,7 @@ class StyleTest extends PHPUnit_Framework_TestCase
         $style->setHeader(['Name', "Age"]);
 
         $table = $style->format([
-            ['Jan', '18']
+            ['<green>Ken</green>', '<red>18</red>']
         ]);
 
         echo $table;
